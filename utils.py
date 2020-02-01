@@ -1,12 +1,16 @@
-import threading, time, itertools, sys
+import threading, time, itertools, sys, os
 
 """
 Extremely bareboned version of spinner from yaspin library
 https://github.com/pavdmyt/yaspin/tree/master/yaspin
 """
 class Spinner(object):
+    MAC_FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+    WINDOWS_FRAMES = ["[    ]","[=   ]","[==  ]","[=== ]","[ ===]","[  ==]",
+			         "[   =]","[    ]","[   =]","[  ==]","[ ===]","[====]",
+			         "[=== ]","[==  ]","[=   ]"]
     def __init__(self):
-        self._frames = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+        self._frames = self.WINDOWS_FRAMES if os.name == "nt" else self.MAC_FRAMES
         self._interval = 80 * 0.001 # convert from ms to secs
         self._cycle = itertools.cycle(self._frames)
         self.text = ""
@@ -35,8 +39,9 @@ class Spinner(object):
             self._stop_spin.set()
             self._spin_thread.join()
 
-            sys.stdout.write("\r")
+            sys.stdout.write(f"\r{self.text}")
             self._clear_line()
+            sys.stdout.write("\n")
 
             if sys.stdout.isatty():
                 self._show_cursor()
@@ -58,17 +63,22 @@ class Spinner(object):
 
     @staticmethod
     def _hide_cursor():
-        sys.stdout.write("\033[?25l")
+        if os.name != "nt":
+            sys.stdout.write("\033[?25l")
         sys.stdout.flush()
 
     @staticmethod
     def _show_cursor():
-        sys.stdout.write("\033[?25h")
+        if os.name != "nt":
+            sys.stdout.write("\033[?25h")
         sys.stdout.flush()
 
     @staticmethod
     def _clear_line():
-        sys.stdout.write("\033[K")
+        if os.name == "nt":
+            sys.stdout.write(" "*7+"\r")
+        else:
+            sys.stdout.write("\033[K")
 
 """
 Time how long it takes code to run inside a `Timer` context. Print out the

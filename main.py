@@ -79,7 +79,6 @@ def main():
             else:
                 with Pool() as pool:
                     results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(turns)))]
-    print(info_text)
     total_turns = sum(results)
     print(f"Complete, {pluralize(total_turns,'move',',')} made")
     save_results(results)
