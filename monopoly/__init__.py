@@ -54,8 +54,8 @@ Save the results from the simulation to a txt and a csv file
 """
 def save_results(results):
     total_turns = sum(results)
-    with open('board-spaces.txt') as fnames:
-        with open('board-probabilities.txt', 'w') as fprobs, open('board-probabilities.csv', 'w') as fprobs_csv:
+    with open('./data/board-spaces.txt') as fnames:
+        with open('./results/board-probabilities.txt', 'w') as fprobs, open('./results/board-probabilities.csv', 'w') as fprobs_csv:
             for i,square_name in enumerate(fnames):
                 if i < len(results):
                     fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
@@ -82,7 +82,3 @@ def main():
     total_turns = sum(results)
     print(f"Complete, {pluralize(total_turns,'move',',')} made")
     save_results(results)
-
-
-if __name__ == '__main__':
-    main()

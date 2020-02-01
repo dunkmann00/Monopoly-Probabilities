@@ -1,0 +1,41 @@
+Go                    - 3.086%
+Mediterranean Avenue  - 2.139%
+Community Chest       - 1.885%
+Baltic Avenue         - 2.190%
+Income Tax            - 2.345%
+Reading Railroad      - 2.823%
+Oriental Avenue       - 2.275%
+Chance                - 1.009%
+Vermont Avenue        - 2.319%
+Connecticut Avenue    - 2.291%
+Just Visiting Jail    - 2.264%
+St. Charles Place     - 2.713%
+Electric Company      - 2.612%
+States Avenue         - 2.378%
+Virginia Avenue       - 2.478%
+Pennsylvania Railroad - 2.786%
+St. James Place       - 2.799%
+Community Chest       - 2.599%
+Tennessee Avenue      - 2.919%
+New York Avenue       - 3.094%
+Free Parking          - 2.878%
+Kentucky Avenue       - 2.824%
+Chance                - 1.217%
+Indiana Avenue        - 2.712%
+Illinois Avenue       - 3.171%
+B. & O. Railroad      - 2.906%
+Atlantic Avenue       - 2.727%
+Ventnor Avenue        - 2.670%
+Water Works           - 2.807%
+Marvin Gardens        - 2.586%
+Go To Jail            - 0.000%
+Pacific Avenue        - 2.659%
+North Carolina Avenue - 2.600%
+Community Chest       - 2.382%
+Pennsylvania Avenue   - 2.493%
+Short Line Railroad   - 2.427%
+Chance                - 1.000%
+Park Place            - 2.193%
+Luxury Tax            - 2.161%
+Boardwalk             - 2.620%
+In Jail               - 3.966%
