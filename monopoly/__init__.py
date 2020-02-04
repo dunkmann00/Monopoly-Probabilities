@@ -1,8 +1,8 @@
 import os
 from multiprocessing import Pool
 from itertools import starmap
-from monopoly import Monopoly
-from utils import Spinner, Timer, pluralize
+from utils import (Spinner, Timer, pluralize, calculate_all_turns,
+                   save_results, generate_games, play_game)
 
 try:
     import argparse
@@ -13,54 +13,6 @@ try:
     flags = parser.parse_args()
 except ImportError:
     flags = None
-
-
-def generate_games(turns):
-    i=0
-    while i < len(turns):
-        game = Monopoly()
-        yield game, turns[i]
-        i+=1
-
-"""
-Calculate how many games to play and how many turns in each game.
-If not running in parallel we only want one game, if we are running in parallel
-we will play at most, the same number of games as cpu_count. When dividing the
-turns up amonst games, the fewest number of turns in a game is 1,000,000.
-"""
-def calculate_all_turns(total_turns, cpu_count):
-    turns = []
-    turns_remaining = total_turns
-    turns_per_game = max(1000000, int(total_turns/cpu_count))
-
-    while len(turns) < cpu_count and turns_remaining > 0:
-        game_turns = min(turns_per_game, turns_remaining)
-        turns.append(game_turns)
-        turns_remaining-=game_turns
-
-    for i in range(len(turns)):
-        if turns_remaining == 0:
-            break
-        turns[i]+=1
-        turns_remaining-=1
-    return turns
-
-def play_game(game, turns):
-    game.take_turns(turns)
-    return game.results
-
-"""
-Save the results from the simulation to a txt and a csv file
-"""
-def save_results(results):
-    total_turns = sum(results)
-    with open('./data/board-spaces.txt') as fnames:
-        with open('./results/board-probabilities.txt', 'w') as fprobs, open('./results/board-probabilities.csv', 'w') as fprobs_csv:
-            for i,square_name in enumerate(fnames):
-                if i < len(results):
-                    fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
-                    fprobs_csv.write(f"{square_name.rstrip()},{results[i]/total_turns:.3%}\n")
-
 
 def main():
     with Timer():

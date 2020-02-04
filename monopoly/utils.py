@@ -1,4 +1,5 @@
 import threading, time, itertools, sys, os
+from monopoly import Monopoly
 
 """
 Extremely bareboned version of spinner from yaspin library
@@ -110,6 +111,23 @@ class Timer(object):
         format = '.0f' if mins > 0 else '.2f'
         duration_str += f"{pluralize(secs,'sec',format)}"
         return duration_str
+"""
+Returns a generator that yields a tuple containing a new Monopoly object and the
+number of turns to simulate for that game.
+"""
+def generate_games(turns):
+    i=0
+    while i < len(turns):
+        game = Monopoly()
+        yield game, turns[i]
+        i+=1
+"""
+Calls the game's `take_turns` method with the value from `turns`. Then returns
+the results list. This is needed as the function that gets passed to starmap.
+"""
+def play_game(game, turns):
+    game.take_turns(turns)
+    return game.results
 
 """
 Given a value and a label for that value, make the label plural if the value is
@@ -120,3 +138,38 @@ Return the value, formatted if necessary, with the correct label.
 def pluralize(value, label, format=None):
     value_str = str(value) if format is None else f"{value:{format}}"
     return f"{value_str} {label}{'s' if value != 1 else ''}"
+
+"""
+Calculate how many games to play and how many turns in each game.
+If not running in parallel we only want one game, if we are running in parallel
+we will play at most, the same number of games as cpu_count. When dividing the
+turns up amonst games, the fewest number of turns in a game is 1,000,000.
+"""
+def calculate_all_turns(total_turns, cpu_count):
+    turns = []
+    turns_remaining = total_turns
+    turns_per_game = max(1000000, int(total_turns/cpu_count))
+
+    while len(turns) < cpu_count and turns_remaining > 0:
+        game_turns = min(turns_per_game, turns_remaining)
+        turns.append(game_turns)
+        turns_remaining-=game_turns
+
+    for i in range(len(turns)):
+        if turns_remaining == 0:
+            break
+        turns[i]+=1
+        turns_remaining-=1
+    return turns
+
+"""
+Save the results from the simulation to a txt and a csv file
+"""
+def save_results(results):
+    total_turns = sum(results)
+    with open('./data/board-spaces.txt') as fnames:
+        with open('./results/board-probabilities.txt', 'w') as fprobs, open('./results/board-probabilities.csv', 'w') as fprobs_csv:
+            for i,square_name in enumerate(fnames):
+                if i < len(results):
+                    fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
+                    fprobs_csv.write(f"{square_name.rstrip()},{results[i]/total_turns:.3%}\n")
