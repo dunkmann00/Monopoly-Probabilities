@@ -1,14 +1,31 @@
+# cython: language_level=3
+
+
 import random
 
-class Monopoly(object):
-    num_spaces = 40
-    community_squares = {2,17,33} # this is correct, but differs from maths.py  # THIS IS WHERE THE DESCREPANCY
-    chance_squares = {7,22,36} # this is correct, but differs from maths.py     # IN PROBABILITIES COMES FROM
-    community_cards = [0,-1] + [None for i in range(14)] # Two cards change your position, the rest don't matter
-    chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)] # 9 cards change your position
-    roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12] # all possible combos of dice rolls
+cdef class Monopoly():
+    cdef int num_spaces # = 40
+    cdef set community_squares # = {2,17,33} # this is correct, but differs from maths.py  # THIS IS WHERE THE DESCREPANCY
+    cdef set chance_squares # = {7,22,36} # this is correct, but differs from maths.py     # IN PROBABILITIES COMES FROM
+    cdef list community_cards # = [0,-1] + [None for i in range(14)] # Two cards change your position, the rest don't matter
+    cdef list chance_cards # = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)] # 9 cards change your position
+    cdef list roll_values # = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12] # all possible combos of dice rolls
+
+    cdef list community_deck
+    cdef list chance_deck
+    cdef public list results
+    cdef int total_turns
+    cdef int current_position
+    cdef int doubles
                                                                                                   # more efficient than rolling dice twice
     def __init__(self):
+        self.num_spaces = 40
+        self.community_squares = {2,17,33}
+        self.chance_squares = {7,22,36}
+        self.community_cards = [0,-1] + [None for i in range(14)]
+        self.chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)]
+        self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
+
         self.community_deck = []
         self.chance_deck = []
         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately
