@@ -3,6 +3,8 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "depends": [],
+        "language": "c++",
         "name": "monopoly.monopoly",
         "sources": [
             "monopoly/monopoly.pyx"
@@ -296,19 +298,33 @@ END: Cython Metadata */
   #endif
 #endif
 
+#ifndef __cplusplus
+  #error "Cython files generated with the C++ option must be compiled with a C++ compiler."
+#endif
 #ifndef CYTHON_INLINE
   #if defined(__clang__)
     #define CYTHON_INLINE __inline__ __attribute__ ((__unused__))
-  #elif defined(__GNUC__)
-    #define CYTHON_INLINE __inline__
-  #elif defined(_MSC_VER)
-    #define CYTHON_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-    #define CYTHON_INLINE inline
   #else
-    #define CYTHON_INLINE
+    #define CYTHON_INLINE inline
   #endif
 #endif
+template<typename T>
+void __Pyx_call_destructor(T& x) {
+    x.~T();
+}
+template<typename T>
+class __Pyx_FakeReference {
+  public:
+    __Pyx_FakeReference() : ptr(NULL) { }
+    __Pyx_FakeReference(const T& ref) : ptr(const_cast<T*>(&ref)) { }
+    T *operator->() { return ptr; }
+    T *operator&() { return ptr; }
+    operator T&() { return *ptr; }
+    template<typename U> bool operator ==(U other) { return *ptr == other; }
+    template<typename U> bool operator !=(U other) { return *ptr != other; }
+  private:
+    T *ptr;
+};
 
 #if CYTHON_COMPILING_IN_PYPY && PY_VERSION_HEX < 0x02070600 && !defined(Py_OptimizeFlag)
   #define Py_OptimizeFlag 0
@@ -605,6 +621,16 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__monopoly__monopoly
 #define __PYX_HAVE_API__monopoly__monopoly
 /* Early includes */
+#include <string.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <time.h>
+#include "ios"
+#include "new"
+#include "stdexcept"
+#include "typeinfo"
+#include <utility>
+#include <set>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -820,29 +846,57 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_8monopoly_8monopoly_Monopoly;
 
-/* "monopoly/monopoly.pyx":6
- * import random
+/* "monopoly/monopoly.pyx":10
+ * # import random
+ * 
+ * cdef enum:             # <<<<<<<<<<<<<<
+ *     JAIL = 40
+ * 
+ */
+enum  {
+  __pyx_e_8monopoly_8monopoly_JAIL = 40
+};
+
+/* "monopoly/monopoly.pyx":13
+ *     JAIL = 40
  * 
  * cdef class Monopoly():             # <<<<<<<<<<<<<<
- *     cdef int num_spaces # = 40
- *     cdef set community_squares # = {2,17,33} # this is correct, but differs from maths.py  # THIS IS WHERE THE DESCREPANCY
+ *     cdef int num_spaces
+ *     cdef set[int] community_squares # this is correct, but differs from maths.py  # THIS IS WHERE THE DESCREPANCY
  */
 struct __pyx_obj_8monopoly_8monopoly_Monopoly {
   PyObject_HEAD
+  struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *__pyx_vtab;
   int num_spaces;
-  PyObject *community_squares;
-  PyObject *chance_squares;
+  std::set<int>  community_squares;
+  std::set<int>  chance_squares;
   PyObject *community_cards;
   PyObject *chance_cards;
-  PyObject *roll_values;
+  int roll_values[36];
+  std::set<int>  double_indices;
   PyObject *community_deck;
   PyObject *chance_deck;
-  PyObject *results;
+  int results[41];
   int total_turns;
   int current_position;
   int doubles;
 };
 
+
+
+struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly {
+  PyObject *(*take_turns)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int, int __pyx_skip_dispatch);
+  int (*roll_dice)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*move_spaces)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int);
+  PyObject *(*move_to)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int);
+  PyObject *(*end_turn)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*move_to_utility)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*move_to_railroad)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*draw_community_chest)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*draw_chance)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *);
+  PyObject *(*shuffle_deck)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, PyObject *);
+};
+static struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *__pyx_vtabptr_8monopoly_8monopoly_Monopoly;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -942,6 +996,42 @@ static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
 #define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
 #endif
 
+/* IncludeStringH.proto */
+#include <string.h>
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
 /* PyFunctionFastCall.proto */
 #if CYTHON_FAST_PYCALL
 #define __Pyx_PyFunction_FastCall(func, args, nargs)\
@@ -972,145 +1062,16 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
 
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
 /* PyObjectCallMethO.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
 #endif
 
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
-#endif
-
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
-
-/* RaiseNeedMoreValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
-
-/* IterFinish.proto */
-static CYTHON_INLINE int __Pyx_IterFinish(void);
-
-/* UnpackItemEndCheck.proto */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
-
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* pyfrozenset_new.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyFrozenSet_New(PyObject* it);
-
-/* PySetContains.proto */
-static CYTHON_INLINE int __Pyx_PySet_ContainsTF(PyObject* key, PyObject* set, int eq);
-
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
-/* GetModuleGlobalName.proto */
-#if CYTHON_USE_DICT_VERSIONS
-#define __Pyx_GetModuleGlobalName(var, name)  {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
-        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
-        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
-    PY_UINT64_T __pyx_dict_version;\
-    PyObject *__pyx_dict_cached_value;\
-    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
-#else
-#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
-#endif
-
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
-#else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
-#endif
-
-/* PyIntCompare.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_EqObjC(PyObject *op1, PyObject *op2, long intval, long inplace);
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace, zerodivision_check)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
-/* SetItemInt.proto */
-#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
-               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
-                                               int is_list, int wraparound, int boundscheck);
 
 /* None.proto */
 static CYTHON_INLINE long __Pyx_mod_long(long, long);
@@ -1124,6 +1085,13 @@ static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, long int
 #else
 #define __Pyx_PyInt_SubtractCObj(op1, op2, intval, inplace, zerodivision_check)\
     (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
+#endif
+
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
 
 /* PyObjectGetMethod.proto */
@@ -1172,14 +1140,46 @@ static PyObject* __Pyx__CallUnboundCMethod0(__Pyx_CachedCFunction* cfunc, PyObje
 #define __Pyx_CallUnboundCMethod0(cfunc, self)  __Pyx__CallUnboundCMethod0(cfunc, self)
 #endif
 
-/* IncludeStringH.proto */
-#include <string.h>
-
 /* BytesEquals.proto */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
 
 /* UnicodeEquals.proto */
 static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals);
+
+/* None.proto */
+static CYTHON_INLINE int __Pyx_mod_int(int, int);
+
+/* GetItemInt.proto */
+#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
+               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
+#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
+                                                     int is_list, int wraparound, int boundscheck);
+
+/* SetItemInt.proto */
+#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
+               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
+static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
+static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
+                                               int is_list, int wraparound, int boundscheck);
 
 /* PyErrExceptionMatches.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1231,6 +1231,27 @@ static CYTHON_INLINE PyObject *__Pyx_GetAttr(PyObject *, PyObject *);
 /* GetAttr3.proto */
 static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *, PyObject *, PyObject *);
 
+/* GetModuleGlobalName.proto */
+#if CYTHON_USE_DICT_VERSIONS
+#define __Pyx_GetModuleGlobalName(var, name)  {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
+        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
+        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
+    PY_UINT64_T __pyx_dict_version;\
+    PyObject *__pyx_dict_cached_value;\
+    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
+#else
+#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
+#endif
+
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
@@ -1251,6 +1272,22 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 /* HasAttr.proto */
 static CYTHON_INLINE int __Pyx_HasAttr(PyObject *, PyObject *);
 
+/* GetTopmostException.proto */
+#if CYTHON_USE_EXC_INFO_STACK
+static _PyErr_StackItem * __Pyx_PyErr_GetTopmostException(PyThreadState *tstate);
+#endif
+
+/* SaveResetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+#else
+#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
+#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
+#endif
+
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static CYTHON_INLINE PyObject* __Pyx_PyObject_GenericGetAttrNoDict(PyObject* obj, PyObject* attr_name);
@@ -1264,6 +1301,9 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
 #else
 #define __Pyx_PyObject_GenericGetAttr PyObject_GenericGetAttr
 #endif
+
+/* SetVTable.proto */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable);
 
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
@@ -1294,6 +1334,9 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object);
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename);
 
+/* None.proto */
+#include <new>
+
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
@@ -1305,6 +1348,9 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
+
+/* CIntFromPy.proto */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
 
 /* FastTypeChecks.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -1325,21 +1371,53 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_8monopoly_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_end_turn(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck); /* proto*/
+
+/* Module declarations from 'libc.string' */
+
+/* Module declarations from 'libc.stdlib' */
+
+/* Module declarations from 'libc.stddef' */
+
+/* Module declarations from 'libc.time' */
+
+/* Module declarations from 'libcpp.utility' */
+
+/* Module declarations from 'libcpp.set' */
 
 /* Module declarations from 'monopoly.monopoly' */
 static PyTypeObject *__pyx_ptype_8monopoly_8monopoly_Monopoly = 0;
 static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, PyObject *); /*proto*/
+static PyObject *__pyx_convert_set_to_py_int(std::set<int>  const &); /*proto*/
+static std::set<int>  __pyx_convert_set_from_py_int(PyObject *); /*proto*/
+static CYTHON_INLINE PyObject *__Pyx_carray_to_py_int(int *, Py_ssize_t); /*proto*/
+static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_int(int *, Py_ssize_t); /*proto*/
+static int __Pyx_carray_from_py_int(PyObject *, int *, Py_ssize_t); /*proto*/
 #define __Pyx_MODULE_NAME "monopoly.monopoly"
 extern int __pyx_module_is_main_monopoly__monopoly;
 int __pyx_module_is_main_monopoly__monopoly = 0;
 
 /* Implementation of 'monopoly.monopoly' */
 static PyObject *__pyx_builtin_range;
+static PyObject *__pyx_builtin_TypeError;
+static PyObject *__pyx_builtin_OverflowError;
+static PyObject *__pyx_builtin_enumerate;
+static PyObject *__pyx_builtin_IndexError;
 static const char __pyx_k_B[] = "B";
 static const char __pyx_k_R[] = "R";
 static const char __pyx_k_U[] = "U";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_pop[] = "pop";
+static const char __pyx_k_copy[] = "copy";
 static const char __pyx_k_dict[] = "__dict__";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
@@ -1347,54 +1425,48 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_pickle[] = "pickle";
-static const char __pyx_k_random[] = "random";
 static const char __pyx_k_reduce[] = "__reduce__";
-static const char __pyx_k_sample[] = "sample";
 static const char __pyx_k_update[] = "update";
-static const char __pyx_k_move_to[] = "move_to";
 static const char __pyx_k_Monopoly[] = "Monopoly";
-static const char __pyx_k_end_turn[] = "end_turn";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
 static const char __pyx_k_setstate[] = "__setstate__";
+static const char __pyx_k_TypeError[] = "TypeError";
+static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
-static const char __pyx_k_roll_dice[] = "roll_dice";
+static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
+static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_take_turns[] = "take_turns";
 static const char __pyx_k_PickleError[] = "PickleError";
-static const char __pyx_k_draw_chance[] = "draw_chance";
-static const char __pyx_k_move_spaces[] = "move_spaces";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
+static const char __pyx_k_OverflowError[] = "OverflowError";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
-static const char __pyx_k_move_to_utility[] = "move_to_utility";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
-static const char __pyx_k_move_to_railroad[] = "move_to_railroad";
 static const char __pyx_k_monopoly_monopoly[] = "monopoly.monopoly";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_draw_community_chest[] = "draw_community_chest";
 static const char __pyx_k_pyx_unpickle_Monopoly[] = "__pyx_unpickle_Monopoly";
-static const char __pyx_k_Incompatible_checksums_s_vs_0x09[] = "Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))";
+static const char __pyx_k_Incompatible_checksums_s_vs_0xd3[] = "Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))";
 static PyObject *__pyx_n_u_B;
-static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0x09;
+static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0xd3;
+static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_n_s_Monopoly;
+static PyObject *__pyx_n_s_OverflowError;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_u_R;
+static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_u_U;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_n_s_copy;
 static PyObject *__pyx_n_s_dict;
-static PyObject *__pyx_n_s_draw_chance;
-static PyObject *__pyx_n_s_draw_community_chest;
-static PyObject *__pyx_n_s_end_turn;
+static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_monopoly_monopoly;
-static PyObject *__pyx_n_s_move_spaces;
-static PyObject *__pyx_n_s_move_to;
-static PyObject *__pyx_n_s_move_to_railroad;
-static PyObject *__pyx_n_s_move_to_utility;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_n_s_pickle;
@@ -1405,49 +1477,32 @@ static PyObject *__pyx_n_s_pyx_result;
 static PyObject *__pyx_n_s_pyx_state;
 static PyObject *__pyx_n_s_pyx_type;
 static PyObject *__pyx_n_s_pyx_unpickle_Monopoly;
-static PyObject *__pyx_n_s_random;
+static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
-static PyObject *__pyx_n_s_roll_dice;
-static PyObject *__pyx_n_s_sample;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_kp_s_stringsource;
+static PyObject *__pyx_n_s_take_turns;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_update;
 static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_turns); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_4roll_dice(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_6move_spaces(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_spaces); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_8move_to(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_square); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_10end_turn(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns); /* proto */
 static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static int __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_2__set__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static int __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_4__del__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_22__setstate_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_8monopoly_8monopoly_Monopoly(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_copy = {0, &__pyx_n_s_copy, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_pop = {0, &__pyx_n_s_pop, 0, 0, 0};
 static PyObject *__pyx_int_0;
-static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
-static PyObject *__pyx_int_3;
-static PyObject *__pyx_int_4;
 static PyObject *__pyx_int_5;
-static PyObject *__pyx_int_6;
 static PyObject *__pyx_int_7;
-static PyObject *__pyx_int_8;
-static PyObject *__pyx_int_9;
 static PyObject *__pyx_int_10;
 static PyObject *__pyx_int_11;
-static PyObject *__pyx_int_12;
 static PyObject *__pyx_int_14;
 static PyObject *__pyx_int_17;
 static PyObject *__pyx_int_21;
@@ -1458,16 +1513,14 @@ static PyObject *__pyx_int_33;
 static PyObject *__pyx_int_35;
 static PyObject *__pyx_int_36;
 static PyObject *__pyx_int_39;
-static PyObject *__pyx_int_9724518;
-static PyObject *__pyx_int_neg_1;
-static PyObject *__pyx_int_neg_3;
+static PyObject *__pyx_int_221449969;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_codeobj__2;
 /* Late includes */
 
-/* "monopoly/monopoly.pyx":21
+/* "monopoly/monopoly.pyx":28
  *     cdef int doubles
- *                                                                                                   # more efficient than rolling dice twice
+ * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}
@@ -1492,16 +1545,22 @@ static int __pyx_pw_8monopoly_8monopoly_8Monopoly_1__init__(PyObject *__pyx_v_se
 static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   CYTHON_UNUSED long __pyx_7genexpr__pyx_v_i;
   CYTHON_UNUSED long __pyx_8genexpr1__pyx_v_i;
+  CYTHON_UNUSED long __pyx_8genexpr2__pyx_v_i;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  long __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
+  std::set<int>  __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  long __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6[36];
+  long __pyx_t_7;
+  long __pyx_t_8;
+  int __pyx_t_9[41];
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "monopoly/monopoly.pyx":22
- *                                                                                                   # more efficient than rolling dice twice
+  /* "monopoly/monopoly.pyx":29
+ * 
  *     def __init__(self):
  *         self.num_spaces = 40             # <<<<<<<<<<<<<<
  *         self.community_squares = {2,17,33}
@@ -1509,315 +1568,255 @@ static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8mon
  */
   __pyx_v_self->num_spaces = 40;
 
-  /* "monopoly/monopoly.pyx":23
+  /* "monopoly/monopoly.pyx":30
  *     def __init__(self):
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}             # <<<<<<<<<<<<<<
  *         self.chance_squares = {7,22,36}
- *         self.community_cards = [0,-1] + [None for i in range(14)]
+ *         self.community_cards = [0,JAIL] + [None for i in range(14)]
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PySet_Add(__pyx_t_1, __pyx_int_2) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
-  if (PySet_Add(__pyx_t_1, __pyx_int_17) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
-  if (PySet_Add(__pyx_t_1, __pyx_int_33) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->community_squares);
-  __Pyx_DECREF(__pyx_v_self->community_squares);
-  __pyx_v_self->community_squares = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  if (PySet_Add(__pyx_t_1, __pyx_int_2) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_1, __pyx_int_17) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_1, __pyx_int_33) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_self->community_squares = __pyx_t_2;
 
-  /* "monopoly/monopoly.pyx":24
+  /* "monopoly/monopoly.pyx":31
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}
  *         self.chance_squares = {7,22,36}             # <<<<<<<<<<<<<<
- *         self.community_cards = [0,-1] + [None for i in range(14)]
- *         self.chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)]
+ *         self.community_cards = [0,JAIL] + [None for i in range(14)]
+ *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  */
-  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PySet_Add(__pyx_t_1, __pyx_int_7) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
-  if (PySet_Add(__pyx_t_1, __pyx_int_22) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
-  if (PySet_Add(__pyx_t_1, __pyx_int_36) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->chance_squares);
-  __Pyx_DECREF(__pyx_v_self->chance_squares);
-  __pyx_v_self->chance_squares = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  if (PySet_Add(__pyx_t_1, __pyx_int_7) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_1, __pyx_int_22) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_1, __pyx_int_36) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_self->chance_squares = __pyx_t_2;
 
-  /* "monopoly/monopoly.pyx":25
+  /* "monopoly/monopoly.pyx":32
  *         self.community_squares = {2,17,33}
  *         self.chance_squares = {7,22,36}
- *         self.community_cards = [0,-1] + [None for i in range(14)]             # <<<<<<<<<<<<<<
- *         self.chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)]
+ *         self.community_cards = [0,JAIL] + [None for i in range(14)]             # <<<<<<<<<<<<<<
+ *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
  */
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_e_8monopoly_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(__pyx_int_0);
+  __Pyx_GIVEREF(__pyx_int_0);
+  PyList_SET_ITEM(__pyx_t_3, 0, __pyx_int_0);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
+  __pyx_t_1 = 0;
+  { /* enter inner scope */
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    for (__pyx_t_4 = 0; __pyx_t_4 < 14; __pyx_t_4+=1) {
+      __pyx_7genexpr__pyx_v_i = __pyx_t_4;
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)Py_None))) __PYX_ERR(0, 32, __pyx_L1_error)
+    }
+  } /* exit inner scope */
+  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_GIVEREF(__pyx_t_5);
+  __Pyx_GOTREF(__pyx_v_self->community_cards);
+  __Pyx_DECREF(__pyx_v_self->community_cards);
+  __pyx_v_self->community_cards = ((PyObject*)__pyx_t_5);
+  __pyx_t_5 = 0;
+
+  /* "monopoly/monopoly.pyx":33
+ *         self.chance_squares = {7,22,36}
+ *         self.community_cards = [0,JAIL] + [None for i in range(14)]
+ *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]             # <<<<<<<<<<<<<<
+ *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
+ *         self.double_indices = {0,7,14,21,28,35}
+ */
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_e_8monopoly_8monopoly_JAIL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = PyList_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_int_0);
-  __Pyx_INCREF(__pyx_int_neg_1);
-  __Pyx_GIVEREF(__pyx_int_neg_1);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_int_neg_1);
-  { /* enter inner scope */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    for (__pyx_t_3 = 0; __pyx_t_3 < 14; __pyx_t_3+=1) {
-      __pyx_7genexpr__pyx_v_i = __pyx_t_3;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)Py_None))) __PYX_ERR(0, 25, __pyx_L1_error)
-    }
-  } /* exit inner scope */
-  __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 25, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GIVEREF(__pyx_t_4);
-  __Pyx_GOTREF(__pyx_v_self->community_cards);
-  __Pyx_DECREF(__pyx_v_self->community_cards);
-  __pyx_v_self->community_cards = ((PyObject*)__pyx_t_4);
-  __pyx_t_4 = 0;
-
-  /* "monopoly/monopoly.pyx":26
- *         self.chance_squares = {7,22,36}
- *         self.community_cards = [0,-1] + [None for i in range(14)]
- *         self.chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)]             # <<<<<<<<<<<<<<
- *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
- * 
- */
-  __pyx_t_4 = PyList_New(9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_INCREF(__pyx_int_0);
-  __Pyx_GIVEREF(__pyx_int_0);
-  PyList_SET_ITEM(__pyx_t_4, 0, __pyx_int_0);
   __Pyx_INCREF(__pyx_int_5);
   __Pyx_GIVEREF(__pyx_int_5);
-  PyList_SET_ITEM(__pyx_t_4, 1, __pyx_int_5);
+  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_int_5);
   __Pyx_INCREF(__pyx_int_11);
   __Pyx_GIVEREF(__pyx_int_11);
-  PyList_SET_ITEM(__pyx_t_4, 2, __pyx_int_11);
+  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_int_11);
   __Pyx_INCREF(__pyx_int_24);
   __Pyx_GIVEREF(__pyx_int_24);
-  PyList_SET_ITEM(__pyx_t_4, 3, __pyx_int_24);
+  PyList_SET_ITEM(__pyx_t_1, 3, __pyx_int_24);
   __Pyx_INCREF(__pyx_int_39);
   __Pyx_GIVEREF(__pyx_int_39);
-  PyList_SET_ITEM(__pyx_t_4, 4, __pyx_int_39);
+  PyList_SET_ITEM(__pyx_t_1, 4, __pyx_int_39);
   __Pyx_INCREF(__pyx_n_u_U);
   __Pyx_GIVEREF(__pyx_n_u_U);
-  PyList_SET_ITEM(__pyx_t_4, 5, __pyx_n_u_U);
+  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_n_u_U);
   __Pyx_INCREF(__pyx_n_u_R);
   __Pyx_GIVEREF(__pyx_n_u_R);
-  PyList_SET_ITEM(__pyx_t_4, 6, __pyx_n_u_R);
+  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_u_R);
   __Pyx_INCREF(__pyx_n_u_B);
   __Pyx_GIVEREF(__pyx_n_u_B);
-  PyList_SET_ITEM(__pyx_t_4, 7, __pyx_n_u_B);
-  __Pyx_INCREF(__pyx_int_neg_1);
-  __Pyx_GIVEREF(__pyx_int_neg_1);
-  PyList_SET_ITEM(__pyx_t_4, 8, __pyx_int_neg_1);
+  PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_u_B);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyList_SET_ITEM(__pyx_t_1, 8, __pyx_t_5);
+  __pyx_t_5 = 0;
   { /* enter inner scope */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    for (__pyx_t_3 = 0; __pyx_t_3 < 7; __pyx_t_3+=1) {
-      __pyx_8genexpr1__pyx_v_i = __pyx_t_3;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_2, (PyObject*)Py_None))) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_5 = PyList_New(0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    for (__pyx_t_4 = 0; __pyx_t_4 < 7; __pyx_t_4+=1) {
+      __pyx_8genexpr1__pyx_v_i = __pyx_t_4;
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_5, (PyObject*)Py_None))) __PYX_ERR(0, 33, __pyx_L1_error)
     }
   } /* exit inner scope */
-  __pyx_t_1 = PyNumber_Add(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->chance_cards);
   __Pyx_DECREF(__pyx_v_self->chance_cards);
-  __pyx_v_self->chance_cards = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_v_self->chance_cards = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "monopoly/monopoly.pyx":27
- *         self.community_cards = [0,-1] + [None for i in range(14)]
- *         self.chance_cards = [0,5,11,24,39,'U','R','B',-1] + [None for i in range(7)]
+  /* "monopoly/monopoly.pyx":34
+ *         self.community_cards = [0,JAIL] + [None for i in range(14)]
+ *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]             # <<<<<<<<<<<<<<
+ *         self.double_indices = {0,7,14,21,28,35}
+ * 
+ */
+  __pyx_t_6[0] = 2;
+  __pyx_t_6[1] = 3;
+  __pyx_t_6[2] = 4;
+  __pyx_t_6[3] = 5;
+  __pyx_t_6[4] = 6;
+  __pyx_t_6[5] = 7;
+  __pyx_t_6[6] = 3;
+  __pyx_t_6[7] = 4;
+  __pyx_t_6[8] = 5;
+  __pyx_t_6[9] = 6;
+  __pyx_t_6[10] = 7;
+  __pyx_t_6[11] = 8;
+  __pyx_t_6[12] = 4;
+  __pyx_t_6[13] = 5;
+  __pyx_t_6[14] = 6;
+  __pyx_t_6[15] = 7;
+  __pyx_t_6[16] = 8;
+  __pyx_t_6[17] = 9;
+  __pyx_t_6[18] = 5;
+  __pyx_t_6[19] = 6;
+  __pyx_t_6[20] = 7;
+  __pyx_t_6[21] = 8;
+  __pyx_t_6[22] = 9;
+  __pyx_t_6[23] = 10;
+  __pyx_t_6[24] = 6;
+  __pyx_t_6[25] = 7;
+  __pyx_t_6[26] = 8;
+  __pyx_t_6[27] = 9;
+  __pyx_t_6[28] = 10;
+  __pyx_t_6[29] = 11;
+  __pyx_t_6[30] = 7;
+  __pyx_t_6[31] = 8;
+  __pyx_t_6[32] = 9;
+  __pyx_t_6[33] = 10;
+  __pyx_t_6[34] = 11;
+  __pyx_t_6[35] = 12;
+  memcpy(&(__pyx_v_self->roll_values[0]), __pyx_t_6, sizeof(__pyx_v_self->roll_values[0]) * (36));
+
+  /* "monopoly/monopoly.pyx":35
+ *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
+ *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
+ *         self.double_indices = {0,7,14,21,28,35}             # <<<<<<<<<<<<<<
  * 
  *         self.community_deck = []
  */
-  __pyx_t_1 = PyList_New(36); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_int_2);
-  __Pyx_GIVEREF(__pyx_int_2);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_int_2);
-  __Pyx_INCREF(__pyx_int_3);
-  __Pyx_GIVEREF(__pyx_int_3);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_int_3);
-  __Pyx_INCREF(__pyx_int_4);
-  __Pyx_GIVEREF(__pyx_int_4);
-  PyList_SET_ITEM(__pyx_t_1, 2, __pyx_int_4);
-  __Pyx_INCREF(__pyx_int_5);
-  __Pyx_GIVEREF(__pyx_int_5);
-  PyList_SET_ITEM(__pyx_t_1, 3, __pyx_int_5);
-  __Pyx_INCREF(__pyx_int_6);
-  __Pyx_GIVEREF(__pyx_int_6);
-  PyList_SET_ITEM(__pyx_t_1, 4, __pyx_int_6);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_3);
-  __Pyx_GIVEREF(__pyx_int_3);
-  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_int_3);
-  __Pyx_INCREF(__pyx_int_4);
-  __Pyx_GIVEREF(__pyx_int_4);
-  PyList_SET_ITEM(__pyx_t_1, 7, __pyx_int_4);
-  __Pyx_INCREF(__pyx_int_5);
-  __Pyx_GIVEREF(__pyx_int_5);
-  PyList_SET_ITEM(__pyx_t_1, 8, __pyx_int_5);
-  __Pyx_INCREF(__pyx_int_6);
-  __Pyx_GIVEREF(__pyx_int_6);
-  PyList_SET_ITEM(__pyx_t_1, 9, __pyx_int_6);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 10, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_8);
-  __Pyx_GIVEREF(__pyx_int_8);
-  PyList_SET_ITEM(__pyx_t_1, 11, __pyx_int_8);
-  __Pyx_INCREF(__pyx_int_4);
-  __Pyx_GIVEREF(__pyx_int_4);
-  PyList_SET_ITEM(__pyx_t_1, 12, __pyx_int_4);
-  __Pyx_INCREF(__pyx_int_5);
-  __Pyx_GIVEREF(__pyx_int_5);
-  PyList_SET_ITEM(__pyx_t_1, 13, __pyx_int_5);
-  __Pyx_INCREF(__pyx_int_6);
-  __Pyx_GIVEREF(__pyx_int_6);
-  PyList_SET_ITEM(__pyx_t_1, 14, __pyx_int_6);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 15, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_8);
-  __Pyx_GIVEREF(__pyx_int_8);
-  PyList_SET_ITEM(__pyx_t_1, 16, __pyx_int_8);
-  __Pyx_INCREF(__pyx_int_9);
-  __Pyx_GIVEREF(__pyx_int_9);
-  PyList_SET_ITEM(__pyx_t_1, 17, __pyx_int_9);
-  __Pyx_INCREF(__pyx_int_5);
-  __Pyx_GIVEREF(__pyx_int_5);
-  PyList_SET_ITEM(__pyx_t_1, 18, __pyx_int_5);
-  __Pyx_INCREF(__pyx_int_6);
-  __Pyx_GIVEREF(__pyx_int_6);
-  PyList_SET_ITEM(__pyx_t_1, 19, __pyx_int_6);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 20, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_8);
-  __Pyx_GIVEREF(__pyx_int_8);
-  PyList_SET_ITEM(__pyx_t_1, 21, __pyx_int_8);
-  __Pyx_INCREF(__pyx_int_9);
-  __Pyx_GIVEREF(__pyx_int_9);
-  PyList_SET_ITEM(__pyx_t_1, 22, __pyx_int_9);
-  __Pyx_INCREF(__pyx_int_10);
-  __Pyx_GIVEREF(__pyx_int_10);
-  PyList_SET_ITEM(__pyx_t_1, 23, __pyx_int_10);
-  __Pyx_INCREF(__pyx_int_6);
-  __Pyx_GIVEREF(__pyx_int_6);
-  PyList_SET_ITEM(__pyx_t_1, 24, __pyx_int_6);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 25, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_8);
-  __Pyx_GIVEREF(__pyx_int_8);
-  PyList_SET_ITEM(__pyx_t_1, 26, __pyx_int_8);
-  __Pyx_INCREF(__pyx_int_9);
-  __Pyx_GIVEREF(__pyx_int_9);
-  PyList_SET_ITEM(__pyx_t_1, 27, __pyx_int_9);
-  __Pyx_INCREF(__pyx_int_10);
-  __Pyx_GIVEREF(__pyx_int_10);
-  PyList_SET_ITEM(__pyx_t_1, 28, __pyx_int_10);
-  __Pyx_INCREF(__pyx_int_11);
-  __Pyx_GIVEREF(__pyx_int_11);
-  PyList_SET_ITEM(__pyx_t_1, 29, __pyx_int_11);
-  __Pyx_INCREF(__pyx_int_7);
-  __Pyx_GIVEREF(__pyx_int_7);
-  PyList_SET_ITEM(__pyx_t_1, 30, __pyx_int_7);
-  __Pyx_INCREF(__pyx_int_8);
-  __Pyx_GIVEREF(__pyx_int_8);
-  PyList_SET_ITEM(__pyx_t_1, 31, __pyx_int_8);
-  __Pyx_INCREF(__pyx_int_9);
-  __Pyx_GIVEREF(__pyx_int_9);
-  PyList_SET_ITEM(__pyx_t_1, 32, __pyx_int_9);
-  __Pyx_INCREF(__pyx_int_10);
-  __Pyx_GIVEREF(__pyx_int_10);
-  PyList_SET_ITEM(__pyx_t_1, 33, __pyx_int_10);
-  __Pyx_INCREF(__pyx_int_11);
-  __Pyx_GIVEREF(__pyx_int_11);
-  PyList_SET_ITEM(__pyx_t_1, 34, __pyx_int_11);
-  __Pyx_INCREF(__pyx_int_12);
-  __Pyx_GIVEREF(__pyx_int_12);
-  PyList_SET_ITEM(__pyx_t_1, 35, __pyx_int_12);
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->roll_values);
-  __Pyx_DECREF(__pyx_v_self->roll_values);
-  __pyx_v_self->roll_values = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_3 = PySet_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PySet_Add(__pyx_t_3, __pyx_int_0) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_3, __pyx_int_7) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_3, __pyx_int_14) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_3, __pyx_int_21) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_3, __pyx_int_28) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  if (PySet_Add(__pyx_t_3, __pyx_int_35) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_3); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 35, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_self->double_indices = __pyx_t_2;
 
-  /* "monopoly/monopoly.pyx":29
- *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
+  /* "monopoly/monopoly.pyx":37
+ *         self.double_indices = {0,7,14,21,28,35}
  * 
  *         self.community_deck = []             # <<<<<<<<<<<<<<
  *         self.chance_deck = []
- *         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately
+ *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->community_deck);
   __Pyx_DECREF(__pyx_v_self->community_deck);
-  __pyx_v_self->community_deck = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_v_self->community_deck = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "monopoly/monopoly.pyx":30
+  /* "monopoly/monopoly.pyx":38
  * 
  *         self.community_deck = []
  *         self.chance_deck = []             # <<<<<<<<<<<<<<
- *         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately
+ *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  *         self.total_turns = 0
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->chance_deck);
   __Pyx_DECREF(__pyx_v_self->chance_deck);
-  __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
 
-  /* "monopoly/monopoly.pyx":31
+  /* "monopoly/monopoly.pyx":39
  *         self.community_deck = []
  *         self.chance_deck = []
- *         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately             # <<<<<<<<<<<<<<
+ *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately             # <<<<<<<<<<<<<<
  *         self.total_turns = 0
  *         self.current_position = 0
  */
-  __pyx_t_1 = PyList_New(1 * (((__pyx_v_self->num_spaces + 1)<0) ? 0:(__pyx_v_self->num_spaces + 1))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  { Py_ssize_t __pyx_temp;
-    for (__pyx_temp=0; __pyx_temp < (__pyx_v_self->num_spaces + 1); __pyx_temp++) {
-      __Pyx_INCREF(__pyx_int_0);
-      __Pyx_GIVEREF(__pyx_int_0);
-      PyList_SET_ITEM(__pyx_t_1, __pyx_temp, __pyx_int_0);
+  { /* enter inner scope */
+    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = (__pyx_v_self->num_spaces + 1);
+    __pyx_t_7 = __pyx_t_4;
+    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_8genexpr2__pyx_v_i = __pyx_t_8;
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_int_0))) __PYX_ERR(0, 39, __pyx_L1_error)
     }
-  }
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->results);
-  __Pyx_DECREF(__pyx_v_self->results);
-  __pyx_v_self->results = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  } /* exit inner scope */
+  if (unlikely(__Pyx_carray_from_py_int(__pyx_t_3, __pyx_t_9, 41) < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  memcpy(&(__pyx_v_self->results[0]), __pyx_t_9, sizeof(__pyx_v_self->results[0]) * (41));
 
-  /* "monopoly/monopoly.pyx":32
+  /* "monopoly/monopoly.pyx":40
  *         self.chance_deck = []
- *         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately
+ *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  *         self.total_turns = 0             # <<<<<<<<<<<<<<
  *         self.current_position = 0
  *         self.doubles = 0
  */
   __pyx_v_self->total_turns = 0;
 
-  /* "monopoly/monopoly.pyx":33
- *         self.results = [0]*(self.num_spaces+1) # +1 because we are counting jail vs visiting separately
+  /* "monopoly/monopoly.pyx":41
+ *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  *         self.total_turns = 0
  *         self.current_position = 0             # <<<<<<<<<<<<<<
  *         self.doubles = 0
@@ -1825,18 +1824,27 @@ static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8mon
  */
   __pyx_v_self->current_position = 0;
 
-  /* "monopoly/monopoly.pyx":34
+  /* "monopoly/monopoly.pyx":42
  *         self.total_turns = 0
  *         self.current_position = 0
  *         self.doubles = 0             # <<<<<<<<<<<<<<
  * 
- *     def take_turns(self, turns):
+ *         srand(time(NULL))
  */
   __pyx_v_self->doubles = 0;
 
-  /* "monopoly/monopoly.pyx":21
+  /* "monopoly/monopoly.pyx":44
+ *         self.doubles = 0
+ * 
+ *         srand(time(NULL))             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef take_turns(self, int turns):
+ */
+  srand(time(NULL));
+
+  /* "monopoly/monopoly.pyx":28
  *     cdef int doubles
- *                                                                                                   # more efficient than rolling dice twice
+ * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}
@@ -1847,8 +1855,8 @@ static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8mon
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -1856,444 +1864,261 @@ static int __pyx_pf_8monopoly_8monopoly_8Monopoly___init__(struct __pyx_obj_8mon
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":36
- *         self.doubles = 0
+/* "monopoly/monopoly.pyx":46
+ *         srand(time(NULL))
  * 
- *     def take_turns(self, turns):             # <<<<<<<<<<<<<<
+ *     cpdef take_turns(self, int turns):             # <<<<<<<<<<<<<<
  *         while self.total_turns < turns:
- *             spaces, double = self.roll_dice()
+ *             spaces = self.roll_dice()
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_v_turns); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_v_turns) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("take_turns (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v_turns));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_turns) {
-  PyObject *__pyx_v_spaces = NULL;
-  PyObject *__pyx_v_double = NULL;
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns, int __pyx_skip_dispatch) {
+  int __pyx_v_spaces;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  PyObject *(*__pyx_t_6)(PyObject *);
-  int __pyx_t_7;
+  int __pyx_t_6;
   __Pyx_RefNannySetupContext("take_turns", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely((Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0) || (Py_TYPE(((PyObject *)__pyx_v_self))->tp_flags & (Py_TPFLAGS_IS_ABSTRACT | Py_TPFLAGS_HEAPTYPE)))) {
+    #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    static PY_UINT64_T __pyx_tp_dict_version = __PYX_DICT_VERSION_INIT, __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+    if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
+      PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      #endif
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_take_turns); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns)) {
+        __Pyx_XDECREF(__pyx_r);
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_turns); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_1);
+        __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+          __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+          if (likely(__pyx_t_5)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+            __Pyx_INCREF(__pyx_t_5);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_4, function);
+          }
+        }
+        __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+        __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_r = __pyx_t_2;
+        __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        goto __pyx_L0;
+      }
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+      __pyx_tp_dict_version = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
+      __pyx_obj_dict_version = __Pyx_get_object_dict_version(((PyObject *)__pyx_v_self));
+      if (unlikely(__pyx_type_dict_guard != __pyx_tp_dict_version)) {
+        __pyx_tp_dict_version = __pyx_obj_dict_version = __PYX_DICT_VERSION_INIT;
+      }
+      #endif
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_PYTYPE_LOOKUP && CYTHON_USE_TYPE_SLOTS
+    }
+    #endif
+  }
 
-  /* "monopoly/monopoly.pyx":37
+  /* "monopoly/monopoly.pyx":47
  * 
- *     def take_turns(self, turns):
+ *     cpdef take_turns(self, int turns):
  *         while self.total_turns < turns:             # <<<<<<<<<<<<<<
- *             spaces, double = self.roll_dice()
- *             if double:
+ *             spaces = self.roll_dice()
+ *             if self.doubles == 3:
  */
   while (1) {
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->total_turns); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_v_turns, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!__pyx_t_3) break;
+    __pyx_t_6 = ((__pyx_v_self->total_turns < __pyx_v_turns) != 0);
+    if (!__pyx_t_6) break;
 
-    /* "monopoly/monopoly.pyx":38
- *     def take_turns(self, turns):
+    /* "monopoly/monopoly.pyx":48
+ *     cpdef take_turns(self, int turns):
  *         while self.total_turns < turns:
- *             spaces, double = self.roll_dice()             # <<<<<<<<<<<<<<
- *             if double:
- *                 self.doubles+=1
- */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_roll_dice); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
-      }
-    }
-    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
-      PyObject* sequence = __pyx_t_2;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 38, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_4);
-      #else
-      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      #endif
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 38, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_6 = Py_TYPE(__pyx_t_5)->tp_iternext;
-      index = 0; __pyx_t_1 = __pyx_t_6(__pyx_t_5); if (unlikely(!__pyx_t_1)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_1);
-      index = 1; __pyx_t_4 = __pyx_t_6(__pyx_t_5); if (unlikely(!__pyx_t_4)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_6(__pyx_t_5), 2) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
-      __pyx_t_6 = NULL;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_6 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 38, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __Pyx_XDECREF_SET(__pyx_v_spaces, __pyx_t_1);
-    __pyx_t_1 = 0;
-    __Pyx_XDECREF_SET(__pyx_v_double, __pyx_t_4);
-    __pyx_t_4 = 0;
-
-    /* "monopoly/monopoly.pyx":39
- *         while self.total_turns < turns:
- *             spaces, double = self.roll_dice()
- *             if double:             # <<<<<<<<<<<<<<
- *                 self.doubles+=1
- *             else:
- */
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_double); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 39, __pyx_L1_error)
-    if (__pyx_t_3) {
-
-      /* "monopoly/monopoly.pyx":40
- *             spaces, double = self.roll_dice()
- *             if double:
- *                 self.doubles+=1             # <<<<<<<<<<<<<<
- *             else:
- *                 self.doubles = 0
- */
-      __pyx_v_self->doubles = (__pyx_v_self->doubles + 1);
-
-      /* "monopoly/monopoly.pyx":39
- *         while self.total_turns < turns:
- *             spaces, double = self.roll_dice()
- *             if double:             # <<<<<<<<<<<<<<
- *                 self.doubles+=1
- *             else:
- */
-      goto __pyx_L7;
-    }
-
-    /* "monopoly/monopoly.pyx":42
- *                 self.doubles+=1
- *             else:
- *                 self.doubles = 0             # <<<<<<<<<<<<<<
+ *             spaces = self.roll_dice()             # <<<<<<<<<<<<<<
  *             if self.doubles == 3:
- *                 self.move_to(-1)
+ *                 self.move_to(JAIL)
  */
-    /*else*/ {
-      __pyx_v_self->doubles = 0;
-    }
-    __pyx_L7:;
+    __pyx_v_spaces = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->roll_dice(__pyx_v_self);
 
-    /* "monopoly/monopoly.pyx":43
- *             else:
- *                 self.doubles = 0
+    /* "monopoly/monopoly.pyx":49
+ *         while self.total_turns < turns:
+ *             spaces = self.roll_dice()
  *             if self.doubles == 3:             # <<<<<<<<<<<<<<
- *                 self.move_to(-1)
+ *                 self.move_to(JAIL)
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  */
-    __pyx_t_3 = ((__pyx_v_self->doubles == 3) != 0);
-    if (__pyx_t_3) {
+    __pyx_t_6 = ((__pyx_v_self->doubles == 3) != 0);
+    if (__pyx_t_6) {
 
-      /* "monopoly/monopoly.pyx":44
- *                 self.doubles = 0
+      /* "monopoly/monopoly.pyx":50
+ *             spaces = self.roll_dice()
  *             if self.doubles == 3:
- *                 self.move_to(-1)             # <<<<<<<<<<<<<<
+ *                 self.move_to(JAIL)             # <<<<<<<<<<<<<<
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  *             else:
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 44, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_1)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_1);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, __pyx_int_neg_1) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_int_neg_1);
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_8monopoly_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "monopoly/monopoly.pyx":45
+      /* "monopoly/monopoly.pyx":51
  *             if self.doubles == 3:
- *                 self.move_to(-1)
+ *                 self.move_to(JAIL)
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)             # <<<<<<<<<<<<<<
  *             else:
  *                 self.move_spaces(spaces)
  */
       __pyx_v_self->doubles = 0;
 
-      /* "monopoly/monopoly.pyx":43
- *             else:
- *                 self.doubles = 0
+      /* "monopoly/monopoly.pyx":49
+ *         while self.total_turns < turns:
+ *             spaces = self.roll_dice()
  *             if self.doubles == 3:             # <<<<<<<<<<<<<<
- *                 self.move_to(-1)
+ *                 self.move_to(JAIL)
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  */
-      goto __pyx_L8;
+      goto __pyx_L5;
     }
 
-    /* "monopoly/monopoly.pyx":47
+    /* "monopoly/monopoly.pyx":53
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  *             else:
  *                 self.move_spaces(spaces)             # <<<<<<<<<<<<<<
  *                 if self.current_position == 30: # Go to Jail
- *                     self.move_to(-1)
+ *                     self.move_to(JAIL)
  */
     /*else*/ {
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_spaces); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_1 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_1)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_1);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, __pyx_v_spaces) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_spaces);
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_v_spaces); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "monopoly/monopoly.pyx":48
+      /* "monopoly/monopoly.pyx":54
  *             else:
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail             # <<<<<<<<<<<<<<
- *                     self.move_to(-1)
- *                 elif self.current_position in self.community_squares:
+ *                     self.move_to(JAIL)
+ *                 elif self.community_squares.count(self.current_position) == 1:
  */
-      __pyx_t_3 = ((__pyx_v_self->current_position == 30) != 0);
-      if (__pyx_t_3) {
+      __pyx_t_6 = ((__pyx_v_self->current_position == 30) != 0);
+      if (__pyx_t_6) {
 
-        /* "monopoly/monopoly.pyx":49
+        /* "monopoly/monopoly.pyx":55
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail
- *                     self.move_to(-1)             # <<<<<<<<<<<<<<
- *                 elif self.current_position in self.community_squares:
+ *                     self.move_to(JAIL)             # <<<<<<<<<<<<<<
+ *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
  */
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_1 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-          __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-          if (likely(__pyx_t_1)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-            __Pyx_INCREF(__pyx_t_1);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_4, function);
-          }
-        }
-        __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, __pyx_int_neg_1) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_int_neg_1);
-        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_8monopoly_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/monopoly.pyx":48
+        /* "monopoly/monopoly.pyx":54
  *             else:
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail             # <<<<<<<<<<<<<<
- *                     self.move_to(-1)
- *                 elif self.current_position in self.community_squares:
+ *                     self.move_to(JAIL)
+ *                 elif self.community_squares.count(self.current_position) == 1:
  */
-        goto __pyx_L9;
+        goto __pyx_L6;
       }
 
-      /* "monopoly/monopoly.pyx":50
+      /* "monopoly/monopoly.pyx":56
  *                 if self.current_position == 30: # Go to Jail
- *                     self.move_to(-1)
- *                 elif self.current_position in self.community_squares:             # <<<<<<<<<<<<<<
+ *                     self.move_to(JAIL)
+ *                 elif self.community_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
  *                     self.draw_community_chest()
- *                 elif self.current_position in self.chance_squares:
+ *                 elif self.chance_squares.count(self.current_position) == 1:
  */
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->current_position); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(__pyx_v_self->community_squares == Py_None)) {
-        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        __PYX_ERR(0, 50, __pyx_L1_error)
-      }
-      __pyx_t_3 = (__Pyx_PySet_ContainsTF(__pyx_t_2, __pyx_v_self->community_squares, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 50, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_7 = (__pyx_t_3 != 0);
-      if (__pyx_t_7) {
+      __pyx_t_6 = ((__pyx_v_self->community_squares.count(__pyx_v_self->current_position) == 1) != 0);
+      if (__pyx_t_6) {
 
-        /* "monopoly/monopoly.pyx":51
- *                     self.move_to(-1)
- *                 elif self.current_position in self.community_squares:
+        /* "monopoly/monopoly.pyx":57
+ *                     self.move_to(JAIL)
+ *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()             # <<<<<<<<<<<<<<
- *                 elif self.current_position in self.chance_squares:
+ *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()
  */
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_draw_community_chest); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_1 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-          __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-          if (likely(__pyx_t_1)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-            __Pyx_INCREF(__pyx_t_1);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_4, function);
-          }
-        }
-        __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
-        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_community_chest(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/monopoly.pyx":50
+        /* "monopoly/monopoly.pyx":56
  *                 if self.current_position == 30: # Go to Jail
- *                     self.move_to(-1)
- *                 elif self.current_position in self.community_squares:             # <<<<<<<<<<<<<<
+ *                     self.move_to(JAIL)
+ *                 elif self.community_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
  *                     self.draw_community_chest()
- *                 elif self.current_position in self.chance_squares:
+ *                 elif self.chance_squares.count(self.current_position) == 1:
  */
-        goto __pyx_L9;
+        goto __pyx_L6;
       }
 
-      /* "monopoly/monopoly.pyx":52
- *                 elif self.current_position in self.community_squares:
+      /* "monopoly/monopoly.pyx":58
+ *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
- *                 elif self.current_position in self.chance_squares:             # <<<<<<<<<<<<<<
+ *                 elif self.chance_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
  *                     self.draw_chance()
  *             self.end_turn()
  */
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->current_position); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(__pyx_v_self->chance_squares == Py_None)) {
-        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-        __PYX_ERR(0, 52, __pyx_L1_error)
-      }
-      __pyx_t_7 = (__Pyx_PySet_ContainsTF(__pyx_t_2, __pyx_v_self->chance_squares, Py_EQ)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_3 = (__pyx_t_7 != 0);
-      if (__pyx_t_3) {
+      __pyx_t_6 = ((__pyx_v_self->chance_squares.count(__pyx_v_self->current_position) == 1) != 0);
+      if (__pyx_t_6) {
 
-        /* "monopoly/monopoly.pyx":53
+        /* "monopoly/monopoly.pyx":59
  *                     self.draw_community_chest()
- *                 elif self.current_position in self.chance_squares:
+ *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()             # <<<<<<<<<<<<<<
  *             self.end_turn()
  * 
  */
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_draw_chance); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_1 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-          __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-          if (likely(__pyx_t_1)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-            __Pyx_INCREF(__pyx_t_1);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_4, function);
-          }
-        }
-        __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
-        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_chance(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/monopoly.pyx":52
- *                 elif self.current_position in self.community_squares:
+        /* "monopoly/monopoly.pyx":58
+ *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
- *                 elif self.current_position in self.chance_squares:             # <<<<<<<<<<<<<<
+ *                 elif self.chance_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
  *                     self.draw_chance()
  *             self.end_turn()
  */
       }
-      __pyx_L9:;
+      __pyx_L6:;
     }
-    __pyx_L8:;
+    __pyx_L5:;
 
-    /* "monopoly/monopoly.pyx":54
- *                 elif self.current_position in self.chance_squares:
+    /* "monopoly/monopoly.pyx":60
+ *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()
  *             self.end_turn()             # <<<<<<<<<<<<<<
  * 
- *     def roll_dice(self):
+ *     cdef int roll_dice(self):
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_end_turn); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_1)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_1);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-      }
-    }
-    __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->end_turn(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "monopoly/monopoly.pyx":36
- *         self.doubles = 0
+  /* "monopoly/monopoly.pyx":46
+ *         srand(time(NULL))
  * 
- *     def take_turns(self, turns):             # <<<<<<<<<<<<<<
+ *     cpdef take_turns(self, int turns):             # <<<<<<<<<<<<<<
  *         while self.total_turns < turns:
- *             spaces, double = self.roll_dice()
+ *             spaces = self.roll_dice()
  */
 
   /* function exit code */
@@ -2302,478 +2127,350 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(struct __pyx
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __pyx_r = 0;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_spaces);
-  __Pyx_XDECREF(__pyx_v_double);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":56
- *             self.end_turn()
- * 
- *     def roll_dice(self):             # <<<<<<<<<<<<<<
- *         # roll_index = random.randrange(36) # This seems to take a little longer
- *         roll_index = int(random.random()*36)
- */
-
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_5roll_dice(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_5roll_dice(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns) {
+  int __pyx_v_turns;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("roll_dice (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_4roll_dice(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("take_turns (wrapper)", 0);
+  assert(__pyx_arg_turns); {
+    __pyx_v_turns = __Pyx_PyInt_As_int(__pyx_arg_turns); if (unlikely((__pyx_v_turns == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((int)__pyx_v_turns));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_4roll_dice(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
-  PyObject *__pyx_v_roll_index = NULL;
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  __Pyx_RefNannySetupContext("roll_dice", 0);
-
-  /* "monopoly/monopoly.pyx":58
- *     def roll_dice(self):
- *         # roll_index = random.randrange(36) # This seems to take a little longer
- *         roll_index = int(random.random()*36)             # <<<<<<<<<<<<<<
- *         return self.roll_values[roll_index], roll_index in {0,7,14,21,28,35}
- * 
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_random); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_2);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_int_36); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_roll_index = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "monopoly/monopoly.pyx":59
- *         # roll_index = random.randrange(36) # This seems to take a little longer
- *         roll_index = int(random.random()*36)
- *         return self.roll_values[roll_index], roll_index in {0,7,14,21,28,35}             # <<<<<<<<<<<<<<
- * 
- *     def move_spaces(self, spaces):
- */
+  __Pyx_RefNannySetupContext("take_turns", 0);
   __Pyx_XDECREF(__pyx_r);
-  if (unlikely(__pyx_v_self->roll_values == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 59, __pyx_L1_error)
-  }
-  __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->roll_values, __pyx_v_roll_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8monopoly_8monopoly_8Monopoly_take_turns(__pyx_v_self, __pyx_v_turns, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_v_roll_index);
-  __pyx_t_3 = __pyx_v_roll_index;
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_4 = __pyx_t_5;
-    goto __pyx_L3_bool_binop_done;
-  }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_7, 7, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_4 = __pyx_t_5;
-    goto __pyx_L3_bool_binop_done;
-  }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_14, 14, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_4 = __pyx_t_5;
-    goto __pyx_L3_bool_binop_done;
-  }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_21, 21, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_4 = __pyx_t_5;
-    goto __pyx_L3_bool_binop_done;
-  }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_28, 28, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!__pyx_t_5) {
-  } else {
-    __pyx_t_4 = __pyx_t_5;
-    goto __pyx_L3_bool_binop_done;
-  }
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_35, 35, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __pyx_t_5;
-  __pyx_L3_bool_binop_done:;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
+  __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
-  __pyx_t_3 = 0;
-  __pyx_r = __pyx_t_2;
-  __pyx_t_2 = 0;
   goto __pyx_L0;
-
-  /* "monopoly/monopoly.pyx":56
- *             self.end_turn()
- * 
- *     def roll_dice(self):             # <<<<<<<<<<<<<<
- *         # roll_index = random.randrange(36) # This seems to take a little longer
- *         roll_index = int(random.random()*36)
- */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.roll_dice", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_roll_index);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":61
- *         return self.roll_values[roll_index], roll_index in {0,7,14,21,28,35}
+/* "monopoly/monopoly.pyx":62
+ *             self.end_turn()
  * 
- *     def move_spaces(self, spaces):             # <<<<<<<<<<<<<<
- *         if self.current_position == -1: # We are in jail, move us to just visiting
- *             self.current_position = 10
+ *     cdef int roll_dice(self):             # <<<<<<<<<<<<<<
+ *         # roll_index = random.randrange(36) # This seems to take a little longer
+ *         # cdef int roll_index = int(random.random()*36)
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_7move_spaces(PyObject *__pyx_v_self, PyObject *__pyx_v_spaces); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_7move_spaces(PyObject *__pyx_v_self, PyObject *__pyx_v_spaces) {
-  PyObject *__pyx_r = 0;
+static int __pyx_f_8monopoly_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+  int __pyx_v_roll_index;
+  int __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("move_spaces (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_6move_spaces(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v_spaces));
+  int __pyx_t_1;
+  __Pyx_RefNannySetupContext("roll_dice", 0);
+
+  /* "monopoly/monopoly.pyx":65
+ *         # roll_index = random.randrange(36) # This seems to take a little longer
+ *         # cdef int roll_index = int(random.random()*36)
+ *         cdef int roll_index = rand()%36             # <<<<<<<<<<<<<<
+ *         if self.double_indices.count(roll_index) == 1:
+ *             self.doubles+=1
+ */
+  __pyx_v_roll_index = __Pyx_mod_long(rand(), 36);
+
+  /* "monopoly/monopoly.pyx":66
+ *         # cdef int roll_index = int(random.random()*36)
+ *         cdef int roll_index = rand()%36
+ *         if self.double_indices.count(roll_index) == 1:             # <<<<<<<<<<<<<<
+ *             self.doubles+=1
+ *         else:
+ */
+  __pyx_t_1 = ((__pyx_v_self->double_indices.count(__pyx_v_roll_index) == 1) != 0);
+  if (__pyx_t_1) {
+
+    /* "monopoly/monopoly.pyx":67
+ *         cdef int roll_index = rand()%36
+ *         if self.double_indices.count(roll_index) == 1:
+ *             self.doubles+=1             # <<<<<<<<<<<<<<
+ *         else:
+ *             self.doubles = 0
+ */
+    __pyx_v_self->doubles = (__pyx_v_self->doubles + 1);
+
+    /* "monopoly/monopoly.pyx":66
+ *         # cdef int roll_index = int(random.random()*36)
+ *         cdef int roll_index = rand()%36
+ *         if self.double_indices.count(roll_index) == 1:             # <<<<<<<<<<<<<<
+ *             self.doubles+=1
+ *         else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "monopoly/monopoly.pyx":69
+ *             self.doubles+=1
+ *         else:
+ *             self.doubles = 0             # <<<<<<<<<<<<<<
+ *         return self.roll_values[roll_index]
+ * 
+ */
+  /*else*/ {
+    __pyx_v_self->doubles = 0;
+  }
+  __pyx_L3:;
+
+  /* "monopoly/monopoly.pyx":70
+ *         else:
+ *             self.doubles = 0
+ *         return self.roll_values[roll_index]             # <<<<<<<<<<<<<<
+ * 
+ *     cdef move_spaces(self, int spaces):
+ */
+  __pyx_r = (__pyx_v_self->roll_values[__pyx_v_roll_index]);
+  goto __pyx_L0;
+
+  /* "monopoly/monopoly.pyx":62
+ *             self.end_turn()
+ * 
+ *     cdef int roll_dice(self):             # <<<<<<<<<<<<<<
+ *         # roll_index = random.randrange(36) # This seems to take a little longer
+ *         # cdef int roll_index = int(random.random()*36)
+ */
 
   /* function exit code */
+  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_6move_spaces(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_spaces) {
+/* "monopoly/monopoly.pyx":72
+ *         return self.roll_values[roll_index]
+ * 
+ *     cdef move_spaces(self, int spaces):             # <<<<<<<<<<<<<<
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting
+ *             self.current_position = 10
+ */
+
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_t_5;
   __Pyx_RefNannySetupContext("move_spaces", 0);
 
-  /* "monopoly/monopoly.pyx":62
+  /* "monopoly/monopoly.pyx":73
  * 
- *     def move_spaces(self, spaces):
- *         if self.current_position == -1: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
+ *     cdef move_spaces(self, int spaces):
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
  *             self.current_position = 10
- *         self.current_position = (self.current_position+spaces) % self.num_spaces
+ *         self.current_position += spaces
  */
-  __pyx_t_1 = ((__pyx_v_self->current_position == -1L) != 0);
+  __pyx_t_1 = ((__pyx_v_self->current_position == __pyx_e_8monopoly_8monopoly_JAIL) != 0);
   if (__pyx_t_1) {
 
-    /* "monopoly/monopoly.pyx":63
- *     def move_spaces(self, spaces):
- *         if self.current_position == -1: # We are in jail, move us to just visiting
+    /* "monopoly/monopoly.pyx":74
+ *     cdef move_spaces(self, int spaces):
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting
  *             self.current_position = 10             # <<<<<<<<<<<<<<
- *         self.current_position = (self.current_position+spaces) % self.num_spaces
- * 
+ *         self.current_position += spaces
+ *         if self.current_position >= self.num_spaces:
  */
     __pyx_v_self->current_position = 10;
 
-    /* "monopoly/monopoly.pyx":62
+    /* "monopoly/monopoly.pyx":73
  * 
- *     def move_spaces(self, spaces):
- *         if self.current_position == -1: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
+ *     cdef move_spaces(self, int spaces):
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
  *             self.current_position = 10
- *         self.current_position = (self.current_position+spaces) % self.num_spaces
+ *         self.current_position += spaces
  */
   }
 
-  /* "monopoly/monopoly.pyx":64
- *         if self.current_position == -1: # We are in jail, move us to just visiting
+  /* "monopoly/monopoly.pyx":75
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting
  *             self.current_position = 10
- *         self.current_position = (self.current_position+spaces) % self.num_spaces             # <<<<<<<<<<<<<<
- * 
- *     def move_to(self, square):
+ *         self.current_position += spaces             # <<<<<<<<<<<<<<
+ *         if self.current_position >= self.num_spaces:
+ *             self.current_position -= self.num_spaces
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->current_position); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_spaces); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->num_spaces); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyNumber_Remainder(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_v_self->current_position = __pyx_t_5;
+  __pyx_v_self->current_position = (__pyx_v_self->current_position + __pyx_v_spaces);
 
-  /* "monopoly/monopoly.pyx":61
- *         return self.roll_values[roll_index], roll_index in {0,7,14,21,28,35}
+  /* "monopoly/monopoly.pyx":76
+ *             self.current_position = 10
+ *         self.current_position += spaces
+ *         if self.current_position >= self.num_spaces:             # <<<<<<<<<<<<<<
+ *             self.current_position -= self.num_spaces
  * 
- *     def move_spaces(self, spaces):             # <<<<<<<<<<<<<<
- *         if self.current_position == -1: # We are in jail, move us to just visiting
+ */
+  __pyx_t_1 = ((__pyx_v_self->current_position >= __pyx_v_self->num_spaces) != 0);
+  if (__pyx_t_1) {
+
+    /* "monopoly/monopoly.pyx":77
+ *         self.current_position += spaces
+ *         if self.current_position >= self.num_spaces:
+ *             self.current_position -= self.num_spaces             # <<<<<<<<<<<<<<
+ * 
+ *     cdef move_to(self, int square):
+ */
+    __pyx_v_self->current_position = (__pyx_v_self->current_position - __pyx_v_self->num_spaces);
+
+    /* "monopoly/monopoly.pyx":76
+ *             self.current_position = 10
+ *         self.current_position += spaces
+ *         if self.current_position >= self.num_spaces:             # <<<<<<<<<<<<<<
+ *             self.current_position -= self.num_spaces
+ * 
+ */
+  }
+
+  /* "monopoly/monopoly.pyx":72
+ *         return self.roll_values[roll_index]
+ * 
+ *     cdef move_spaces(self, int spaces):             # <<<<<<<<<<<<<<
+ *         if self.current_position == JAIL: # We are in jail, move us to just visiting
  *             self.current_position = 10
  */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.move_spaces", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":66
- *         self.current_position = (self.current_position+spaces) % self.num_spaces
+/* "monopoly/monopoly.pyx":79
+ *             self.current_position -= self.num_spaces
  * 
- *     def move_to(self, square):             # <<<<<<<<<<<<<<
+ *     cdef move_to(self, int square):             # <<<<<<<<<<<<<<
  *         self.current_position = square
  * 
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_9move_to(PyObject *__pyx_v_self, PyObject *__pyx_v_square); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_9move_to(PyObject *__pyx_v_self, PyObject *__pyx_v_square) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("move_to (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_8move_to(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v_square));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_8move_to(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_square) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
   __Pyx_RefNannySetupContext("move_to", 0);
 
-  /* "monopoly/monopoly.pyx":67
+  /* "monopoly/monopoly.pyx":80
  * 
- *     def move_to(self, square):
+ *     cdef move_to(self, int square):
  *         self.current_position = square             # <<<<<<<<<<<<<<
  * 
- *     def end_turn(self):
+ *     cdef end_turn(self):
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_square); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
-  __pyx_v_self->current_position = __pyx_t_1;
+  __pyx_v_self->current_position = __pyx_v_square;
 
-  /* "monopoly/monopoly.pyx":66
- *         self.current_position = (self.current_position+spaces) % self.num_spaces
+  /* "monopoly/monopoly.pyx":79
+ *             self.current_position -= self.num_spaces
  * 
- *     def move_to(self, square):             # <<<<<<<<<<<<<<
+ *     cdef move_to(self, int square):             # <<<<<<<<<<<<<<
  *         self.current_position = square
  * 
  */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.move_to", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":69
+/* "monopoly/monopoly.pyx":82
  *         self.current_position = square
  * 
- *     def end_turn(self):             # <<<<<<<<<<<<<<
+ *     cdef end_turn(self):             # <<<<<<<<<<<<<<
  *         self.results[self.current_position]+=1
  *         self.total_turns+=1
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_11end_turn(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_11end_turn(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("end_turn (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_10end_turn(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_10end_turn(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_end_turn(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_1;
   __Pyx_RefNannySetupContext("end_turn", 0);
 
-  /* "monopoly/monopoly.pyx":70
+  /* "monopoly/monopoly.pyx":83
  * 
- *     def end_turn(self):
+ *     cdef end_turn(self):
  *         self.results[self.current_position]+=1             # <<<<<<<<<<<<<<
  *         self.total_turns+=1
  * 
  */
-  if (unlikely(__pyx_v_self->results == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 70, __pyx_L1_error)
-  }
-  __Pyx_INCREF(__pyx_v_self->results);
-  __pyx_t_1 = __pyx_v_self->results;
-  __pyx_t_2 = __pyx_v_self->current_position;
-  if (unlikely(__pyx_t_1 == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 70, __pyx_L1_error)
-  }
-  __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_t_1, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_3, __pyx_int_1, 1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(__pyx_t_1 == Py_None)) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 70, __pyx_L1_error)
-  }
-  if (unlikely(__Pyx_SetItemInt(__pyx_t_1, __pyx_t_2, __pyx_t_4, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __pyx_v_self->current_position;
+  (__pyx_v_self->results[__pyx_t_1]) = ((__pyx_v_self->results[__pyx_t_1]) + 1);
 
-  /* "monopoly/monopoly.pyx":71
- *     def end_turn(self):
+  /* "monopoly/monopoly.pyx":84
+ *     cdef end_turn(self):
  *         self.results[self.current_position]+=1
  *         self.total_turns+=1             # <<<<<<<<<<<<<<
  * 
- *     def move_to_utility(self):
+ *     cdef move_to_utility(self):
  */
   __pyx_v_self->total_turns = (__pyx_v_self->total_turns + 1);
 
-  /* "monopoly/monopoly.pyx":69
+  /* "monopoly/monopoly.pyx":82
  *         self.current_position = square
  * 
- *     def end_turn(self):             # <<<<<<<<<<<<<<
+ *     cdef end_turn(self):             # <<<<<<<<<<<<<<
  *         self.results[self.current_position]+=1
  *         self.total_turns+=1
  */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.end_turn", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":73
+/* "monopoly/monopoly.pyx":86
  *         self.total_turns+=1
  * 
- *     def move_to_utility(self):             # <<<<<<<<<<<<<<
+ *     cdef move_to_utility(self):             # <<<<<<<<<<<<<<
  *         if self.current_position > 12 and self.current_position < 28:
  *             self.move_to(28)
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_13move_to_utility(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_13move_to_utility(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("move_to_utility (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("move_to_utility", 0);
 
-  /* "monopoly/monopoly.pyx":74
+  /* "monopoly/monopoly.pyx":87
  * 
- *     def move_to_utility(self):
+ *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:             # <<<<<<<<<<<<<<
  *             self.move_to(28)
  *         else:
@@ -2789,35 +2486,20 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(struct
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "monopoly/monopoly.pyx":75
- *     def move_to_utility(self):
+    /* "monopoly/monopoly.pyx":88
+ *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:
  *             self.move_to(28)             # <<<<<<<<<<<<<<
  *         else:
  *             self.move_to(12)
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-      }
-    }
-    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_int_28) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_int_28);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 28); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "monopoly/monopoly.pyx":74
+    /* "monopoly/monopoly.pyx":87
  * 
- *     def move_to_utility(self):
+ *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:             # <<<<<<<<<<<<<<
  *             self.move_to(28)
  *         else:
@@ -2825,39 +2507,24 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(struct
     goto __pyx_L3;
   }
 
-  /* "monopoly/monopoly.pyx":77
+  /* "monopoly/monopoly.pyx":90
  *             self.move_to(28)
  *         else:
  *             self.move_to(12)             # <<<<<<<<<<<<<<
  * 
- *     def move_to_railroad(self):
+ *     cdef move_to_railroad(self):
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_4, function);
-      }
-    }
-    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_int_12) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_int_12);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_L3:;
 
-  /* "monopoly/monopoly.pyx":73
+  /* "monopoly/monopoly.pyx":86
  *         self.total_turns+=1
  * 
- *     def move_to_utility(self):             # <<<<<<<<<<<<<<
+ *     cdef move_to_utility(self):             # <<<<<<<<<<<<<<
  *         if self.current_position > 12 and self.current_position < 28:
  *             self.move_to(28)
  */
@@ -2867,86 +2534,70 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_12move_to_utility(struct
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.move_to_utility", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":79
+/* "monopoly/monopoly.pyx":92
  *             self.move_to(12)
  * 
- *     def move_to_railroad(self):             # <<<<<<<<<<<<<<
+ *     cdef move_to_railroad(self):             # <<<<<<<<<<<<<<
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_15move_to_railroad(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_15move_to_railroad(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("move_to_railroad (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_distance_rr = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_t_2;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_3;
   __Pyx_RefNannySetupContext("move_to_railroad", 0);
 
-  /* "monopoly/monopoly.pyx":80
+  /* "monopoly/monopoly.pyx":93
  * 
- *     def move_to_railroad(self):
+ *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10             # <<<<<<<<<<<<<<
  *         if distance_rr != 0:
  *             distance_rr = 10-distance_rr
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_mod_long((__pyx_v_self->current_position + 5), 10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long(__Pyx_mod_long((__pyx_v_self->current_position + 5), 10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_distance_rr = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "monopoly/monopoly.pyx":81
- *     def move_to_railroad(self):
+  /* "monopoly/monopoly.pyx":94
+ *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:             # <<<<<<<<<<<<<<
  *             distance_rr = 10-distance_rr
  *         self.move_spaces(distance_rr)
  */
-  __pyx_t_1 = __Pyx_PyInt_NeObjC(__pyx_v_distance_rr, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_NeObjC(__pyx_v_distance_rr, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "monopoly/monopoly.pyx":82
+    /* "monopoly/monopoly.pyx":95
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:
  *             distance_rr = 10-distance_rr             # <<<<<<<<<<<<<<
  *         self.move_spaces(distance_rr)
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_SubtractCObj(__pyx_int_10, __pyx_v_distance_rr, 10, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_SubtractCObj(__pyx_int_10, __pyx_v_distance_rr, 10, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_distance_rr, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "monopoly/monopoly.pyx":81
- *     def move_to_railroad(self):
+    /* "monopoly/monopoly.pyx":94
+ *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:             # <<<<<<<<<<<<<<
  *             distance_rr = 10-distance_rr
@@ -2954,36 +2605,22 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(struc
  */
   }
 
-  /* "monopoly/monopoly.pyx":83
+  /* "monopoly/monopoly.pyx":96
  *         if distance_rr != 0:
  *             distance_rr = 10-distance_rr
  *         self.move_spaces(distance_rr)             # <<<<<<<<<<<<<<
  * 
- *     def draw_community_chest(self):
+ *     cdef draw_community_chest(self):
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_spaces); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_distance_rr) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_distance_rr);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_distance_rr); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "monopoly/monopoly.pyx":79
+  /* "monopoly/monopoly.pyx":92
  *             self.move_to(12)
  * 
- *     def move_to_railroad(self):             # <<<<<<<<<<<<<<
+ *     cdef move_to_railroad(self):             # <<<<<<<<<<<<<<
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:
  */
@@ -2993,10 +2630,8 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(struc
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.move_to_railroad", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_distance_rr);
   __Pyx_XGIVEREF(__pyx_r);
@@ -3004,28 +2639,15 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_14move_to_railroad(struc
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":85
+/* "monopoly/monopoly.pyx":98
  *         self.move_spaces(distance_rr)
  * 
- *     def draw_community_chest(self):             # <<<<<<<<<<<<<<
+ *     cdef draw_community_chest(self):             # <<<<<<<<<<<<<<
  *         if len(self.community_deck) == 0:
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_17draw_community_chest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_17draw_community_chest(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("draw_community_chest (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -3033,171 +2655,96 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(s
   Py_ssize_t __pyx_t_2;
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  int __pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
+  int __pyx_t_5;
+  int __pyx_t_6;
   __Pyx_RefNannySetupContext("draw_community_chest", 0);
 
-  /* "monopoly/monopoly.pyx":86
+  /* "monopoly/monopoly.pyx":99
  * 
- *     def draw_community_chest(self):
+ *     cdef draw_community_chest(self):
  *         if len(self.community_deck) == 0:             # <<<<<<<<<<<<<<
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
- *         card = self.community_deck.pop()
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             self.community_deck = self.shuffle_deck(self.community_cards)
  */
   __pyx_t_1 = __pyx_v_self->community_deck;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 86, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "monopoly/monopoly.pyx":87
- *     def draw_community_chest(self):
+    /* "monopoly/monopoly.pyx":101
  *         if len(self.community_deck) == 0:
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))             # <<<<<<<<<<<<<<
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             self.community_deck = self.shuffle_deck(self.community_cards)             # <<<<<<<<<<<<<<
  *         card = self.community_deck.pop()
  *         if card is not None:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_1 = __pyx_v_self->community_cards;
+    __Pyx_INCREF(__pyx_t_1);
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sample); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 87, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __pyx_v_self->community_cards;
-    __Pyx_INCREF(__pyx_t_4);
-    if (unlikely(__pyx_t_4 == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 87, __pyx_L1_error)
-    }
-    __pyx_t_2 = PyList_GET_SIZE(__pyx_t_4); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 87, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = NULL;
-    __pyx_t_7 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-        __pyx_t_7 = 1;
-      }
-    }
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_self->community_cards, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_self->community_cards, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 87, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      if (__pyx_t_6) {
-        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      }
-      __Pyx_INCREF(__pyx_v_self->community_cards);
-      __Pyx_GIVEREF(__pyx_v_self->community_cards);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_self->community_cards);
-      __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 87, __pyx_L1_error)
-    __Pyx_GIVEREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_GIVEREF(__pyx_t_4);
     __Pyx_GOTREF(__pyx_v_self->community_deck);
     __Pyx_DECREF(__pyx_v_self->community_deck);
-    __pyx_v_self->community_deck = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_v_self->community_deck = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":86
+    /* "monopoly/monopoly.pyx":99
  * 
- *     def draw_community_chest(self):
+ *     cdef draw_community_chest(self):
  *         if len(self.community_deck) == 0:             # <<<<<<<<<<<<<<
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
- *         card = self.community_deck.pop()
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             self.community_deck = self.shuffle_deck(self.community_cards)
  */
   }
 
-  /* "monopoly/monopoly.pyx":88
- *         if len(self.community_deck) == 0:
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+  /* "monopoly/monopoly.pyx":102
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()             # <<<<<<<<<<<<<<
  *         if card is not None:
  *             self.move_to(card)
  */
   if (unlikely(__pyx_v_self->community_deck == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-    __PYX_ERR(0, 88, __pyx_L1_error)
+    __PYX_ERR(0, 102, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_Pop(__pyx_v_self->community_deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_card = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_4 = __Pyx_PyList_Pop(__pyx_v_self->community_deck); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_v_card = __pyx_t_4;
+  __pyx_t_4 = 0;
 
-  /* "monopoly/monopoly.pyx":89
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+  /* "monopoly/monopoly.pyx":103
+ *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()
  *         if card is not None:             # <<<<<<<<<<<<<<
  *             self.move_to(card)
  * 
  */
   __pyx_t_3 = (__pyx_v_card != Py_None);
-  __pyx_t_9 = (__pyx_t_3 != 0);
-  if (__pyx_t_9) {
+  __pyx_t_5 = (__pyx_t_3 != 0);
+  if (__pyx_t_5) {
 
-    /* "monopoly/monopoly.pyx":90
+    /* "monopoly/monopoly.pyx":104
  *         card = self.community_deck.pop()
  *         if card is not None:
  *             self.move_to(card)             # <<<<<<<<<<<<<<
  * 
- *     def draw_chance(self):
+ *     cdef draw_chance(self):
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_8, __pyx_v_card) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_card);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":89
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+    /* "monopoly/monopoly.pyx":103
+ *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()
  *         if card is not None:             # <<<<<<<<<<<<<<
  *             self.move_to(card)
@@ -3205,12 +2752,12 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(s
  */
   }
 
-  /* "monopoly/monopoly.pyx":85
+  /* "monopoly/monopoly.pyx":98
  *         self.move_spaces(distance_rr)
  * 
- *     def draw_community_chest(self):             # <<<<<<<<<<<<<<
+ *     cdef draw_community_chest(self):             # <<<<<<<<<<<<<<
  *         if len(self.community_deck) == 0:
- *             self.community_deck = random.sample(self.community_cards, len(self.community_cards))
+ *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
  */
 
   /* function exit code */
@@ -3219,11 +2766,8 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(s
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.draw_community_chest", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_card);
   __Pyx_XGIVEREF(__pyx_r);
@@ -3231,28 +2775,15 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_16draw_community_chest(s
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":92
+/* "monopoly/monopoly.pyx":106
  *             self.move_to(card)
  * 
- *     def draw_chance(self):             # <<<<<<<<<<<<<<
+ *     cdef draw_chance(self):             # <<<<<<<<<<<<<<
  *         if len(self.chance_deck) == 0:
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_19draw_chance(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_19draw_chance(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("draw_chance (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -3260,170 +2791,94 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
   Py_ssize_t __pyx_t_2;
   int __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  int __pyx_t_7;
-  PyObject *__pyx_t_8 = NULL;
-  int __pyx_t_9;
+  int __pyx_t_5;
+  int __pyx_t_6;
   __Pyx_RefNannySetupContext("draw_chance", 0);
 
-  /* "monopoly/monopoly.pyx":93
+  /* "monopoly/monopoly.pyx":107
  * 
- *     def draw_chance(self):
+ *     cdef draw_chance(self):
  *         if len(self.chance_deck) == 0:             # <<<<<<<<<<<<<<
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
- *         card = self.chance_deck.pop()
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  */
   __pyx_t_1 = __pyx_v_self->chance_deck;
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 93, __pyx_L1_error)
+    __PYX_ERR(0, 107, __pyx_L1_error)
   }
-  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "monopoly/monopoly.pyx":94
- *     def draw_chance(self):
+    /* "monopoly/monopoly.pyx":109
  *         if len(self.chance_deck) == 0:
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))             # <<<<<<<<<<<<<<
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)             # <<<<<<<<<<<<<<
  *         card = self.chance_deck.pop()
  *         if card == 'U':
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_1 = __pyx_v_self->chance_cards;
+    __Pyx_INCREF(__pyx_t_1);
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sample); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __pyx_v_self->chance_cards;
-    __Pyx_INCREF(__pyx_t_4);
-    if (unlikely(__pyx_t_4 == Py_None)) {
-      PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 94, __pyx_L1_error)
-    }
-    __pyx_t_2 = PyList_GET_SIZE(__pyx_t_4); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = NULL;
-    __pyx_t_7 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-        __pyx_t_7 = 1;
-      }
-    }
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_self->chance_cards, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_self->chance_cards, __pyx_t_4};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    } else
-    #endif
-    {
-      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 94, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      if (__pyx_t_6) {
-        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
-      }
-      __Pyx_INCREF(__pyx_v_self->chance_cards);
-      __Pyx_GIVEREF(__pyx_v_self->chance_cards);
-      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_self->chance_cards);
-      __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_4);
-      __pyx_t_4 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    }
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_GIVEREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_GIVEREF(__pyx_t_4);
     __Pyx_GOTREF(__pyx_v_self->chance_deck);
     __Pyx_DECREF(__pyx_v_self->chance_deck);
-    __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_1);
-    __pyx_t_1 = 0;
+    __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":93
+    /* "monopoly/monopoly.pyx":107
  * 
- *     def draw_chance(self):
+ *     cdef draw_chance(self):
  *         if len(self.chance_deck) == 0:             # <<<<<<<<<<<<<<
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
- *         card = self.chance_deck.pop()
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  */
   }
 
-  /* "monopoly/monopoly.pyx":95
- *         if len(self.chance_deck) == 0:
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+  /* "monopoly/monopoly.pyx":110
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()             # <<<<<<<<<<<<<<
  *         if card == 'U':
  *             self.move_to_utility()
  */
   if (unlikely(__pyx_v_self->chance_deck == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-    __PYX_ERR(0, 95, __pyx_L1_error)
+    __PYX_ERR(0, 110, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_Pop(__pyx_v_self->chance_deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_v_card = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_4 = __Pyx_PyList_Pop(__pyx_v_self->chance_deck); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_v_card = __pyx_t_4;
+  __pyx_t_4 = 0;
 
-  /* "monopoly/monopoly.pyx":96
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+  /* "monopoly/monopoly.pyx":111
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()
  *         if card == 'U':             # <<<<<<<<<<<<<<
  *             self.move_to_utility()
  *         elif card == 'R':
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_U, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_U, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/monopoly.pyx":97
+    /* "monopoly/monopoly.pyx":112
  *         card = self.chance_deck.pop()
  *         if card == 'U':
  *             self.move_to_utility()             # <<<<<<<<<<<<<<
  *         elif card == 'R':
  *             self.move_to_railroad()
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to_utility); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_8) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_utility(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":96
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+    /* "monopoly/monopoly.pyx":111
+ *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()
  *         if card == 'U':             # <<<<<<<<<<<<<<
  *             self.move_to_utility()
@@ -3432,43 +2887,28 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
     goto __pyx_L4;
   }
 
-  /* "monopoly/monopoly.pyx":98
+  /* "monopoly/monopoly.pyx":113
  *         if card == 'U':
  *             self.move_to_utility()
  *         elif card == 'R':             # <<<<<<<<<<<<<<
  *             self.move_to_railroad()
  *         elif card == 'B':
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_R, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_R, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/monopoly.pyx":99
+    /* "monopoly/monopoly.pyx":114
  *             self.move_to_utility()
  *         elif card == 'R':
  *             self.move_to_railroad()             # <<<<<<<<<<<<<<
  *         elif card == 'B':
  *             self.move_spaces(-3)
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to_railroad); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_8) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_railroad(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":98
+    /* "monopoly/monopoly.pyx":113
  *         if card == 'U':
  *             self.move_to_utility()
  *         elif card == 'R':             # <<<<<<<<<<<<<<
@@ -3478,43 +2918,28 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
     goto __pyx_L4;
   }
 
-  /* "monopoly/monopoly.pyx":100
+  /* "monopoly/monopoly.pyx":115
  *         elif card == 'R':
  *             self.move_to_railroad()
  *         elif card == 'B':             # <<<<<<<<<<<<<<
  *             self.move_spaces(-3)
  *         elif card is not None:
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_B, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_B, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 115, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/monopoly.pyx":101
+    /* "monopoly/monopoly.pyx":116
  *             self.move_to_railroad()
  *         elif card == 'B':
  *             self.move_spaces(-3)             # <<<<<<<<<<<<<<
  *         elif card is not None:
  *             self.move_to(card)
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_spaces); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_8, __pyx_int_neg_3) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_int_neg_3);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, -3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":100
+    /* "monopoly/monopoly.pyx":115
  *         elif card == 'R':
  *             self.move_to_railroad()
  *         elif card == 'B':             # <<<<<<<<<<<<<<
@@ -3524,55 +2949,45 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
     goto __pyx_L4;
   }
 
-  /* "monopoly/monopoly.pyx":102
+  /* "monopoly/monopoly.pyx":117
  *         elif card == 'B':
  *             self.move_spaces(-3)
  *         elif card is not None:             # <<<<<<<<<<<<<<
  *             self.move_to(card)
+ * 
  */
   __pyx_t_3 = (__pyx_v_card != Py_None);
-  __pyx_t_9 = (__pyx_t_3 != 0);
-  if (__pyx_t_9) {
+  __pyx_t_5 = (__pyx_t_3 != 0);
+  if (__pyx_t_5) {
 
-    /* "monopoly/monopoly.pyx":103
+    /* "monopoly/monopoly.pyx":118
  *             self.move_spaces(-3)
  *         elif card is not None:
  *             self.move_to(card)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef list shuffle_deck(self, list deck):
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_move_to); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_8)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_8);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_8, __pyx_v_card) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_card);
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/monopoly.pyx":102
+    /* "monopoly/monopoly.pyx":117
  *         elif card == 'B':
  *             self.move_spaces(-3)
  *         elif card is not None:             # <<<<<<<<<<<<<<
  *             self.move_to(card)
+ * 
  */
   }
   __pyx_L4:;
 
-  /* "monopoly/monopoly.pyx":92
+  /* "monopoly/monopoly.pyx":106
  *             self.move_to(card)
  * 
- *     def draw_chance(self):             # <<<<<<<<<<<<<<
+ *     cdef draw_chance(self):             # <<<<<<<<<<<<<<
  *         if len(self.chance_deck) == 0:
- *             self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
+ *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
  */
 
   /* function exit code */
@@ -3581,11 +2996,8 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.draw_chance", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_card);
   __Pyx_XGIVEREF(__pyx_r);
@@ -3593,10 +3005,163 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_18draw_chance(struct __p
   return __pyx_r;
 }
 
-/* "monopoly/monopoly.pyx":16
+/* "monopoly/monopoly.pyx":120
+ *             self.move_to(card)
+ * 
+ *     cdef list shuffle_deck(self, list deck):             # <<<<<<<<<<<<<<
+ *         cdef list shuffled = deck.copy()
+ *         cdef int i,r
+ */
+
+static PyObject *__pyx_f_8monopoly_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck) {
+  PyObject *__pyx_v_shuffled = 0;
+  int __pyx_v_i;
+  int __pyx_v_r;
+  PyObject *__pyx_v_move = 0;
+  int __pyx_v_n;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  __Pyx_RefNannySetupContext("shuffle_deck", 0);
+
+  /* "monopoly/monopoly.pyx":121
+ * 
+ *     cdef list shuffle_deck(self, list deck):
+ *         cdef list shuffled = deck.copy()             # <<<<<<<<<<<<<<
+ *         cdef int i,r
+ *         cdef move
+ */
+  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyList_Type_copy, __pyx_v_deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 121, __pyx_L1_error)
+  __pyx_v_shuffled = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "monopoly/monopoly.pyx":124
+ *         cdef int i,r
+ *         cdef move
+ *         cdef int n = len(shuffled)             # <<<<<<<<<<<<<<
+ *         for i in range(n-1,0,-1):
+ *             r = rand()%i
+ */
+  if (unlikely(__pyx_v_shuffled == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 124, __pyx_L1_error)
+  }
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_v_shuffled); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_v_n = __pyx_t_2;
+
+  /* "monopoly/monopoly.pyx":125
+ *         cdef move
+ *         cdef int n = len(shuffled)
+ *         for i in range(n-1,0,-1):             # <<<<<<<<<<<<<<
+ *             r = rand()%i
+ *             move = shuffled[r]
+ */
+  for (__pyx_t_3 = (__pyx_v_n - 1); __pyx_t_3 > 0; __pyx_t_3-=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "monopoly/monopoly.pyx":126
+ *         cdef int n = len(shuffled)
+ *         for i in range(n-1,0,-1):
+ *             r = rand()%i             # <<<<<<<<<<<<<<
+ *             move = shuffled[r]
+ *             shuffled[r] = shuffled[i]
+ */
+    __pyx_t_4 = rand();
+    if (unlikely(__pyx_v_i == 0)) {
+      PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+      __PYX_ERR(0, 126, __pyx_L1_error)
+    }
+    __pyx_v_r = __Pyx_mod_int(__pyx_t_4, __pyx_v_i);
+
+    /* "monopoly/monopoly.pyx":127
+ *         for i in range(n-1,0,-1):
+ *             r = rand()%i
+ *             move = shuffled[r]             # <<<<<<<<<<<<<<
+ *             shuffled[r] = shuffled[i]
+ *             shuffled[i] = move
+ */
+    if (unlikely(__pyx_v_shuffled == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 127, __pyx_L1_error)
+    }
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_shuffled, __pyx_v_r, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_move, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "monopoly/monopoly.pyx":128
+ *             r = rand()%i
+ *             move = shuffled[r]
+ *             shuffled[r] = shuffled[i]             # <<<<<<<<<<<<<<
+ *             shuffled[i] = move
+ *         return shuffled
+ */
+    if (unlikely(__pyx_v_shuffled == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 128, __pyx_L1_error)
+    }
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_shuffled, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (unlikely(__pyx_v_shuffled == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 128, __pyx_L1_error)
+    }
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_shuffled, __pyx_v_r, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "monopoly/monopoly.pyx":129
+ *             move = shuffled[r]
+ *             shuffled[r] = shuffled[i]
+ *             shuffled[i] = move             # <<<<<<<<<<<<<<
+ *         return shuffled
+ */
+    if (unlikely(__pyx_v_shuffled == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 129, __pyx_L1_error)
+    }
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_shuffled, __pyx_v_i, __pyx_v_move, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 129, __pyx_L1_error)
+  }
+
+  /* "monopoly/monopoly.pyx":130
+ *             shuffled[r] = shuffled[i]
+ *             shuffled[i] = move
+ *         return shuffled             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_shuffled);
+  __pyx_r = __pyx_v_shuffled;
+  goto __pyx_L0;
+
+  /* "monopoly/monopoly.pyx":120
+ *             self.move_to(card)
+ * 
+ *     cdef list shuffle_deck(self, list deck):             # <<<<<<<<<<<<<<
+ *         cdef list shuffled = deck.copy()
+ *         cdef int i,r
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.shuffle_deck", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_shuffled);
+  __Pyx_XDECREF(__pyx_v_move);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "monopoly/monopoly.pyx":23
  *     cdef list community_deck
  *     cdef list chance_deck
- *     cdef public list results             # <<<<<<<<<<<<<<
+ *     cdef readonly int[41] results             # <<<<<<<<<<<<<<
  *     cdef int total_turns
  *     cdef int current_position
  */
@@ -3617,83 +3182,22 @@ static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_7results_1__get__(PyObje
 static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(__pyx_v_self->results);
-  __pyx_r = __pyx_v_self->results;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_2__set__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v_value));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_2__set__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_value) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(PyList_CheckExact(__pyx_v_value))||((__pyx_v_value) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_v_value)->tp_name), 0))) __PYX_ERR(0, 16, __pyx_L1_error)
-  __pyx_t_1 = __pyx_v_value;
-  __Pyx_INCREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v_self->results);
-  __Pyx_DECREF(__pyx_v_self->results);
-  __pyx_v_self->results = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = __Pyx_carray_to_py_int(__pyx_v_self->results, 41); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
+  goto __pyx_L0;
 
   /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.results.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
+  __Pyx_AddTraceback("monopoly.monopoly.Monopoly.results.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static int __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_5__del__(PyObject *__pyx_v_self); /*proto*/
-static int __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_5__del__(PyObject *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_4__del__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_4__del__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__del__", 0);
-  __Pyx_INCREF(Py_None);
-  __Pyx_GIVEREF(Py_None);
-  __Pyx_GOTREF(__pyx_v_self->results);
-  __Pyx_DECREF(__pyx_v_self->results);
-  __pyx_v_self->results = ((PyObject*)Py_None);
-
-  /* function exit code */
-  __pyx_r = 0;
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -3705,19 +3209,19 @@ static int __pyx_pf_8monopoly_8monopoly_8Monopoly_7results_4__del__(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_21__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_21__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
+  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_4__reduce_cython__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -3728,89 +3232,107 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(stru
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  int __pyx_t_11;
+  int __pyx_t_12;
+  int __pyx_t_13;
   __Pyx_RefNannySetupContext("__reduce_cython__", 0);
 
   /* "(tree fragment)":5
  *     cdef object _dict
  *     cdef bint use_setstate
- *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)             # <<<<<<<<<<<<<<
+ *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.double_indices, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)             # <<<<<<<<<<<<<<
  *     _dict = getattr(self, '__dict__', None)
  *     if _dict is not None:
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->current_position); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_set_to_py_int(__pyx_v_self->chance_squares); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->doubles); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_set_to_py_int(__pyx_v_self->community_squares); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->num_spaces); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->current_position); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->total_turns); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_4 = __pyx_convert_set_to_py_int(__pyx_v_self->double_indices); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = PyTuple_New(12); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->doubles); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->num_spaces); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = __Pyx_carray_to_py_int(__pyx_v_self->results, 41); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_8 = __Pyx_carray_to_py_int(__pyx_v_self->roll_values, 36); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_self->total_turns); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
+  __pyx_t_10 = PyTuple_New(13); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
   __Pyx_INCREF(__pyx_v_self->chance_cards);
   __Pyx_GIVEREF(__pyx_v_self->chance_cards);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v_self->chance_cards);
+  PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_v_self->chance_cards);
   __Pyx_INCREF(__pyx_v_self->chance_deck);
   __Pyx_GIVEREF(__pyx_v_self->chance_deck);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_v_self->chance_deck);
-  __Pyx_INCREF(__pyx_v_self->chance_squares);
-  __Pyx_GIVEREF(__pyx_v_self->chance_squares);
-  PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_v_self->chance_squares);
+  PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_v_self->chance_deck);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_10, 2, __pyx_t_1);
   __Pyx_INCREF(__pyx_v_self->community_cards);
   __Pyx_GIVEREF(__pyx_v_self->community_cards);
-  PyTuple_SET_ITEM(__pyx_t_5, 3, __pyx_v_self->community_cards);
+  PyTuple_SET_ITEM(__pyx_t_10, 3, __pyx_v_self->community_cards);
   __Pyx_INCREF(__pyx_v_self->community_deck);
   __Pyx_GIVEREF(__pyx_v_self->community_deck);
-  PyTuple_SET_ITEM(__pyx_t_5, 4, __pyx_v_self->community_deck);
-  __Pyx_INCREF(__pyx_v_self->community_squares);
-  __Pyx_GIVEREF(__pyx_v_self->community_squares);
-  PyTuple_SET_ITEM(__pyx_t_5, 5, __pyx_v_self->community_squares);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_5, 6, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_10, 4, __pyx_v_self->community_deck);
   __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_5, 7, __pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_10, 5, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_5, 8, __pyx_t_3);
-  __Pyx_INCREF(__pyx_v_self->results);
-  __Pyx_GIVEREF(__pyx_v_self->results);
-  PyTuple_SET_ITEM(__pyx_t_5, 9, __pyx_v_self->results);
-  __Pyx_INCREF(__pyx_v_self->roll_values);
-  __Pyx_GIVEREF(__pyx_v_self->roll_values);
-  PyTuple_SET_ITEM(__pyx_t_5, 10, __pyx_v_self->roll_values);
+  PyTuple_SET_ITEM(__pyx_t_10, 6, __pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_5, 11, __pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_10, 7, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_10, 8, __pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_10, 9, __pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_10, 10, __pyx_t_7);
+  __Pyx_GIVEREF(__pyx_t_8);
+  PyTuple_SET_ITEM(__pyx_t_10, 11, __pyx_t_8);
+  __Pyx_GIVEREF(__pyx_t_9);
+  PyTuple_SET_ITEM(__pyx_t_10, 12, __pyx_t_9);
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
-  __pyx_v_state = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
+  __pyx_t_6 = 0;
+  __pyx_t_7 = 0;
+  __pyx_t_8 = 0;
+  __pyx_t_9 = 0;
+  __pyx_v_state = ((PyObject*)__pyx_t_10);
+  __pyx_t_10 = 0;
 
   /* "(tree fragment)":6
  *     cdef bint use_setstate
- *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
+ *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.double_indices, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
  *     _dict = getattr(self, '__dict__', None)             # <<<<<<<<<<<<<<
  *     if _dict is not None:
  *         state += (_dict,)
  */
-  __pyx_t_5 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_dict, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 6, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_v__dict = __pyx_t_5;
-  __pyx_t_5 = 0;
+  __pyx_t_10 = __Pyx_GetAttr3(((PyObject *)__pyx_v_self), __pyx_n_s_dict, Py_None); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 6, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_10);
+  __pyx_v__dict = __pyx_t_10;
+  __pyx_t_10 = 0;
 
   /* "(tree fragment)":7
- *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
+ *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.double_indices, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
  *     _dict = getattr(self, '__dict__', None)
  *     if _dict is not None:             # <<<<<<<<<<<<<<
  *         state += (_dict,)
  *         use_setstate = True
  */
-  __pyx_t_6 = (__pyx_v__dict != Py_None);
-  __pyx_t_7 = (__pyx_t_6 != 0);
-  if (__pyx_t_7) {
+  __pyx_t_11 = (__pyx_v__dict != Py_None);
+  __pyx_t_12 = (__pyx_t_11 != 0);
+  if (__pyx_t_12) {
 
     /* "(tree fragment)":8
  *     _dict = getattr(self, '__dict__', None)
@@ -3819,28 +3341,28 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(stru
  *         use_setstate = True
  *     else:
  */
-    __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 8, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_INCREF(__pyx_v__dict);
     __Pyx_GIVEREF(__pyx_v__dict);
-    PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_v__dict);
-    __pyx_t_4 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 8, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_4));
-    __pyx_t_4 = 0;
+    PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_v__dict);
+    __pyx_t_9 = PyNumber_InPlaceAdd(__pyx_v_state, __pyx_t_10); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 8, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __Pyx_DECREF_SET(__pyx_v_state, ((PyObject*)__pyx_t_9));
+    __pyx_t_9 = 0;
 
     /* "(tree fragment)":9
  *     if _dict is not None:
  *         state += (_dict,)
  *         use_setstate = True             # <<<<<<<<<<<<<<
  *     else:
- *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.chance_squares is not None or self.community_cards is not None or self.community_deck is not None or self.community_squares is not None or self.results is not None or self.roll_values is not None
+ *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.community_cards is not None or self.community_deck is not None
  */
     __pyx_v_use_setstate = 1;
 
     /* "(tree fragment)":7
- *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
+ *     state = (self.chance_cards, self.chance_deck, self.chance_squares, self.community_cards, self.community_deck, self.community_squares, self.current_position, self.double_indices, self.doubles, self.num_spaces, self.results, self.roll_values, self.total_turns)
  *     _dict = getattr(self, '__dict__', None)
  *     if _dict is not None:             # <<<<<<<<<<<<<<
  *         state += (_dict,)
@@ -3852,155 +3374,127 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(stru
   /* "(tree fragment)":11
  *         use_setstate = True
  *     else:
- *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.chance_squares is not None or self.community_cards is not None or self.community_deck is not None or self.community_squares is not None or self.results is not None or self.roll_values is not None             # <<<<<<<<<<<<<<
+ *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.community_cards is not None or self.community_deck is not None             # <<<<<<<<<<<<<<
  *     if use_setstate:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, None), state
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, None), state
  */
   /*else*/ {
-    __pyx_t_6 = (__pyx_v_self->chance_cards != ((PyObject*)Py_None));
-    __pyx_t_8 = (__pyx_t_6 != 0);
-    if (!__pyx_t_8) {
+    __pyx_t_11 = (__pyx_v_self->chance_cards != ((PyObject*)Py_None));
+    __pyx_t_13 = (__pyx_t_11 != 0);
+    if (!__pyx_t_13) {
     } else {
-      __pyx_t_7 = __pyx_t_8;
+      __pyx_t_12 = __pyx_t_13;
       goto __pyx_L4_bool_binop_done;
     }
-    __pyx_t_8 = (__pyx_v_self->chance_deck != ((PyObject*)Py_None));
-    __pyx_t_6 = (__pyx_t_8 != 0);
-    if (!__pyx_t_6) {
+    __pyx_t_13 = (__pyx_v_self->chance_deck != ((PyObject*)Py_None));
+    __pyx_t_11 = (__pyx_t_13 != 0);
+    if (!__pyx_t_11) {
     } else {
-      __pyx_t_7 = __pyx_t_6;
+      __pyx_t_12 = __pyx_t_11;
       goto __pyx_L4_bool_binop_done;
     }
-    __pyx_t_6 = (__pyx_v_self->chance_squares != ((PyObject*)Py_None));
-    __pyx_t_8 = (__pyx_t_6 != 0);
-    if (!__pyx_t_8) {
+    __pyx_t_11 = (__pyx_v_self->community_cards != ((PyObject*)Py_None));
+    __pyx_t_13 = (__pyx_t_11 != 0);
+    if (!__pyx_t_13) {
     } else {
-      __pyx_t_7 = __pyx_t_8;
+      __pyx_t_12 = __pyx_t_13;
       goto __pyx_L4_bool_binop_done;
     }
-    __pyx_t_8 = (__pyx_v_self->community_cards != ((PyObject*)Py_None));
-    __pyx_t_6 = (__pyx_t_8 != 0);
-    if (!__pyx_t_6) {
-    } else {
-      __pyx_t_7 = __pyx_t_6;
-      goto __pyx_L4_bool_binop_done;
-    }
-    __pyx_t_6 = (__pyx_v_self->community_deck != ((PyObject*)Py_None));
-    __pyx_t_8 = (__pyx_t_6 != 0);
-    if (!__pyx_t_8) {
-    } else {
-      __pyx_t_7 = __pyx_t_8;
-      goto __pyx_L4_bool_binop_done;
-    }
-    __pyx_t_8 = (__pyx_v_self->community_squares != ((PyObject*)Py_None));
-    __pyx_t_6 = (__pyx_t_8 != 0);
-    if (!__pyx_t_6) {
-    } else {
-      __pyx_t_7 = __pyx_t_6;
-      goto __pyx_L4_bool_binop_done;
-    }
-    __pyx_t_6 = (__pyx_v_self->results != ((PyObject*)Py_None));
-    __pyx_t_8 = (__pyx_t_6 != 0);
-    if (!__pyx_t_8) {
-    } else {
-      __pyx_t_7 = __pyx_t_8;
-      goto __pyx_L4_bool_binop_done;
-    }
-    __pyx_t_8 = (__pyx_v_self->roll_values != ((PyObject*)Py_None));
-    __pyx_t_6 = (__pyx_t_8 != 0);
-    __pyx_t_7 = __pyx_t_6;
+    __pyx_t_13 = (__pyx_v_self->community_deck != ((PyObject*)Py_None));
+    __pyx_t_11 = (__pyx_t_13 != 0);
+    __pyx_t_12 = __pyx_t_11;
     __pyx_L4_bool_binop_done:;
-    __pyx_v_use_setstate = __pyx_t_7;
+    __pyx_v_use_setstate = __pyx_t_12;
   }
   __pyx_L3:;
 
   /* "(tree fragment)":12
  *     else:
- *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.chance_squares is not None or self.community_cards is not None or self.community_deck is not None or self.community_squares is not None or self.results is not None or self.roll_values is not None
+ *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.community_cards is not None or self.community_deck is not None
  *     if use_setstate:             # <<<<<<<<<<<<<<
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, None), state
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, None), state
  *     else:
  */
-  __pyx_t_7 = (__pyx_v_use_setstate != 0);
-  if (__pyx_t_7) {
+  __pyx_t_12 = (__pyx_v_use_setstate != 0);
+  if (__pyx_t_12) {
 
     /* "(tree fragment)":13
- *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.chance_squares is not None or self.community_cards is not None or self.community_deck is not None or self.community_squares is not None or self.results is not None or self.roll_values is not None
+ *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.community_cards is not None or self.community_deck is not None
  *     if use_setstate:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, None), state             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, None), state             # <<<<<<<<<<<<<<
  *     else:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, state)
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, state)
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_pyx_unpickle_Monopoly); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_pyx_unpickle_Monopoly); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
     __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_INCREF(__pyx_int_9724518);
-    __Pyx_GIVEREF(__pyx_int_9724518);
-    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_int_9724518);
+    PyTuple_SET_ITEM(__pyx_t_10, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_INCREF(__pyx_int_221449969);
+    __Pyx_GIVEREF(__pyx_int_221449969);
+    PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_int_221449969);
     __Pyx_INCREF(Py_None);
     __Pyx_GIVEREF(Py_None);
-    PyTuple_SET_ITEM(__pyx_t_5, 2, Py_None);
-    __pyx_t_3 = PyTuple_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 13, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_10, 2, Py_None);
+    __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 13, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __Pyx_GIVEREF(__pyx_t_9);
+    PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_9);
+    __Pyx_GIVEREF(__pyx_t_10);
+    PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_10);
     __Pyx_INCREF(__pyx_v_state);
     __Pyx_GIVEREF(__pyx_v_state);
-    PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_v_state);
-    __pyx_t_4 = 0;
-    __pyx_t_5 = 0;
-    __pyx_r = __pyx_t_3;
-    __pyx_t_3 = 0;
+    PyTuple_SET_ITEM(__pyx_t_8, 2, __pyx_v_state);
+    __pyx_t_9 = 0;
+    __pyx_t_10 = 0;
+    __pyx_r = __pyx_t_8;
+    __pyx_t_8 = 0;
     goto __pyx_L0;
 
     /* "(tree fragment)":12
  *     else:
- *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.chance_squares is not None or self.community_cards is not None or self.community_deck is not None or self.community_squares is not None or self.results is not None or self.roll_values is not None
+ *         use_setstate = self.chance_cards is not None or self.chance_deck is not None or self.community_cards is not None or self.community_deck is not None
  *     if use_setstate:             # <<<<<<<<<<<<<<
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, None), state
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, None), state
  *     else:
  */
   }
 
   /* "(tree fragment)":15
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, None), state
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, None), state
  *     else:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, state)             # <<<<<<<<<<<<<<
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, state)             # <<<<<<<<<<<<<<
  * def __setstate_cython__(self, __pyx_state):
  *     __pyx_unpickle_Monopoly__set_state(self, __pyx_state)
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pyx_unpickle_Monopoly); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_pyx_unpickle_Monopoly); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_10 = PyTuple_New(3); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
     __Pyx_GIVEREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
-    __Pyx_INCREF(__pyx_int_9724518);
-    __Pyx_GIVEREF(__pyx_int_9724518);
-    PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_int_9724518);
+    PyTuple_SET_ITEM(__pyx_t_10, 0, ((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
+    __Pyx_INCREF(__pyx_int_221449969);
+    __Pyx_GIVEREF(__pyx_int_221449969);
+    PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_int_221449969);
     __Pyx_INCREF(__pyx_v_state);
     __Pyx_GIVEREF(__pyx_v_state);
-    PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_v_state);
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_5);
-    __pyx_t_3 = 0;
-    __pyx_t_5 = 0;
-    __pyx_r = __pyx_t_4;
-    __pyx_t_4 = 0;
+    PyTuple_SET_ITEM(__pyx_t_10, 2, __pyx_v_state);
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 15, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __Pyx_GIVEREF(__pyx_t_8);
+    PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8);
+    __Pyx_GIVEREF(__pyx_t_10);
+    PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_10);
+    __pyx_t_8 = 0;
+    __pyx_t_10 = 0;
+    __pyx_r = __pyx_t_9;
+    __pyx_t_9 = 0;
     goto __pyx_L0;
   }
 
@@ -4017,6 +3511,11 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(stru
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_AddTraceback("monopoly.monopoly.Monopoly.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -4029,32 +3528,32 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_20__reduce_cython__(stru
 
 /* "(tree fragment)":16
  *     else:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, state)
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, state)
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Monopoly__set_state(self, __pyx_state)
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_23__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_23__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_8monopoly_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_22__setstate_cython__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_8monopoly_8monopoly_8Monopoly_6__setstate_cython__(((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_22__setstate_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__setstate_cython__", 0);
 
   /* "(tree fragment)":17
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, state)
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, state)
  * def __setstate_cython__(self, __pyx_state):
  *     __pyx_unpickle_Monopoly__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
@@ -4065,7 +3564,7 @@ static PyObject *__pyx_pf_8monopoly_8monopoly_8Monopoly_22__setstate_cython__(st
 
   /* "(tree fragment)":16
  *     else:
- *         return __pyx_unpickle_Monopoly, (type(self), 0x0946266, state)
+ *         return __pyx_unpickle_Monopoly, (type(self), 0xd330ef1, state)
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     __pyx_unpickle_Monopoly__set_state(self, __pyx_state)
  */
@@ -4178,18 +3677,18 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
   /* "(tree fragment)":4
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0x0946266:             # <<<<<<<<<<<<<<
+ *     if __pyx_checksum != 0xd330ef1:             # <<<<<<<<<<<<<<
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  */
-  __pyx_t_1 = ((__pyx_v___pyx_checksum != 0x0946266) != 0);
+  __pyx_t_1 = ((__pyx_v___pyx_checksum != 0xd330ef1) != 0);
   if (__pyx_t_1) {
 
     /* "(tree fragment)":5
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0x0946266:
+ *     if __pyx_checksum != 0xd330ef1:
  *         from pickle import PickleError as __pyx_PickleError             # <<<<<<<<<<<<<<
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  *     __pyx_result = Monopoly.__new__(__pyx_type)
  */
     __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
@@ -4208,15 +3707,15 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "(tree fragment)":6
- *     if __pyx_checksum != 0x0946266:
+ *     if __pyx_checksum != 0xd330ef1:
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)             # <<<<<<<<<<<<<<
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)             # <<<<<<<<<<<<<<
  *     __pyx_result = Monopoly.__new__(__pyx_type)
  *     if __pyx_state is not None:
  */
     __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_v___pyx_checksum); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 6, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Incompatible_checksums_s_vs_0x09, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 6, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Incompatible_checksums_s_vs_0xd3, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 6, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_v___pyx_PickleError);
@@ -4243,15 +3742,15 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
     /* "(tree fragment)":4
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
- *     if __pyx_checksum != 0x0946266:             # <<<<<<<<<<<<<<
+ *     if __pyx_checksum != 0xd330ef1:             # <<<<<<<<<<<<<<
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  */
   }
 
   /* "(tree fragment)":7
  *         from pickle import PickleError as __pyx_PickleError
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  *     __pyx_result = Monopoly.__new__(__pyx_type)             # <<<<<<<<<<<<<<
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
@@ -4277,7 +3776,7 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
   __pyx_t_3 = 0;
 
   /* "(tree fragment)":8
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  *     __pyx_result = Monopoly.__new__(__pyx_type)
  *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
@@ -4300,7 +3799,7 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "(tree fragment)":8
- *         raise __pyx_PickleError("Incompatible checksums (%s vs 0x0946266 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
+ *         raise __pyx_PickleError("Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))" % __pyx_checksum)
  *     __pyx_result = Monopoly.__new__(__pyx_type)
  *     if __pyx_state is not None:             # <<<<<<<<<<<<<<
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
@@ -4313,7 +3812,7 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
  *     return __pyx_result             # <<<<<<<<<<<<<<
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v___pyx_result);
@@ -4346,30 +3845,33 @@ static PyObject *__pyx_pf_8monopoly_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNU
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
  *     return __pyx_result
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):
  */
 
 static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_8monopoly_8monopoly_Monopoly *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  int __pyx_t_2;
+  std::set<int>  __pyx_t_2;
   int __pyx_t_3;
-  Py_ssize_t __pyx_t_4;
-  int __pyx_t_5;
+  int __pyx_t_4[41];
+  int __pyx_t_5[36];
   int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  PyObject *__pyx_t_10 = NULL;
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
   __Pyx_RefNannySetupContext("__pyx_unpickle_Monopoly__set_state", 0);
 
   /* "(tree fragment)":12
  *     return __pyx_result
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]             # <<<<<<<<<<<<<<
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):
- *         __pyx_result.__dict__.update(__pyx_state[12])
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]             # <<<<<<<<<<<<<<
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[13])
  */
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -4401,12 +3903,9 @@ static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PySet_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "set", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v___pyx_result->chance_squares);
-  __Pyx_DECREF(__pyx_v___pyx_result->chance_squares);
-  __pyx_v___pyx_result->chance_squares = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->chance_squares = __pyx_t_2;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
@@ -4437,135 +3936,135 @@ static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 5, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PySet_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "set", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v___pyx_result->community_squares);
-  __Pyx_DECREF(__pyx_v___pyx_result->community_squares);
-  __pyx_v___pyx_result->community_squares = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->community_squares = __pyx_t_2;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 6, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v___pyx_result->current_position = __pyx_t_2;
+  __pyx_v___pyx_result->current_position = __pyx_t_3;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 7, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_set_from_py_int(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v___pyx_result->doubles = __pyx_t_2;
+  __pyx_v___pyx_result->double_indices = __pyx_t_2;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 8, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v___pyx_result->num_spaces = __pyx_t_2;
+  __pyx_v___pyx_result->doubles = __pyx_t_3;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 9, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v___pyx_result->results);
-  __Pyx_DECREF(__pyx_v___pyx_result->results);
-  __pyx_v___pyx_result->results = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->num_spaces = __pyx_t_3;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 10, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyList_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(1, 12, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_1);
-  __Pyx_GOTREF(__pyx_v___pyx_result->roll_values);
-  __Pyx_DECREF(__pyx_v___pyx_result->roll_values);
-  __pyx_v___pyx_result->roll_values = ((PyObject*)__pyx_t_1);
-  __pyx_t_1 = 0;
+  if (unlikely(__Pyx_carray_from_py_int(__pyx_t_1, __pyx_t_4, 41) < 0)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  memcpy(&(__pyx_v___pyx_result->results[0]), __pyx_t_4, sizeof(__pyx_v___pyx_result->results[0]) * (41));
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     __PYX_ERR(1, 12, __pyx_L1_error)
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 11, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  if (unlikely(__Pyx_carray_from_py_int(__pyx_t_1, __pyx_t_5, 36) < 0)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v___pyx_result->total_turns = __pyx_t_2;
+  memcpy(&(__pyx_v___pyx_result->roll_values[0]), __pyx_t_5, sizeof(__pyx_v___pyx_result->roll_values[0]) * (36));
+  if (unlikely(__pyx_v___pyx_state == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+    __PYX_ERR(1, 12, __pyx_L1_error)
+  }
+  __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 12, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 12, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v___pyx_result->total_turns = __pyx_t_3;
 
   /* "(tree fragment)":13
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
- *         __pyx_result.__dict__.update(__pyx_state[12])
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[13])
  */
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
     __PYX_ERR(1, 13, __pyx_L1_error)
   }
-  __pyx_t_4 = PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
-  __pyx_t_5 = ((__pyx_t_4 > 12) != 0);
-  if (__pyx_t_5) {
+  __pyx_t_7 = PyTuple_GET_SIZE(__pyx_v___pyx_state); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_8 = ((__pyx_t_7 > 13) != 0);
+  if (__pyx_t_8) {
   } else {
-    __pyx_t_3 = __pyx_t_5;
+    __pyx_t_6 = __pyx_t_8;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_5 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
-  __pyx_t_6 = (__pyx_t_5 != 0);
-  __pyx_t_3 = __pyx_t_6;
+  __pyx_t_8 = __Pyx_HasAttr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(1, 13, __pyx_L1_error)
+  __pyx_t_9 = (__pyx_t_8 != 0);
+  __pyx_t_6 = __pyx_t_9;
   __pyx_L4_bool_binop_done:;
-  if (__pyx_t_3) {
+  if (__pyx_t_6) {
 
     /* "(tree fragment)":14
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):
- *         __pyx_result.__dict__.update(__pyx_state[12])             # <<<<<<<<<<<<<<
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):
+ *         __pyx_result.__dict__.update(__pyx_state[13])             # <<<<<<<<<<<<<<
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_update); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_8);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v___pyx_result), __pyx_n_s_dict); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_update); if (unlikely(!__pyx_t_11)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     if (unlikely(__pyx_v___pyx_state == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
       __PYX_ERR(1, 14, __pyx_L1_error)
     }
-    __pyx_t_7 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 12, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 14, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_9 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
-      __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_8);
-      if (likely(__pyx_t_9)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
-        __Pyx_INCREF(__pyx_t_9);
+    __pyx_t_10 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 13, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 14, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_12 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
+      __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_11);
+      if (likely(__pyx_t_12)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+        __Pyx_INCREF(__pyx_t_12);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_8, function);
+        __Pyx_DECREF_SET(__pyx_t_11, function);
       }
     }
-    __pyx_t_1 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_9, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_7);
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_12, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_10);
+    __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "(tree fragment)":13
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
- *         __pyx_result.__dict__.update(__pyx_state[12])
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):             # <<<<<<<<<<<<<<
+ *         __pyx_result.__dict__.update(__pyx_state[13])
  */
   }
 
@@ -4573,8 +4072,8 @@ static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
  *     return __pyx_result
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):             # <<<<<<<<<<<<<<
- *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.doubles = __pyx_state[7]; __pyx_result.num_spaces = __pyx_state[8]; __pyx_result.results = __pyx_state[9]; __pyx_result.roll_values = __pyx_state[10]; __pyx_result.total_turns = __pyx_state[11]
- *     if len(__pyx_state) > 12 and hasattr(__pyx_result, '__dict__'):
+ *     __pyx_result.chance_cards = __pyx_state[0]; __pyx_result.chance_deck = __pyx_state[1]; __pyx_result.chance_squares = __pyx_state[2]; __pyx_result.community_cards = __pyx_state[3]; __pyx_result.community_deck = __pyx_state[4]; __pyx_result.community_squares = __pyx_state[5]; __pyx_result.current_position = __pyx_state[6]; __pyx_result.double_indices = __pyx_state[7]; __pyx_result.doubles = __pyx_state[8]; __pyx_result.num_spaces = __pyx_state[9]; __pyx_result.results = __pyx_state[10]; __pyx_result.roll_values = __pyx_state[11]; __pyx_result.total_turns = __pyx_state[12]
+ *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):
  */
 
   /* function exit code */
@@ -4582,9 +4081,9 @@ static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_AddTraceback("monopoly.monopoly.__pyx_unpickle_Monopoly__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -4592,6 +4091,767 @@ static PyObject *__pyx_f_8monopoly_8monopoly___pyx_unpickle_Monopoly__set_state(
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
+
+/* "set.to_py":129
+ * 
+ * @cname("__pyx_convert_set_to_py_int")
+ * cdef object __pyx_convert_set_to_py_int(const cpp_set[X]& s):             # <<<<<<<<<<<<<<
+ *     o = set()
+ *     cdef cpp_set[X].const_iterator iter = s.begin()
+ */
+
+static PyObject *__pyx_convert_set_to_py_int(std::set<int>  const &__pyx_v_s) {
+  PyObject *__pyx_v_o = NULL;
+  std::set<int> ::const_iterator __pyx_v_iter;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  __Pyx_RefNannySetupContext("__pyx_convert_set_to_py_int", 0);
+
+  /* "set.to_py":130
+ * @cname("__pyx_convert_set_to_py_int")
+ * cdef object __pyx_convert_set_to_py_int(const cpp_set[X]& s):
+ *     o = set()             # <<<<<<<<<<<<<<
+ *     cdef cpp_set[X].const_iterator iter = s.begin()
+ *     while iter != s.end():
+ */
+  __pyx_t_1 = PySet_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_o = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "set.to_py":131
+ * cdef object __pyx_convert_set_to_py_int(const cpp_set[X]& s):
+ *     o = set()
+ *     cdef cpp_set[X].const_iterator iter = s.begin()             # <<<<<<<<<<<<<<
+ *     while iter != s.end():
+ *         o.add(cython.operator.dereference(iter))
+ */
+  __pyx_v_iter = __pyx_v_s.begin();
+
+  /* "set.to_py":132
+ *     o = set()
+ *     cdef cpp_set[X].const_iterator iter = s.begin()
+ *     while iter != s.end():             # <<<<<<<<<<<<<<
+ *         o.add(cython.operator.dereference(iter))
+ *         cython.operator.preincrement(iter)
+ */
+  while (1) {
+    __pyx_t_2 = ((__pyx_v_iter != __pyx_v_s.end()) != 0);
+    if (!__pyx_t_2) break;
+
+    /* "set.to_py":133
+ *     cdef cpp_set[X].const_iterator iter = s.begin()
+ *     while iter != s.end():
+ *         o.add(cython.operator.dereference(iter))             # <<<<<<<<<<<<<<
+ *         cython.operator.preincrement(iter)
+ *     return o
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_int((*__pyx_v_iter)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 133, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PySet_Add(__pyx_v_o, __pyx_t_1); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(1, 133, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "set.to_py":134
+ *     while iter != s.end():
+ *         o.add(cython.operator.dereference(iter))
+ *         cython.operator.preincrement(iter)             # <<<<<<<<<<<<<<
+ *     return o
+ * 
+ */
+    (void)((++__pyx_v_iter));
+  }
+
+  /* "set.to_py":135
+ *         o.add(cython.operator.dereference(iter))
+ *         cython.operator.preincrement(iter)
+ *     return o             # <<<<<<<<<<<<<<
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_o);
+  __pyx_r = __pyx_v_o;
+  goto __pyx_L0;
+
+  /* "set.to_py":129
+ * 
+ * @cname("__pyx_convert_set_to_py_int")
+ * cdef object __pyx_convert_set_to_py_int(const cpp_set[X]& s):             # <<<<<<<<<<<<<<
+ *     o = set()
+ *     cdef cpp_set[X].const_iterator iter = s.begin()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("set.to_py.__pyx_convert_set_to_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_o);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "set.from_py":108
+ * 
+ * @cname("__pyx_convert_set_from_py_int")
+ * cdef set[X] __pyx_convert_set_from_py_int(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef set[X] s
+ *     for item in o:
+ */
+
+static std::set<int>  __pyx_convert_set_from_py_int(PyObject *__pyx_v_o) {
+  std::set<int>  __pyx_v_s;
+  PyObject *__pyx_v_item = NULL;
+  std::set<int>  __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *(*__pyx_t_3)(PyObject *);
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  __Pyx_RefNannySetupContext("__pyx_convert_set_from_py_int", 0);
+
+  /* "set.from_py":110
+ * cdef set[X] __pyx_convert_set_from_py_int(object o) except *:
+ *     cdef set[X] s
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         s.insert(<X>item)
+ *     return s
+ */
+  if (likely(PyList_CheckExact(__pyx_v_o)) || PyTuple_CheckExact(__pyx_v_o)) {
+    __pyx_t_1 = __pyx_v_o; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
+    __pyx_t_3 = NULL;
+  } else {
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_o); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 110, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 110, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_3)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 110, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 110, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(1, 110, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 110, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_3(__pyx_t_1);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(1, 110, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "set.from_py":111
+ *     cdef set[X] s
+ *     for item in o:
+ *         s.insert(<X>item)             # <<<<<<<<<<<<<<
+ *     return s
+ * 
+ */
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_item); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 111, __pyx_L1_error)
+    __pyx_v_s.insert(((int)__pyx_t_5));
+
+    /* "set.from_py":110
+ * cdef set[X] __pyx_convert_set_from_py_int(object o) except *:
+ *     cdef set[X] s
+ *     for item in o:             # <<<<<<<<<<<<<<
+ *         s.insert(<X>item)
+ *     return s
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "set.from_py":112
+ *     for item in o:
+ *         s.insert(<X>item)
+ *     return s             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = __pyx_v_s;
+  goto __pyx_L0;
+
+  /* "set.from_py":108
+ * 
+ * @cname("__pyx_convert_set_from_py_int")
+ * cdef set[X] __pyx_convert_set_from_py_int(object o) except *:             # <<<<<<<<<<<<<<
+ *     cdef set[X] s
+ *     for item in o:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("set.from_py.__pyx_convert_set_from_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_pretend_to_initialize(&__pyx_r);
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "carray.to_py":112
+ * 
+ * @cname("__Pyx_carray_to_py_int")
+ * cdef inline list __Pyx_carray_to_py_int(base_type *v, Py_ssize_t length):             # <<<<<<<<<<<<<<
+ *     cdef size_t i
+ *     cdef object value
+ */
+
+static CYTHON_INLINE PyObject *__Pyx_carray_to_py_int(int *__pyx_v_v, Py_ssize_t __pyx_v_length) {
+  size_t __pyx_v_i;
+  PyObject *__pyx_v_value = 0;
+  PyObject *__pyx_v_l = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  size_t __pyx_t_2;
+  size_t __pyx_t_3;
+  size_t __pyx_t_4;
+  __Pyx_RefNannySetupContext("__Pyx_carray_to_py_int", 0);
+
+  /* "carray.to_py":115
+ *     cdef size_t i
+ *     cdef object value
+ *     l = PyList_New(length)             # <<<<<<<<<<<<<<
+ *     for i in range(<size_t>length):
+ *         value = v[i]
+ */
+  __pyx_t_1 = PyList_New(__pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 115, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_l = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "carray.to_py":116
+ *     cdef object value
+ *     l = PyList_New(length)
+ *     for i in range(<size_t>length):             # <<<<<<<<<<<<<<
+ *         value = v[i]
+ *         Py_INCREF(value)
+ */
+  __pyx_t_2 = ((size_t)__pyx_v_length);
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+
+    /* "carray.to_py":117
+ *     l = PyList_New(length)
+ *     for i in range(<size_t>length):
+ *         value = v[i]             # <<<<<<<<<<<<<<
+ *         Py_INCREF(value)
+ *         PyList_SET_ITEM(l, i, value)
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_v[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 117, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "carray.to_py":118
+ *     for i in range(<size_t>length):
+ *         value = v[i]
+ *         Py_INCREF(value)             # <<<<<<<<<<<<<<
+ *         PyList_SET_ITEM(l, i, value)
+ *     return l
+ */
+    Py_INCREF(__pyx_v_value);
+
+    /* "carray.to_py":119
+ *         value = v[i]
+ *         Py_INCREF(value)
+ *         PyList_SET_ITEM(l, i, value)             # <<<<<<<<<<<<<<
+ *     return l
+ * 
+ */
+    PyList_SET_ITEM(__pyx_v_l, __pyx_v_i, __pyx_v_value);
+  }
+
+  /* "carray.to_py":120
+ *         Py_INCREF(value)
+ *         PyList_SET_ITEM(l, i, value)
+ *     return l             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_l);
+  __pyx_r = __pyx_v_l;
+  goto __pyx_L0;
+
+  /* "carray.to_py":112
+ * 
+ * @cname("__Pyx_carray_to_py_int")
+ * cdef inline list __Pyx_carray_to_py_int(base_type *v, Py_ssize_t length):             # <<<<<<<<<<<<<<
+ *     cdef size_t i
+ *     cdef object value
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("carray.to_py.__Pyx_carray_to_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_value);
+  __Pyx_XDECREF(__pyx_v_l);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "carray.to_py":124
+ * 
+ * @cname("__Pyx_carray_to_tuple_int")
+ * cdef inline tuple __Pyx_carray_to_tuple_int(base_type *v, Py_ssize_t length):             # <<<<<<<<<<<<<<
+ *     cdef size_t i
+ *     cdef object value
+ */
+
+static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_int(int *__pyx_v_v, Py_ssize_t __pyx_v_length) {
+  size_t __pyx_v_i;
+  PyObject *__pyx_v_value = 0;
+  PyObject *__pyx_v_t = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  size_t __pyx_t_2;
+  size_t __pyx_t_3;
+  size_t __pyx_t_4;
+  __Pyx_RefNannySetupContext("__Pyx_carray_to_tuple_int", 0);
+
+  /* "carray.to_py":127
+ *     cdef size_t i
+ *     cdef object value
+ *     t = PyTuple_New(length)             # <<<<<<<<<<<<<<
+ *     for i in range(<size_t>length):
+ *         value = v[i]
+ */
+  __pyx_t_1 = PyTuple_New(__pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_t = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "carray.to_py":128
+ *     cdef object value
+ *     t = PyTuple_New(length)
+ *     for i in range(<size_t>length):             # <<<<<<<<<<<<<<
+ *         value = v[i]
+ *         Py_INCREF(value)
+ */
+  __pyx_t_2 = ((size_t)__pyx_v_length);
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+
+    /* "carray.to_py":129
+ *     t = PyTuple_New(length)
+ *     for i in range(<size_t>length):
+ *         value = v[i]             # <<<<<<<<<<<<<<
+ *         Py_INCREF(value)
+ *         PyTuple_SET_ITEM(t, i, value)
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_v[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "carray.to_py":130
+ *     for i in range(<size_t>length):
+ *         value = v[i]
+ *         Py_INCREF(value)             # <<<<<<<<<<<<<<
+ *         PyTuple_SET_ITEM(t, i, value)
+ *     return t
+ */
+    Py_INCREF(__pyx_v_value);
+
+    /* "carray.to_py":131
+ *         value = v[i]
+ *         Py_INCREF(value)
+ *         PyTuple_SET_ITEM(t, i, value)             # <<<<<<<<<<<<<<
+ *     return t
+ */
+    PyTuple_SET_ITEM(__pyx_v_t, __pyx_v_i, __pyx_v_value);
+  }
+
+  /* "carray.to_py":132
+ *         Py_INCREF(value)
+ *         PyTuple_SET_ITEM(t, i, value)
+ *     return t             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_t);
+  __pyx_r = __pyx_v_t;
+  goto __pyx_L0;
+
+  /* "carray.to_py":124
+ * 
+ * @cname("__Pyx_carray_to_tuple_int")
+ * cdef inline tuple __Pyx_carray_to_tuple_int(base_type *v, Py_ssize_t length):             # <<<<<<<<<<<<<<
+ *     cdef size_t i
+ *     cdef object value
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("carray.to_py.__Pyx_carray_to_tuple_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_value);
+  __Pyx_XDECREF(__pyx_v_t);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "carray.from_py":77
+ * 
+ * @cname("__Pyx_carray_from_py_int")
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:             # <<<<<<<<<<<<<<
+ *     cdef Py_ssize_t i = length
+ *     try:
+ */
+
+static int __Pyx_carray_from_py_int(PyObject *__pyx_v_o, int *__pyx_v_v, Py_ssize_t __pyx_v_length) {
+  Py_ssize_t __pyx_v_i;
+  PyObject *__pyx_v_item = NULL;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  Py_ssize_t __pyx_t_8;
+  PyObject *(*__pyx_t_9)(PyObject *);
+  PyObject *__pyx_t_10 = NULL;
+  char const *__pyx_t_11;
+  __Pyx_RefNannySetupContext("__Pyx_carray_from_py_int", 0);
+
+  /* "carray.from_py":78
+ * @cname("__Pyx_carray_from_py_int")
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:
+ *     cdef Py_ssize_t i = length             # <<<<<<<<<<<<<<
+ *     try:
+ *         i = len(o)
+ */
+  __pyx_v_i = __pyx_v_length;
+
+  /* "carray.from_py":79
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:
+ *     cdef Py_ssize_t i = length
+ *     try:             # <<<<<<<<<<<<<<
+ *         i = len(o)
+ *     except (TypeError, OverflowError):
+ */
+  {
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ExceptionSave(&__pyx_t_1, &__pyx_t_2, &__pyx_t_3);
+    __Pyx_XGOTREF(__pyx_t_1);
+    __Pyx_XGOTREF(__pyx_t_2);
+    __Pyx_XGOTREF(__pyx_t_3);
+    /*try:*/ {
+
+      /* "carray.from_py":80
+ *     cdef Py_ssize_t i = length
+ *     try:
+ *         i = len(o)             # <<<<<<<<<<<<<<
+ *     except (TypeError, OverflowError):
+ *         pass
+ */
+      __pyx_t_4 = PyObject_Length(__pyx_v_o); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(1, 80, __pyx_L3_error)
+      __pyx_v_i = __pyx_t_4;
+
+      /* "carray.from_py":79
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:
+ *     cdef Py_ssize_t i = length
+ *     try:             # <<<<<<<<<<<<<<
+ *         i = len(o)
+ *     except (TypeError, OverflowError):
+ */
+    }
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    goto __pyx_L8_try_end;
+    __pyx_L3_error:;
+
+    /* "carray.from_py":81
+ *     try:
+ *         i = len(o)
+ *     except (TypeError, OverflowError):             # <<<<<<<<<<<<<<
+ *         pass
+ *     if i == length:
+ */
+    __pyx_t_5 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_TypeError) || __Pyx_PyErr_ExceptionMatches(__pyx_builtin_OverflowError);
+    if (__pyx_t_5) {
+      __Pyx_ErrRestore(0,0,0);
+      goto __pyx_L4_exception_handled;
+    }
+    goto __pyx_L5_except_error;
+    __pyx_L5_except_error:;
+
+    /* "carray.from_py":79
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:
+ *     cdef Py_ssize_t i = length
+ *     try:             # <<<<<<<<<<<<<<
+ *         i = len(o)
+ *     except (TypeError, OverflowError):
+ */
+    __Pyx_XGIVEREF(__pyx_t_1);
+    __Pyx_XGIVEREF(__pyx_t_2);
+    __Pyx_XGIVEREF(__pyx_t_3);
+    __Pyx_ExceptionReset(__pyx_t_1, __pyx_t_2, __pyx_t_3);
+    goto __pyx_L1_error;
+    __pyx_L4_exception_handled:;
+    __Pyx_XGIVEREF(__pyx_t_1);
+    __Pyx_XGIVEREF(__pyx_t_2);
+    __Pyx_XGIVEREF(__pyx_t_3);
+    __Pyx_ExceptionReset(__pyx_t_1, __pyx_t_2, __pyx_t_3);
+    __pyx_L8_try_end:;
+  }
+
+  /* "carray.from_py":83
+ *     except (TypeError, OverflowError):
+ *         pass
+ *     if i == length:             # <<<<<<<<<<<<<<
+ *         for i, item in enumerate(o):
+ *             if i >= length:
+ */
+  __pyx_t_6 = ((__pyx_v_i == __pyx_v_length) != 0);
+  if (__pyx_t_6) {
+
+    /* "carray.from_py":84
+ *         pass
+ *     if i == length:
+ *         for i, item in enumerate(o):             # <<<<<<<<<<<<<<
+ *             if i >= length:
+ *                 break
+ */
+    __pyx_t_4 = 0;
+    if (likely(PyList_CheckExact(__pyx_v_o)) || PyTuple_CheckExact(__pyx_v_o)) {
+      __pyx_t_7 = __pyx_v_o; __Pyx_INCREF(__pyx_t_7); __pyx_t_8 = 0;
+      __pyx_t_9 = NULL;
+    } else {
+      __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(__pyx_v_o); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 84, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_9 = Py_TYPE(__pyx_t_7)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 84, __pyx_L1_error)
+    }
+    for (;;) {
+      if (likely(!__pyx_t_9)) {
+        if (likely(PyList_CheckExact(__pyx_t_7))) {
+          if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_7)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_10 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 84, __pyx_L1_error)
+          #else
+          __pyx_t_10 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 84, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_10);
+          #endif
+        } else {
+          if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_7)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_10 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 84, __pyx_L1_error)
+          #else
+          __pyx_t_10 = PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 84, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_10);
+          #endif
+        }
+      } else {
+        __pyx_t_10 = __pyx_t_9(__pyx_t_7);
+        if (unlikely(!__pyx_t_10)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(1, 84, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_10);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_10);
+      __pyx_t_10 = 0;
+      __pyx_v_i = __pyx_t_4;
+      __pyx_t_4 = (__pyx_t_4 + 1);
+
+      /* "carray.from_py":85
+ *     if i == length:
+ *         for i, item in enumerate(o):
+ *             if i >= length:             # <<<<<<<<<<<<<<
+ *                 break
+ *             v[i] = item
+ */
+      __pyx_t_6 = ((__pyx_v_i >= __pyx_v_length) != 0);
+      if (__pyx_t_6) {
+
+        /* "carray.from_py":86
+ *         for i, item in enumerate(o):
+ *             if i >= length:
+ *                 break             # <<<<<<<<<<<<<<
+ *             v[i] = item
+ *         else:
+ */
+        goto __pyx_L11_break;
+
+        /* "carray.from_py":85
+ *     if i == length:
+ *         for i, item in enumerate(o):
+ *             if i >= length:             # <<<<<<<<<<<<<<
+ *                 break
+ *             v[i] = item
+ */
+      }
+
+      /* "carray.from_py":87
+ *             if i >= length:
+ *                 break
+ *             v[i] = item             # <<<<<<<<<<<<<<
+ *         else:
+ *             i += 1  # convert index to length
+ */
+      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_item); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(1, 87, __pyx_L1_error)
+      (__pyx_v_v[__pyx_v_i]) = __pyx_t_5;
+
+      /* "carray.from_py":84
+ *         pass
+ *     if i == length:
+ *         for i, item in enumerate(o):             # <<<<<<<<<<<<<<
+ *             if i >= length:
+ *                 break
+ */
+    }
+    /*else*/ {
+
+      /* "carray.from_py":89
+ *             v[i] = item
+ *         else:
+ *             i += 1  # convert index to length             # <<<<<<<<<<<<<<
+ *             if i == length:
+ *                 return 0
+ */
+      __pyx_v_i = (__pyx_v_i + 1);
+
+      /* "carray.from_py":90
+ *         else:
+ *             i += 1  # convert index to length
+ *             if i == length:             # <<<<<<<<<<<<<<
+ *                 return 0
+ * 
+ */
+      __pyx_t_6 = ((__pyx_v_i == __pyx_v_length) != 0);
+      if (__pyx_t_6) {
+
+        /* "carray.from_py":91
+ *             i += 1  # convert index to length
+ *             if i == length:
+ *                 return 0             # <<<<<<<<<<<<<<
+ * 
+ *     PyErr_Format(
+ */
+        __pyx_r = 0;
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        goto __pyx_L0;
+
+        /* "carray.from_py":90
+ *         else:
+ *             i += 1  # convert index to length
+ *             if i == length:             # <<<<<<<<<<<<<<
+ *                 return 0
+ * 
+ */
+      }
+    }
+
+    /* "carray.from_py":84
+ *         pass
+ *     if i == length:
+ *         for i, item in enumerate(o):             # <<<<<<<<<<<<<<
+ *             if i >= length:
+ *                 break
+ */
+    __pyx_L11_break:;
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "carray.from_py":83
+ *     except (TypeError, OverflowError):
+ *         pass
+ *     if i == length:             # <<<<<<<<<<<<<<
+ *         for i, item in enumerate(o):
+ *             if i >= length:
+ */
+  }
+
+  /* "carray.from_py":96
+ *         IndexError,
+ *         ("too many values found during array assignment, expected %zd"
+ *          if i >= length else             # <<<<<<<<<<<<<<
+ *          "not enough values found during array assignment, expected %zd, got %zd"),
+ *         length, i)
+ */
+  if (((__pyx_v_i >= __pyx_v_length) != 0)) {
+    __pyx_t_11 = ((char const *)"too many values found during array assignment, expected %zd");
+  } else {
+    __pyx_t_11 = ((char const *)"not enough values found during array assignment, expected %zd, got %zd");
+  }
+
+  /* "carray.from_py":93
+ *                 return 0
+ * 
+ *     PyErr_Format(             # <<<<<<<<<<<<<<
+ *         IndexError,
+ *         ("too many values found during array assignment, expected %zd"
+ */
+  __pyx_t_7 = PyErr_Format(__pyx_builtin_IndexError, __pyx_t_11, __pyx_v_length, __pyx_v_i); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 93, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+  /* "carray.from_py":77
+ * 
+ * @cname("__Pyx_carray_from_py_int")
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:             # <<<<<<<<<<<<<<
+ *     cdef Py_ssize_t i = length
+ *     try:
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_AddTraceback("carray.from_py.__Pyx_carray_from_py_int", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+static struct __pyx_vtabstruct_8monopoly_8monopoly_Monopoly __pyx_vtable_8monopoly_8monopoly_Monopoly;
 
 static PyObject *__pyx_tp_new_8monopoly_8monopoly_Monopoly(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
   struct __pyx_obj_8monopoly_8monopoly_Monopoly *p;
@@ -4603,14 +4863,14 @@ static PyObject *__pyx_tp_new_8monopoly_8monopoly_Monopoly(PyTypeObject *t, CYTH
   }
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_8monopoly_8monopoly_Monopoly *)o);
-  p->community_squares = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->chance_squares = ((PyObject*)Py_None); Py_INCREF(Py_None);
+  p->__pyx_vtab = __pyx_vtabptr_8monopoly_8monopoly_Monopoly;
+  new((void*)&(p->community_squares)) std::set<int> ();
+  new((void*)&(p->chance_squares)) std::set<int> ();
+  new((void*)&(p->double_indices)) std::set<int> ();
   p->community_cards = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->chance_cards = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->roll_values = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->community_deck = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->chance_deck = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  p->results = ((PyObject*)Py_None); Py_INCREF(Py_None);
   return o;
 }
 
@@ -4622,34 +4882,24 @@ static void __pyx_tp_dealloc_8monopoly_8monopoly_Monopoly(PyObject *o) {
   }
   #endif
   PyObject_GC_UnTrack(o);
-  Py_CLEAR(p->community_squares);
-  Py_CLEAR(p->chance_squares);
+  __Pyx_call_destructor(p->community_squares);
+  __Pyx_call_destructor(p->chance_squares);
+  __Pyx_call_destructor(p->double_indices);
   Py_CLEAR(p->community_cards);
   Py_CLEAR(p->chance_cards);
-  Py_CLEAR(p->roll_values);
   Py_CLEAR(p->community_deck);
   Py_CLEAR(p->chance_deck);
-  Py_CLEAR(p->results);
   (*Py_TYPE(o)->tp_free)(o);
 }
 
 static int __pyx_tp_traverse_8monopoly_8monopoly_Monopoly(PyObject *o, visitproc v, void *a) {
   int e;
   struct __pyx_obj_8monopoly_8monopoly_Monopoly *p = (struct __pyx_obj_8monopoly_8monopoly_Monopoly *)o;
-  if (p->community_squares) {
-    e = (*v)(p->community_squares, a); if (e) return e;
-  }
-  if (p->chance_squares) {
-    e = (*v)(p->chance_squares, a); if (e) return e;
-  }
   if (p->community_cards) {
     e = (*v)(p->community_cards, a); if (e) return e;
   }
   if (p->chance_cards) {
     e = (*v)(p->chance_cards, a); if (e) return e;
-  }
-  if (p->roll_values) {
-    e = (*v)(p->roll_values, a); if (e) return e;
   }
   if (p->community_deck) {
     e = (*v)(p->community_deck, a); if (e) return e;
@@ -4657,38 +4907,23 @@ static int __pyx_tp_traverse_8monopoly_8monopoly_Monopoly(PyObject *o, visitproc
   if (p->chance_deck) {
     e = (*v)(p->chance_deck, a); if (e) return e;
   }
-  if (p->results) {
-    e = (*v)(p->results, a); if (e) return e;
-  }
   return 0;
 }
 
 static int __pyx_tp_clear_8monopoly_8monopoly_Monopoly(PyObject *o) {
   PyObject* tmp;
   struct __pyx_obj_8monopoly_8monopoly_Monopoly *p = (struct __pyx_obj_8monopoly_8monopoly_Monopoly *)o;
-  tmp = ((PyObject*)p->community_squares);
-  p->community_squares = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
-  tmp = ((PyObject*)p->chance_squares);
-  p->chance_squares = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
   tmp = ((PyObject*)p->community_cards);
   p->community_cards = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->chance_cards);
   p->chance_cards = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
-  tmp = ((PyObject*)p->roll_values);
-  p->roll_values = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
   tmp = ((PyObject*)p->community_deck);
   p->community_deck = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   tmp = ((PyObject*)p->chance_deck);
   p->chance_deck = ((PyObject*)Py_None); Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
-  tmp = ((PyObject*)p->results);
-  p->results = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
   return 0;
 }
@@ -4697,32 +4932,15 @@ static PyObject *__pyx_getprop_8monopoly_8monopoly_8Monopoly_results(PyObject *o
   return __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_1__get__(o);
 }
 
-static int __pyx_setprop_8monopoly_8monopoly_8Monopoly_results(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
-  if (v) {
-    return __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_3__set__(o, v);
-  }
-  else {
-    return __pyx_pw_8monopoly_8monopoly_8Monopoly_7results_5__del__(o);
-  }
-}
-
 static PyMethodDef __pyx_methods_8monopoly_8monopoly_Monopoly[] = {
   {"take_turns", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_3take_turns, METH_O, 0},
-  {"roll_dice", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_5roll_dice, METH_NOARGS, 0},
-  {"move_spaces", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_7move_spaces, METH_O, 0},
-  {"move_to", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_9move_to, METH_O, 0},
-  {"end_turn", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_11end_turn, METH_NOARGS, 0},
-  {"move_to_utility", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_13move_to_utility, METH_NOARGS, 0},
-  {"move_to_railroad", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_15move_to_railroad, METH_NOARGS, 0},
-  {"draw_community_chest", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_17draw_community_chest, METH_NOARGS, 0},
-  {"draw_chance", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_19draw_chance, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_21__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_23__setstate_cython__, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_8monopoly_8monopoly_8Monopoly_7__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
 static struct PyGetSetDef __pyx_getsets_8monopoly_8monopoly_Monopoly[] = {
-  {(char *)"results", __pyx_getprop_8monopoly_8monopoly_8Monopoly_results, __pyx_setprop_8monopoly_8monopoly_8Monopoly_results, (char *)0, 0},
+  {(char *)"results", __pyx_getprop_8monopoly_8monopoly_8Monopoly_results, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
@@ -4842,24 +5060,22 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_u_B, __pyx_k_B, sizeof(__pyx_k_B), 0, 1, 0, 1},
-  {&__pyx_kp_s_Incompatible_checksums_s_vs_0x09, __pyx_k_Incompatible_checksums_s_vs_0x09, sizeof(__pyx_k_Incompatible_checksums_s_vs_0x09), 0, 0, 1, 0},
+  {&__pyx_kp_s_Incompatible_checksums_s_vs_0xd3, __pyx_k_Incompatible_checksums_s_vs_0xd3, sizeof(__pyx_k_Incompatible_checksums_s_vs_0xd3), 0, 0, 1, 0},
+  {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_n_s_Monopoly, __pyx_k_Monopoly, sizeof(__pyx_k_Monopoly), 0, 0, 1, 1},
+  {&__pyx_n_s_OverflowError, __pyx_k_OverflowError, sizeof(__pyx_k_OverflowError), 0, 0, 1, 1},
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_u_R, __pyx_k_R, sizeof(__pyx_k_R), 0, 1, 0, 1},
+  {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_u_U, __pyx_k_U, sizeof(__pyx_k_U), 0, 1, 0, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
-  {&__pyx_n_s_draw_chance, __pyx_k_draw_chance, sizeof(__pyx_k_draw_chance), 0, 0, 1, 1},
-  {&__pyx_n_s_draw_community_chest, __pyx_k_draw_community_chest, sizeof(__pyx_k_draw_community_chest), 0, 0, 1, 1},
-  {&__pyx_n_s_end_turn, __pyx_k_end_turn, sizeof(__pyx_k_end_turn), 0, 0, 1, 1},
+  {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_monopoly_monopoly, __pyx_k_monopoly_monopoly, sizeof(__pyx_k_monopoly_monopoly), 0, 0, 1, 1},
-  {&__pyx_n_s_move_spaces, __pyx_k_move_spaces, sizeof(__pyx_k_move_spaces), 0, 0, 1, 1},
-  {&__pyx_n_s_move_to, __pyx_k_move_to, sizeof(__pyx_k_move_to), 0, 0, 1, 1},
-  {&__pyx_n_s_move_to_railroad, __pyx_k_move_to_railroad, sizeof(__pyx_k_move_to_railroad), 0, 0, 1, 1},
-  {&__pyx_n_s_move_to_utility, __pyx_k_move_to_utility, sizeof(__pyx_k_move_to_utility), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
@@ -4870,22 +5086,25 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pyx_state, __pyx_k_pyx_state, sizeof(__pyx_k_pyx_state), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_type, __pyx_k_pyx_type, sizeof(__pyx_k_pyx_type), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_unpickle_Monopoly, __pyx_k_pyx_unpickle_Monopoly, sizeof(__pyx_k_pyx_unpickle_Monopoly), 0, 0, 1, 1},
-  {&__pyx_n_s_random, __pyx_k_random, sizeof(__pyx_k_random), 0, 0, 1, 1},
+  {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
-  {&__pyx_n_s_roll_dice, __pyx_k_roll_dice, sizeof(__pyx_k_roll_dice), 0, 0, 1, 1},
-  {&__pyx_n_s_sample, __pyx_k_sample, sizeof(__pyx_k_sample), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
+  {&__pyx_n_s_take_turns, __pyx_k_take_turns, sizeof(__pyx_k_take_turns), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 81, __pyx_L1_error)
+  __pyx_builtin_OverflowError = __Pyx_GetBuiltinName(__pyx_n_s_OverflowError); if (!__pyx_builtin_OverflowError) __PYX_ERR(1, 81, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 84, __pyx_L1_error)
+  __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(1, 94, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4912,21 +5131,15 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
+  __pyx_umethod_PyList_Type_copy.type = (PyObject*)&PyList_Type;
   __pyx_umethod_PyList_Type_pop.type = (PyObject*)&PyList_Type;
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_3 = PyInt_FromLong(3); if (unlikely(!__pyx_int_3)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_4 = PyInt_FromLong(4); if (unlikely(!__pyx_int_4)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_5 = PyInt_FromLong(5); if (unlikely(!__pyx_int_5)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_6 = PyInt_FromLong(6); if (unlikely(!__pyx_int_6)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_7 = PyInt_FromLong(7); if (unlikely(!__pyx_int_7)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_8 = PyInt_FromLong(8); if (unlikely(!__pyx_int_8)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_9 = PyInt_FromLong(9); if (unlikely(!__pyx_int_9)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_10 = PyInt_FromLong(10); if (unlikely(!__pyx_int_10)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_11 = PyInt_FromLong(11); if (unlikely(!__pyx_int_11)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_12 = PyInt_FromLong(12); if (unlikely(!__pyx_int_12)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_14 = PyInt_FromLong(14); if (unlikely(!__pyx_int_14)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_17 = PyInt_FromLong(17); if (unlikely(!__pyx_int_17)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_21 = PyInt_FromLong(21); if (unlikely(!__pyx_int_21)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4937,9 +5150,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_int_35 = PyInt_FromLong(35); if (unlikely(!__pyx_int_35)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_36 = PyInt_FromLong(36); if (unlikely(!__pyx_int_36)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_39 = PyInt_FromLong(39); if (unlikely(!__pyx_int_39)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_9724518 = PyInt_FromLong(9724518L); if (unlikely(!__pyx_int_9724518)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_neg_3 = PyInt_FromLong(-3); if (unlikely(!__pyx_int_neg_3)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_221449969 = PyInt_FromLong(221449969L); if (unlikely(!__pyx_int_221449969)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -4981,15 +5192,27 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_vtabptr_8monopoly_8monopoly_Monopoly = &__pyx_vtable_8monopoly_8monopoly_Monopoly;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.take_turns = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int, int __pyx_skip_dispatch))__pyx_f_8monopoly_8monopoly_8Monopoly_take_turns;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.roll_dice = (int (*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_roll_dice;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.move_spaces = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int))__pyx_f_8monopoly_8monopoly_8Monopoly_move_spaces;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.move_to = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, int))__pyx_f_8monopoly_8monopoly_8Monopoly_move_to;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.end_turn = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_end_turn;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.move_to_utility = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_utility;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.move_to_railroad = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_move_to_railroad;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.draw_community_chest = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_draw_community_chest;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.draw_chance = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *))__pyx_f_8monopoly_8monopoly_8Monopoly_draw_chance;
+  __pyx_vtable_8monopoly_8monopoly_Monopoly.shuffle_deck = (PyObject *(*)(struct __pyx_obj_8monopoly_8monopoly_Monopoly *, PyObject *))__pyx_f_8monopoly_8monopoly_8Monopoly_shuffle_deck;
+  if (PyType_Ready(&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8monopoly_8monopoly_Monopoly.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_8monopoly_8monopoly_Monopoly.tp_dictoffset && __pyx_type_8monopoly_8monopoly_Monopoly.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_8monopoly_8monopoly_Monopoly.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Monopoly, (PyObject *)&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_8monopoly_8monopoly_Monopoly.tp_dict, __pyx_vtabptr_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Monopoly, (PyObject *)&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8monopoly_8monopoly_Monopoly) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __pyx_ptype_8monopoly_8monopoly_Monopoly = &__pyx_type_8monopoly_8monopoly_Monopoly;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -5219,18 +5442,6 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "monopoly/monopoly.pyx":4
- * 
- * 
- * import random             # <<<<<<<<<<<<<<
- * 
- * cdef class Monopoly():
- */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_random, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_random, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
   /* "(tree fragment)":1
  * def __pyx_unpickle_Monopoly(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     cdef object __pyx_PickleError
@@ -5243,13 +5454,21 @@ if (!__Pyx_RefNanny) {
 
   /* "monopoly/monopoly.pyx":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
- * 
+ * # distutils: language = c++
  * 
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "carray.from_py":77
+ * 
+ * @cname("__Pyx_carray_from_py_int")
+ * cdef int __Pyx_carray_from_py_int(object o, base_type *v, Py_ssize_t length) except -1:             # <<<<<<<<<<<<<<
+ *     cdef Py_ssize_t i = length
+ *     try:
+ */
 
   /*--- Wrapped vars code ---*/
 
@@ -5386,6 +5605,55 @@ invalid_keyword:
     #endif
     return 0;
 }
+
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
+
+/* PyCFunctionFastCall */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
+}
+#endif
 
 /* PyFunctionFastCall */
 #if CYTHON_FAST_PYCALL
@@ -5526,6 +5794,35 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 }
 #endif
 
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
+}
+
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
@@ -5543,51 +5840,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
             "NULL result without error in PyObject_Call");
     }
     return result;
-}
-#endif
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
-
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
 }
 #endif
 
@@ -5630,566 +5882,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
     return result;
 }
 #endif
-
-/* RaiseTooManyValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
-}
-
-/* IterFinish */
-static CYTHON_INLINE int __Pyx_IterFinish(void) {
-#if CYTHON_FAST_THREAD_STATE
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject* exc_type = tstate->curexc_type;
-    if (unlikely(exc_type)) {
-        if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) {
-            PyObject *exc_value, *exc_tb;
-            exc_value = tstate->curexc_value;
-            exc_tb = tstate->curexc_traceback;
-            tstate->curexc_type = 0;
-            tstate->curexc_value = 0;
-            tstate->curexc_traceback = 0;
-            Py_DECREF(exc_type);
-            Py_XDECREF(exc_value);
-            Py_XDECREF(exc_tb);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#else
-    if (unlikely(PyErr_Occurred())) {
-        if (likely(PyErr_ExceptionMatches(PyExc_StopIteration))) {
-            PyErr_Clear();
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#endif
-}
-
-/* UnpackItemEndCheck */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
-    if (unlikely(retval)) {
-        Py_DECREF(retval);
-        __Pyx_RaiseTooManyValuesError(expected);
-        return -1;
-    } else {
-        return __Pyx_IterFinish();
-    }
-    return 0;
-}
-
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
-}
-
-/* pyfrozenset_new */
-static CYTHON_INLINE PyObject* __Pyx_PyFrozenSet_New(PyObject* it) {
-    if (it) {
-        PyObject* result;
-#if CYTHON_COMPILING_IN_PYPY
-        PyObject* args;
-        args = PyTuple_Pack(1, it);
-        if (unlikely(!args))
-            return NULL;
-        result = PyObject_Call((PyObject*)&PyFrozenSet_Type, args, NULL);
-        Py_DECREF(args);
-        return result;
-#else
-        if (PyFrozenSet_CheckExact(it)) {
-            Py_INCREF(it);
-            return it;
-        }
-        result = PyFrozenSet_New(it);
-        if (unlikely(!result))
-            return NULL;
-        if (likely(PySet_GET_SIZE(result)))
-            return result;
-        Py_DECREF(result);
-#endif
-    }
-#if CYTHON_USE_TYPE_SLOTS
-    return PyFrozenSet_Type.tp_new(&PyFrozenSet_Type, __pyx_empty_tuple, NULL);
-#else
-    return PyObject_Call((PyObject*)&PyFrozenSet_Type, __pyx_empty_tuple, NULL);
-#endif
-}
-
-/* PySetContains */
-static int __Pyx_PySet_ContainsUnhashable(PyObject *set, PyObject *key) {
-    int result = -1;
-    if (PySet_Check(key) && PyErr_ExceptionMatches(PyExc_TypeError)) {
-        PyObject *tmpkey;
-        PyErr_Clear();
-        tmpkey = __Pyx_PyFrozenSet_New(key);
-        if (tmpkey != NULL) {
-            result = PySet_Contains(set, tmpkey);
-            Py_DECREF(tmpkey);
-        }
-    }
-    return result;
-}
-static CYTHON_INLINE int __Pyx_PySet_ContainsTF(PyObject* key, PyObject* set, int eq) {
-    int result = PySet_Contains(set, key);
-    if (unlikely(result < 0)) {
-        result = __Pyx_PySet_ContainsUnhashable(set, key);
-    }
-    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
-}
-
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
-}
-#endif
-
-/* GetModuleGlobalName */
-#if CYTHON_USE_DICT_VERSIONS
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
-#else
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
-#endif
-{
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
-    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    } else if (unlikely(PyErr_Occurred())) {
-        return NULL;
-    }
-#else
-    result = PyDict_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-#endif
-#else
-    result = PyObject_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-    PyErr_Clear();
-#endif
-    return __Pyx_GetBuiltinName(name);
-}
-
-/* GetItemInt */
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
-}
-#endif
-
-/* PyIntCompare */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_EqObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED long inplace) {
-    if (op1 == op2) {
-        Py_RETURN_TRUE;
-    }
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long a = PyInt_AS_LONG(op1);
-        if (a == b) Py_RETURN_TRUE; else Py_RETURN_FALSE;
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        int unequal;
-        unsigned long uintval;
-        Py_ssize_t size = Py_SIZE(op1);
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        if (intval == 0) {
-            if (size == 0) Py_RETURN_TRUE; else Py_RETURN_FALSE;
-        } else if (intval < 0) {
-            if (size >= 0)
-                Py_RETURN_FALSE;
-            intval = -intval;
-            size = -size;
-        } else {
-            if (size <= 0)
-                Py_RETURN_FALSE;
-        }
-        uintval = (unsigned long) intval;
-#if PyLong_SHIFT * 4 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 4)) {
-            unequal = (size != 5) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[4] != ((uintval >> (4 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 3 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 3)) {
-            unequal = (size != 4) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[3] != ((uintval >> (3 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 2 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 2)) {
-            unequal = (size != 3) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK)) | (digits[2] != ((uintval >> (2 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-#if PyLong_SHIFT * 1 < SIZEOF_LONG*8
-        if (uintval >> (PyLong_SHIFT * 1)) {
-            unequal = (size != 2) || (digits[0] != (uintval & (unsigned long) PyLong_MASK))
-                 | (digits[1] != ((uintval >> (1 * PyLong_SHIFT)) & (unsigned long) PyLong_MASK));
-        } else
-#endif
-            unequal = (size != 1) || (((unsigned long) digits[0]) != (uintval & (unsigned long) PyLong_MASK));
-        if (unequal == 0) Py_RETURN_TRUE; else Py_RETURN_FALSE;
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-        if ((double)a == (double)b) Py_RETURN_TRUE; else Py_RETURN_FALSE;
-    }
-    return (
-        PyObject_RichCompare(op1, op2, Py_EQ));
-}
-
-/* PyIntBinop */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
-    (void)inplace;
-    (void)zerodivision_check;
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            x = (long)((unsigned long)a + b);
-            if (likely((x^a) >= 0 || (x^b) >= 0))
-                return PyInt_FromLong(x);
-            return PyLong_Type.tp_as_number->nb_add(op1, op2);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-#ifdef HAVE_LONG_LONG
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-#endif
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-#ifdef HAVE_LONG_LONG
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-#endif
-                    }
-                    CYTHON_FALLTHROUGH;
-                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
-            }
-        }
-                x = a + b;
-            return PyLong_FromLong(x);
-#ifdef HAVE_LONG_LONG
-        long_long:
-                llx = lla + llb;
-            return PyLong_FromLongLong(llx);
-#endif
-        
-        
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            PyFPE_START_PROTECT("add", return NULL)
-            result = ((double)a) + (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
-
-/* SetItemInt */
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
-    int r;
-    if (!j) return -1;
-    r = PyObject_SetItem(o, j, v);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v, int is_list,
-                                               CYTHON_NCP_UNUSED int wraparound, CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = (!wraparound) ? i : ((likely(i >= 0)) ? i : i + PyList_GET_SIZE(o));
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o)))) {
-            PyObject* old = PyList_GET_ITEM(o, n);
-            Py_INCREF(v);
-            PyList_SET_ITEM(o, n, v);
-            Py_DECREF(old);
-            return 1;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_ass_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return -1;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_ass_item(o, i, v);
-        }
-    }
-#else
-#if CYTHON_COMPILING_IN_PYPY
-    if (is_list || (PySequence_Check(o) && !PyDict_Check(o)))
-#else
-    if (is_list || PySequence_Check(o))
-#endif
-    {
-        return PySequence_SetItem(o, i, v);
-    }
-#endif
-    return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
-}
 
 /* None */
 static CYTHON_INLINE long __Pyx_mod_long(long a, long b) {
@@ -6386,6 +6078,28 @@ static PyObject* __Pyx_PyInt_SubtractCObj(PyObject *op1, PyObject *op2, CYTHON_U
             return PyFloat_FromDouble(result);
     }
     return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
+}
+#endif
+
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
 }
 #endif
 
@@ -6706,6 +6420,149 @@ return_ne:
 #endif
 }
 
+/* None */
+static CYTHON_INLINE int __Pyx_mod_int(int a, int b) {
+    int r = a % b;
+    r += ((r != 0) & ((r ^ b) < 0)) * b;
+    return r;
+}
+
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* SetItemInt */
+static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
+    int r;
+    if (!j) return -1;
+    r = PyObject_SetItem(o, j, v);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v, int is_list,
+                                               CYTHON_NCP_UNUSED int wraparound, CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = (!wraparound) ? i : ((likely(i >= 0)) ? i : i + PyList_GET_SIZE(o));
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o)))) {
+            PyObject* old = PyList_GET_ITEM(o, n);
+            Py_INCREF(v);
+            PyList_SET_ITEM(o, n, v);
+            Py_DECREF(old);
+            return 1;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_ass_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return -1;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_ass_item(o, i, v);
+        }
+    }
+#else
+#if CYTHON_COMPILING_IN_PYPY
+    if (is_list || (PySequence_Check(o) && !PyDict_Check(o)))
+#else
+    if (is_list || PySequence_Check(o))
+#endif
+    {
+        return PySequence_SetItem(o, i, v);
+    }
+#endif
+    return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
+}
+
 /* PyErrExceptionMatches */
 #if CYTHON_FAST_THREAD_STATE
 static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
@@ -6781,6 +6638,41 @@ static PyObject *__Pyx_GetAttr3Default(PyObject *d) {
 static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *o, PyObject *n, PyObject *d) {
     PyObject *r = __Pyx_GetAttr(o, n);
     return (likely(r)) ? r : __Pyx_GetAttr3Default(d);
+}
+
+/* GetModuleGlobalName */
+#if CYTHON_USE_DICT_VERSIONS
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+#else
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+#endif
+{
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    } else if (unlikely(PyErr_Occurred())) {
+        return NULL;
+    }
+#else
+    result = PyDict_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+#endif
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+    PyErr_Clear();
+#endif
+    return __Pyx_GetBuiltinName(name);
 }
 
 /* RaiseDoubleKeywords */
@@ -7155,6 +7047,62 @@ static CYTHON_INLINE int __Pyx_HasAttr(PyObject *o, PyObject *n) {
     }
 }
 
+/* GetTopmostException */
+#if CYTHON_USE_EXC_INFO_STACK
+static _PyErr_StackItem *
+__Pyx_PyErr_GetTopmostException(PyThreadState *tstate)
+{
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    while ((exc_info->exc_type == NULL || exc_info->exc_type == Py_None) &&
+           exc_info->previous_item != NULL)
+    {
+        exc_info = exc_info->previous_item;
+    }
+    return exc_info;
+}
+#endif
+
+/* SaveResetException */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    #if CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = __Pyx_PyErr_GetTopmostException(tstate);
+    *type = exc_info->exc_type;
+    *value = exc_info->exc_value;
+    *tb = exc_info->exc_traceback;
+    #else
+    *type = tstate->exc_type;
+    *value = tstate->exc_value;
+    *tb = tstate->exc_traceback;
+    #endif
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+}
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    #if CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_type = exc_info->exc_type;
+    tmp_value = exc_info->exc_value;
+    tmp_tb = exc_info->exc_traceback;
+    exc_info->exc_type = type;
+    exc_info->exc_value = value;
+    exc_info->exc_traceback = tb;
+    #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = type;
+    tstate->exc_value = value;
+    tstate->exc_traceback = tb;
+    #endif
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+#endif
+
 /* PyObject_GenericGetAttrNoDict */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static PyObject *__Pyx_RaiseGenericGetAttributeError(PyTypeObject *tp, PyObject *attr_name) {
@@ -7204,6 +7152,24 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
     return __Pyx_PyObject_GenericGetAttrNoDict(obj, attr_name);
 }
 #endif
+
+/* SetVTable */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
+#if PY_VERSION_HEX >= 0x02070000
+    PyObject *ob = PyCapsule_New(vtable, 0, 0);
+#else
+    PyObject *ob = PyCObject_FromVoidPtr(vtable, 0);
+#endif
+    if (!ob)
+        goto bad;
+    if (PyDict_SetItem(dict, __pyx_n_s_pyx_vtable, ob) < 0)
+        goto bad;
+    Py_DECREF(ob);
+    return 0;
+bad:
+    Py_XDECREF(ob);
+    return -1;
+}
 
 /* SetupReduce */
 static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
@@ -7948,6 +7914,195 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to long");
     return (long) -1;
+}
+
+/* CIntFromPy */
+static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
+    const size_t neg_one = (size_t) ((size_t) 0 - (size_t) 1), const_zero = (size_t) 0;
+    const int is_unsigned = neg_one > const_zero;
+#if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_Check(x))) {
+        if (sizeof(size_t) < sizeof(long)) {
+            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
+        } else {
+            long val = PyInt_AS_LONG(x);
+            if (is_unsigned && unlikely(val < 0)) {
+                goto raise_neg_overflow;
+            }
+            return (size_t) val;
+        }
+    } else
+#endif
+    if (likely(PyLong_Check(x))) {
+        if (is_unsigned) {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
+                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
+                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
+                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
+                        }
+                    }
+                    break;
+            }
+#endif
+#if CYTHON_COMPILING_IN_CPYTHON
+            if (unlikely(Py_SIZE(x) < 0)) {
+                goto raise_neg_overflow;
+            }
+#else
+            {
+                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
+                if (unlikely(result < 0))
+                    return (size_t) -1;
+                if (unlikely(result == 1))
+                    goto raise_neg_overflow;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(unsigned long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
+#endif
+            }
+        } else {
+#if CYTHON_USE_PYLONG_INTERNALS
+            const digit* digits = ((PyLongObject*)x)->ob_digit;
+            switch (Py_SIZE(x)) {
+                case  0: return (size_t) 0;
+                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
+                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
+                case -2:
+                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 2:
+                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -3:
+                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 3:
+                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case -4:
+                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+                case 4:
+                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
+                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
+                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
+                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
+                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
+                        }
+                    }
+                    break;
+            }
+#endif
+            if (sizeof(size_t) <= sizeof(long)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
+#ifdef HAVE_LONG_LONG
+            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
+                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
+#endif
+            }
+        }
+        {
+#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
+            PyErr_SetString(PyExc_RuntimeError,
+                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
+#else
+            size_t val;
+            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
+ #if PY_MAJOR_VERSION < 3
+            if (likely(v) && !PyLong_Check(v)) {
+                PyObject *tmp = v;
+                v = PyNumber_Long(tmp);
+                Py_DECREF(tmp);
+            }
+ #endif
+            if (likely(v)) {
+                int one = 1; int is_little = (int)*(unsigned char *)&one;
+                unsigned char *bytes = (unsigned char *)&val;
+                int ret = _PyLong_AsByteArray((PyLongObject *)v,
+                                              bytes, sizeof(val),
+                                              is_little, !is_unsigned);
+                Py_DECREF(v);
+                if (likely(!ret))
+                    return val;
+            }
+#endif
+            return (size_t) -1;
+        }
+    } else {
+        size_t val;
+        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
+        if (!tmp) return (size_t) -1;
+        val = __Pyx_PyInt_As_size_t(tmp);
+        Py_DECREF(tmp);
+        return val;
+    }
+raise_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "value too large to convert to size_t");
+    return (size_t) -1;
+raise_neg_overflow:
+    PyErr_SetString(PyExc_OverflowError,
+        "can't convert negative value to size_t");
+    return (size_t) -1;
 }
 
 /* FastTypeChecks */

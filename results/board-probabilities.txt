@@ -1,41 +1,41 @@
-Go                    - 3.075%
-Mediterranean Avenue  - 2.136%
-Community Chest       - 1.885%
-Baltic Avenue         - 2.188%
-Income Tax            - 2.361%
-Reading Railroad      - 2.808%
-Oriental Avenue       - 2.274%
-Chance                - 1.012%
-Vermont Avenue        - 2.338%
-Connecticut Avenue    - 2.291%
-Just Visiting Jail    - 2.270%
-St. Charles Place     - 2.701%
-Electric Company      - 2.609%
-States Avenue         - 2.383%
-Virginia Avenue       - 2.463%
-Pennsylvania Railroad - 2.788%
-St. James Place       - 2.797%
-Community Chest       - 2.595%
-Tennessee Avenue      - 2.945%
-New York Avenue       - 3.091%
-Free Parking          - 2.849%
-Kentucky Avenue       - 2.804%
-Chance                - 1.202%
-Indiana Avenue        - 2.744%
-Illinois Avenue       - 3.178%
-B. & O. Railroad      - 2.888%
-Atlantic Avenue       - 2.708%
-Ventnor Avenue        - 2.673%
-Water Works           - 2.824%
-Marvin Gardens        - 2.612%
+Go                    - 3.098%
+Mediterranean Avenue  - 2.137%
+Community Chest       - 1.873%
+Baltic Avenue         - 2.190%
+Income Tax            - 2.353%
+Reading Railroad      - 2.828%
+Oriental Avenue       - 2.273%
+Chance                - 1.010%
+Vermont Avenue        - 2.311%
+Connecticut Avenue    - 2.309%
+Just Visiting Jail    - 2.235%
+St. Charles Place     - 2.702%
+Electric Company      - 2.607%
+States Avenue         - 2.403%
+Virginia Avenue       - 2.465%
+Pennsylvania Railroad - 2.777%
+St. James Place       - 2.775%
+Community Chest       - 2.618%
+Tennessee Avenue      - 2.953%
+New York Avenue       - 3.094%
+Free Parking          - 2.852%
+Kentucky Avenue       - 2.838%
+Chance                - 1.206%
+Indiana Avenue        - 2.733%
+Illinois Avenue       - 3.166%
+B. & O. Railroad      - 2.907%
+Atlantic Avenue       - 2.714%
+Ventnor Avenue        - 2.664%
+Water Works           - 2.816%
+Marvin Gardens        - 2.595%
 Go To Jail            - 0.000%
-Pacific Avenue        - 2.680%
-North Carolina Avenue - 2.608%
-Community Chest       - 2.382%
-Pennsylvania Avenue   - 2.475%
-Short Line Railroad   - 2.409%
-Chance                - 0.999%
-Park Place            - 2.195%
-Luxury Tax            - 2.207%
-Boardwalk             - 2.603%
-In Jail               - 3.948%
+Pacific Avenue        - 2.652%
+North Carolina Avenue - 2.598%
+Community Chest       - 2.369%
+Pennsylvania Avenue   - 2.514%
+Short Line Railroad   - 2.401%
+Chance                - 1.016%
+Park Place            - 2.173%
+Luxury Tax            - 2.177%
+Boardwalk             - 2.619%
+In Jail               - 3.979%
