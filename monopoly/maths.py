@@ -4,7 +4,7 @@ This is the version from the YouTube video by standupmaths. I have just added
 some code to more easily initiate it and see the results.
 """
 
-from utils import Timer
+from .utils import Timer
 
 def monop(finish_order=6,games_order=3):
     global turns

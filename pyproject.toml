@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "monopoly-probabilities"
+version = "0.1.0"
+description = "Calculate the probabilties of landing on each different square on a monopoly board."
+authors = ["George Waters <george@georgeh2os.com>"]
+packages = [
+    { include = "monopoly" }
+]
+build = "build.py"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+cython = {version = "^0.29.15", optional = true}
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+monopoly = "monopoly:main"
+monopolize = "build:cythonize_monopoly"
+
+[tool.poetry.extras]
+cython = ["cython"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

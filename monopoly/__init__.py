@@ -1,8 +1,8 @@
 import os
 from multiprocessing import Pool
 from itertools import starmap
-from utils import (Spinner, Timer, pluralize, calculate_all_turns,
-                   save_results, generate_games, play_game)
+from .utils import (Spinner, Timer, pluralize, calculate_all_turns,
+                    save_results, generate_games, play_game)
 
 try:
     import argparse

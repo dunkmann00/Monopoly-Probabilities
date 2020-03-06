@@ -1,11 +1,9 @@
 # cython: language_level=3
 # distutils: language = c++
 
-from libc.stdlib cimport srand, rand
-from libc.time cimport time
 from libcpp.set cimport set
 
-# import random
+from random import random
 
 cdef enum:
     JAIL = 40
@@ -41,8 +39,6 @@ cdef class Monopoly():
         self.current_position = 0
         self.doubles = 0
 
-        srand(time(NULL))
-
     cpdef take_turns(self, int turns):
         while self.total_turns < turns:
             spaces = self.roll_dice()
@@ -60,9 +56,9 @@ cdef class Monopoly():
             self.end_turn()
 
     cdef int roll_dice(self):
-        # roll_index = random.randrange(36) # This seems to take a little longer
-        # cdef int roll_index = int(random.random()*36)
-        cdef int roll_index = rand()%36
+        # cdef int roll_index = randrange(36) # This seems to take a little longer
+        cdef int roll_index = int(random()*36)
+        # cdef int roll_index = rand()%36
         if self.double_indices.count(roll_index) == 1:
             self.doubles+=1
         else:
@@ -123,7 +119,7 @@ cdef class Monopoly():
         cdef move
         cdef int n = len(shuffled)
         for i in range(n-1,0,-1):
-            r = rand()%i
+            r = random()*i
             move = shuffled[r]
             shuffled[r] = shuffled[i]
             shuffled[i] = move

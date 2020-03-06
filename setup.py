@@ -1,6 +1,36 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup
-from Cython.Build import cythonize
 
-setup(
-    ext_modules = cythonize("monopoly/monopoly.pyx", annotate=True)
-)
+packages = \
+['monopoly', 'monopoly.data']
+
+package_data = \
+{'': ['*']}
+
+extras_require = \
+{u'cython': ['cython>=0.29.15,<0.30.0']}
+
+entry_points = \
+{'console_scripts': ['monopolize = build:cythonize_monopoly',
+                     'monopoly = monopoly:main']}
+
+setup_kwargs = {
+    'name': 'monopoly-probabilities',
+    'version': '0.1.0',
+    'description': 'Calculate the probabilties of landing on each different square on a monopoly board.',
+    'long_description': None,
+    'author': 'George Waters',
+    'author_email': 'george@georgeh2os.com',
+    'maintainer': None,
+    'maintainer_email': None,
+    'url': None,
+    'packages': packages,
+    'package_data': package_data,
+    'extras_require': extras_require,
+    'entry_points': entry_points,
+    'python_requires': '>=3.7,<4.0',
+}
+from build import *
+build(setup_kwargs)
+
+setup(**setup_kwargs)

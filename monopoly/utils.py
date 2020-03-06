@@ -1,5 +1,7 @@
 import threading, time, itertools, sys, os
-from monopoly import Monopoly
+from pathlib import Path
+import importlib.resources as resources
+from .monopoly import Monopoly
 
 """
 Extremely bareboned version of spinner from yaspin library
@@ -167,8 +169,14 @@ Save the results from the simulation to a txt and a csv file
 """
 def save_results(results):
     total_turns = sum(results)
-    with open('./data/board-spaces.txt') as fnames:
-        with open('./results/board-probabilities.txt', 'w') as fprobs, open('./results/board-probabilities.csv', 'w') as fprobs_csv:
+
+    results_dir = Path('results')
+    results_dir.mkdir(parents=True, exist_ok=True)
+    probs_txt = results_dir / 'board-probabilities.txt'
+    probs_csv = results_dir / 'board-probabilities.csv'
+
+    with resources.open_text('monopoly.data', 'board-spaces.txt') as fnames:
+        with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
             for i,square_name in enumerate(fnames):
                 if i < len(results):
                     fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
