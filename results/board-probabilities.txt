@@ -1,41 +1,41 @@
-Go                    - 4.000%
-Mediterranean Avenue  - 1.000%
-Community Chest       - 0.000%
-Baltic Avenue         - 1.000%
-Income Tax            - 3.000%
-Reading Railroad      - 4.000%
+Go                    - 5.000%
+Mediterranean Avenue  - 3.000%
+Community Chest       - 2.000%
+Baltic Avenue         - 2.000%
+Income Tax            - 2.000%
+Reading Railroad      - 2.000%
 Oriental Avenue       - 1.000%
 Chance                - 2.000%
-Vermont Avenue        - 0.000%
-Connecticut Avenue    - 2.000%
+Vermont Avenue        - 1.000%
+Connecticut Avenue    - 5.000%
 Just Visiting Jail    - 3.000%
-St. Charles Place     - 4.000%
-Electric Company      - 4.000%
+St. Charles Place     - 3.000%
+Electric Company      - 1.000%
 States Avenue         - 3.000%
-Virginia Avenue       - 4.000%
-Pennsylvania Railroad - 2.000%
+Virginia Avenue       - 3.000%
+Pennsylvania Railroad - 1.000%
 St. James Place       - 2.000%
 Community Chest       - 2.000%
-Tennessee Avenue      - 4.000%
-New York Avenue       - 3.000%
-Free Parking          - 1.000%
-Kentucky Avenue       - 4.000%
-Chance                - 2.000%
-Indiana Avenue        - 1.000%
-Illinois Avenue       - 1.000%
-B. & O. Railroad      - 7.000%
-Atlantic Avenue       - 4.000%
-Ventnor Avenue        - 2.000%
-Water Works           - 2.000%
-Marvin Gardens        - 3.000%
+Tennessee Avenue      - 3.000%
+New York Avenue       - 4.000%
+Free Parking          - 3.000%
+Kentucky Avenue       - 7.000%
+Chance                - 0.000%
+Indiana Avenue        - 2.000%
+Illinois Avenue       - 2.000%
+B. & O. Railroad      - 3.000%
+Atlantic Avenue       - 2.000%
+Ventnor Avenue        - 4.000%
+Water Works           - 3.000%
+Marvin Gardens        - 1.000%
 Go To Jail            - 0.000%
-Pacific Avenue        - 4.000%
-North Carolina Avenue - 2.000%
-Community Chest       - 1.000%
+Pacific Avenue        - 3.000%
+North Carolina Avenue - 4.000%
+Community Chest       - 3.000%
 Pennsylvania Avenue   - 2.000%
-Short Line Railroad   - 2.000%
+Short Line Railroad   - 0.000%
 Chance                - 1.000%
 Park Place            - 4.000%
-Luxury Tax            - 3.000%
-Boardwalk             - 2.000%
-In Jail               - 3.000%
+Luxury Tax            - 0.000%
+Boardwalk             - 1.000%
+In Jail               - 5.000%

@@ -119,7 +119,7 @@ cdef class Monopoly():
         cdef move
         cdef int n = len(shuffled)
         for i in range(n-1,0,-1):
-            r = random()*i
+            r = int(random()*i)
             move = shuffled[r]
             shuffled[r] = shuffled[i]
             shuffled[i] = move

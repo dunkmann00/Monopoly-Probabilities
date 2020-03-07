@@ -1,7 +1,12 @@
 import threading, time, itertools, sys, os
 from pathlib import Path
 import importlib.resources as resources
-from .monopoly import Monopoly
+
+try:
+    from .cython_ext.monopoly import Monopoly
+except ImportError:
+    print("-- Falling back to Pure Python Monopoly class --")
+    from .monopoly import Monopoly
 
 """
 Extremely bareboned version of spinner from yaspin library
