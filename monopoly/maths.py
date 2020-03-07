@@ -4,7 +4,7 @@ This is the version from the YouTube video by standupmaths. I have just added
 some code to more easily initiate it and see the results.
 """
 
-from .utils import Timer
+from .utils import Timer, save_results
 
 def monop(finish_order=6,games_order=3):
     global turns
@@ -95,16 +95,11 @@ def monop(finish_order=6,games_order=3):
 
 def main():
     with Timer():
-        squares = monop(finish_order=0, games_order=0)
+        squares = monop(finish_order=4, games_order=2)
         # squares = monop(finish_order=6, games_order=2)
     turns = sum(squares)
     print(f"Complete, {turns:,} moves made")
-    with open('../data/board-spaces.txt') as fnames:
-        with open('../results/board-probabilities.txt', 'w') as fprobs, open('../results/board-probabilities.csv', 'w') as fprobs_csv:
-            for i,square_name in enumerate(fnames):
-                if i < len(squares):
-                    fprobs.write(f"{square_name.rstrip():<21} - {squares[i]/turns:.3%}\n")
-                    fprobs_csv.write(f"{square_name.rstrip()},{squares[i]/turns:.3%}\n")
+    save_results(squares)
 
 if __name__ == '__main__':
     main()
