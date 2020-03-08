@@ -3,7 +3,7 @@ from pathlib import Path
 import importlib.resources as resources
 
 try:
-    from .cython_ext.monopoly import Monopoly
+    from .cython_ext import Monopoly
 except ImportError:
     print("-- Falling back to Pure Python Monopoly class --")
     from .monopoly import Monopoly
