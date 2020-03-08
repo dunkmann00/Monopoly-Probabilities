@@ -338,8 +338,8 @@ body.cython { font-family: courier; font-size: 12; }
   std::set&lt;int&gt;  double_indices;
   PyObject *community_deck;
   PyObject *chance_deck;
-  int results[41];
-  int total_turns;
+  PY_LONG_LONG results[41];
+  PY_LONG_LONG total_turns;
   int current_position;
   int doubles;
 };
@@ -347,7 +347,7 @@ body.cython { font-family: courier; font-size: 12; }
 
 
 struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly {
-  PyObject *(*take_turns)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int, int __pyx_skip_dispatch);
+  PyObject *(*take_turns)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PY_LONG_LONG, int __pyx_skip_dispatch);
   int (*roll_dice)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
   PyObject *(*move_spaces)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int);
   PyObject *(*move_to)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int);
@@ -368,7 +368,7 @@ static struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_
 <pre class="cython line score-0">&#xA0;<span class="">018</span>:     cdef set[int] double_indices # more efficient than rolling dice twice</pre>
 <pre class="cython line score-0">&#xA0;<span class="">019</span>:     cdef list community_deck</pre>
 <pre class="cython line score-0">&#xA0;<span class="">020</span>:     cdef list chance_deck</pre>
-<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">021</span>:     cdef readonly int[41] results</pre>
+<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">021</span>:     cdef readonly long long[41] results</pre>
 <pre class='cython code score-4 '>/* Python wrapper */
 static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self); /*proto*/
 static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self) {
@@ -387,7 +387,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
   <span class='refnanny'>__Pyx_RefNannySetupContext</span>("__get__", 0);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-  __pyx_t_1 = __Pyx_carray_to_py_int(__pyx_v_self-&gt;results, 41);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)</span>
+  __pyx_t_1 = __Pyx_carray_to_py_PY_LONG_LONG(__pyx_v_self-&gt;results, 41);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -403,7 +403,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">022</span>:     cdef int total_turns</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">022</span>:     cdef long long total_turns</pre>
 <pre class="cython line score-0">&#xA0;<span class="">023</span>:     cdef int current_position</pre>
 <pre class="cython line score-0">&#xA0;<span class="">024</span>:     cdef int doubles</pre>
 <pre class="cython line score-0">&#xA0;<span class="">025</span>: </pre>
@@ -620,7 +620,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
       if (unlikely(<span class='pyx_c_api'>__Pyx_ListComp_Append</span>(__pyx_t_3, (PyObject*)__pyx_int_0))) <span class='error_goto'>__PYX_ERR(0, 37, __pyx_L1_error)</span>
     }
   } /* exit inner scope */
-  if (unlikely(__Pyx_carray_from_py_int(__pyx_t_3, __pyx_t_9, 41) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 37, __pyx_L1_error)</span>
+  if (unlikely(__Pyx_carray_from_py_PY_LONG_LONG(__pyx_t_3, __pyx_t_9, 41) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 37, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   memcpy(&amp;(__pyx_v_self-&gt;results[0]), __pyx_t_9, sizeof(__pyx_v_self-&gt;results[0]) * (41));
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">038</span>:         self.total_turns = 0</pre>
@@ -630,9 +630,9 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">040</span>:         self.doubles = 0</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;doubles = 0;
 </pre><pre class="cython line score-0">&#xA0;<span class="">041</span>: </pre>
-<pre class="cython line score-44" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">042</span>:     cpdef take_turns(self, int turns):</pre>
+<pre class="cython line score-44" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">042</span>:     cpdef take_turns(self, long long turns):</pre>
 <pre class='cython code score-44 '>static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns, int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns, int __pyx_skip_dispatch) {
   int __pyx_v_spaces;
   PyObject *__pyx_r = NULL;
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
@@ -650,7 +650,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns)) {
         <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
-        __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_turns);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)</span>
+        __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyInt_From_PY_LONG_LONG</span>(__pyx_v_turns);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)</span>
         <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
         <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
         __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -707,12 +707,12 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
 /* Python wrapper */
 static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
 static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns) {
-  int __pyx_v_turns;
+  PY_LONG_LONG __pyx_v_turns;
   PyObject *__pyx_r = 0;
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
   <span class='refnanny'>__Pyx_RefNannySetupContext</span>("take_turns (wrapper)", 0);
   assert(__pyx_arg_turns); {
-    __pyx_v_turns = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_arg_turns); if (unlikely((__pyx_v_turns == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 42, __pyx_L3_error)</span>
+    __pyx_v_turns = <span class='pyx_c_api'>__Pyx_PyInt_As_PY_LONG_LONG</span>(__pyx_arg_turns); if (unlikely((__pyx_v_turns == (PY_LONG_LONG)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 42, __pyx_L3_error)</span>
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -720,14 +720,14 @@ static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((int)__pyx_v_turns));
+  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((PY_LONG_LONG)__pyx_v_turns));
 
   /* function exit code */
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_turns) {
+static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns) {
   PyObject *__pyx_r = NULL;
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
   <span class='refnanny'>__Pyx_RefNannySetupContext</span>("take_turns", 0);

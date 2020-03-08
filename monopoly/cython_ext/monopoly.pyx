@@ -18,8 +18,8 @@ cdef class Monopoly():
     cdef set[int] double_indices # more efficient than rolling dice twice
     cdef list community_deck
     cdef list chance_deck
-    cdef readonly int[41] results
-    cdef int total_turns
+    cdef readonly long long[41] results
+    cdef long long total_turns
     cdef int current_position
     cdef int doubles
 
@@ -39,7 +39,7 @@ cdef class Monopoly():
         self.current_position = 0
         self.doubles = 0
 
-    cpdef take_turns(self, int turns):
+    cpdef take_turns(self, long long turns):
         while self.total_turns < turns:
             spaces = self.roll_dice()
             if self.doubles == 3:

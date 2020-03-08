@@ -155,7 +155,7 @@ turns up amonst games, the fewest number of turns in a game is 1,000,000.
 def calculate_all_turns(total_turns, cpu_count):
     turns = []
     turns_remaining = total_turns
-    turns_per_game = max(1000000, int(total_turns/cpu_count))
+    turns_per_game = max(1000000, total_turns//cpu_count)
 
     while len(turns) < cpu_count and turns_remaining > 0:
         game_turns = min(turns_per_game, turns_remaining)
