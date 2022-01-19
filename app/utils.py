@@ -2,6 +2,8 @@ import threading, time, itertools, sys, os
 from pathlib import Path
 import importlib.resources as resources
 
+from . import data
+
 try:
     from .cython_ext import Monopoly
 except ImportError:
@@ -180,7 +182,7 @@ def save_results(results):
     probs_txt = results_dir / 'board-probabilities.txt'
     probs_csv = results_dir / 'board-probabilities.csv'
 
-    with resources.open_text('monopoly.data', 'board-spaces.txt') as fnames:
+    with resources.open_text(data, 'board-spaces.txt') as fnames:
         with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
             for i,square_name in enumerate(fnames):
                 if i < len(results):

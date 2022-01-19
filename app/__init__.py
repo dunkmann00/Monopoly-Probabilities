@@ -4,17 +4,22 @@ from itertools import starmap
 from .utils import (Spinner, Timer, pluralize, calculate_all_turns,
                     save_results, generate_games, play_game)
 
-try:
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--turns", help="The number of turns to simulate.", type=int, default=100)
-    parser.add_argument("--no-parallel", help="Don't run the simulation in parallel.", action="store_true")
-    parser.add_argument("--max-cpu-cores", help="When running in parallel, the maximum number of CPU cores to use for the simulation.", type=int)
-    flags = parser.parse_args()
-except ImportError:
-    flags = None
+# Need to put this in a function in order for multiprocessing to work
+# when using PyInstaller
+def parse_args():
+    try:
+        import argparse
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--turns", help="The number of turns to simulate.", type=int, default=100)
+        parser.add_argument("--no-parallel", help="Don't run the simulation in parallel.", action="store_true")
+        parser.add_argument("--max-cpu-cores", help="When running in parallel, the maximum number of CPU cores to use for the simulation.", type=int)
+        flags = parser.parse_args()
+    except ImportError:
+        flags = None
+    return flags
 
 def main():
+    flags = parse_args()
     with Timer():
         # determine the number of cores to use
         if flags.no_parallel:

@@ -5,12 +5,12 @@
     "distutils": {
         "depends": [],
         "language": "c++",
-        "name": "monopoly.cython_ext.monopoly",
+        "name": "app.cython_ext.monopoly",
         "sources": [
-            "monopoly/cython_ext/monopoly.pyx"
+            "app/cython_ext/monopoly.pyx"
         ]
     },
-    "module_name": "monopoly.cython_ext.monopoly"
+    "module_name": "app.cython_ext.monopoly"
 }
 END: Cython Metadata */
 
@@ -618,8 +618,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__monopoly__cython_ext__monopoly
-#define __PYX_HAVE_API__monopoly__cython_ext__monopoly
+#define __PYX_HAVE__app__cython_ext__monopoly
+#define __PYX_HAVE_API__app__cython_ext__monopoly
 /* Early includes */
 #include "ios"
 #include "new"
@@ -835,14 +835,14 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "monopoly/cython_ext/monopoly.pyx",
+  "app/cython_ext/monopoly.pyx",
   "stringsource",
 };
 
 /*--- Type declarations ---*/
-struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly;
+struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly;
 
-/* "monopoly/cython_ext/monopoly.pyx":8
+/* "app/cython_ext/monopoly.pyx":8
  * from random import random
  * 
  * cdef enum:             # <<<<<<<<<<<<<<
@@ -850,19 +850,19 @@ struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly;
  * 
  */
 enum  {
-  __pyx_e_8monopoly_10cython_ext_8monopoly_JAIL = 40
+  __pyx_e_3app_10cython_ext_8monopoly_JAIL = 40
 };
 
-/* "monopoly/cython_ext/monopoly.pyx":11
+/* "app/cython_ext/monopoly.pyx":11
  *     JAIL = 40
  * 
  * cdef class Monopoly():             # <<<<<<<<<<<<<<
  *     cdef int num_spaces
  *     cdef set[int] community_squares # this is correct, but differs from maths.py  # THIS IS WHERE THE DESCREPANCY
  */
-struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly {
+struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly {
   PyObject_HEAD
-  struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_vtab;
+  struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *__pyx_vtab;
   int num_spaces;
   std::set<int>  community_squares;
   std::set<int>  chance_squares;
@@ -880,19 +880,19 @@ struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly {
 
 
 
-struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly {
-  PyObject *(*take_turns)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PY_LONG_LONG, int __pyx_skip_dispatch);
-  int (*roll_dice)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*move_spaces)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int);
-  PyObject *(*move_to)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int);
-  PyObject *(*end_turn)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*move_to_utility)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*move_to_railroad)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*draw_community_chest)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*draw_chance)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *);
-  PyObject *(*shuffle_deck)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PyObject *);
+struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly {
+  PyObject *(*take_turns)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, PY_LONG_LONG, int __pyx_skip_dispatch);
+  int (*roll_dice)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*move_spaces)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, int);
+  PyObject *(*move_to)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, int);
+  PyObject *(*end_turn)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*move_to_utility)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*move_to_railroad)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*draw_community_chest)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*draw_chance)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *);
+  PyObject *(*shuffle_deck)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, PyObject *);
 };
-static struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_vtabptr_8monopoly_10cython_ext_8monopoly_Monopoly;
+static struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *__pyx_vtabptr_3app_10cython_ext_8monopoly_Monopoly;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1375,24 +1375,24 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns, int __pyx_skip_dispatch); /* proto*/
-static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns, int __pyx_skip_dispatch); /* proto*/
+static int __pyx_f_3app_10cython_ext_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_end_turn(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck); /* proto*/
 
 /* Module declarations from 'libcpp.utility' */
 
 /* Module declarations from 'libcpp.set' */
 
-/* Module declarations from 'monopoly.cython_ext.monopoly' */
-static PyTypeObject *__pyx_ptype_8monopoly_10cython_ext_8monopoly_Monopoly = 0;
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PyObject *); /*proto*/
+/* Module declarations from 'app.cython_ext.monopoly' */
+static PyTypeObject *__pyx_ptype_3app_10cython_ext_8monopoly_Monopoly = 0;
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, PyObject *); /*proto*/
 static PyObject *__pyx_convert_set_to_py_int(std::set<int>  const &); /*proto*/
 static std::set<int>  __pyx_convert_set_from_py_int(PyObject *); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_PY_LONG_LONG(PY_LONG_LONG *, Py_ssize_t); /*proto*/
@@ -1401,11 +1401,11 @@ static int __Pyx_carray_from_py_PY_LONG_LONG(PyObject *, PY_LONG_LONG *, Py_ssiz
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_int(int *, Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_int(int *, Py_ssize_t); /*proto*/
 static int __Pyx_carray_from_py_int(PyObject *, int *, Py_ssize_t); /*proto*/
-#define __Pyx_MODULE_NAME "monopoly.cython_ext.monopoly"
-extern int __pyx_module_is_main_monopoly__cython_ext__monopoly;
-int __pyx_module_is_main_monopoly__cython_ext__monopoly = 0;
+#define __Pyx_MODULE_NAME "app.cython_ext.monopoly"
+extern int __pyx_module_is_main_app__cython_ext__monopoly;
+int __pyx_module_is_main_app__cython_ext__monopoly = 0;
 
-/* Implementation of 'monopoly.cython_ext.monopoly' */
+/* Implementation of 'app.cython_ext.monopoly' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_OverflowError;
@@ -1448,7 +1448,7 @@ static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_pyx_unpickle_Monopoly[] = "__pyx_unpickle_Monopoly";
-static const char __pyx_k_monopoly_cython_ext_monopoly[] = "monopoly.cython_ext.monopoly";
+static const char __pyx_k_app_cython_ext_monopoly[] = "app.cython_ext.monopoly";
 static const char __pyx_k_Incompatible_checksums_s_vs_0xd3[] = "Incompatible checksums (%s vs 0xd330ef1 = (chance_cards, chance_deck, chance_squares, community_cards, community_deck, community_squares, current_position, double_indices, doubles, num_spaces, results, roll_values, total_turns))";
 static PyObject *__pyx_n_u_B;
 static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0xd3;
@@ -1459,6 +1459,7 @@ static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_u_R;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_u_U;
+static PyObject *__pyx_n_s_app_cython_ext_monopoly;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_copy;
 static PyObject *__pyx_n_s_dict;
@@ -1466,7 +1467,6 @@ static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_monopoly_cython_ext_monopoly;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_n_s_pickle;
@@ -1489,13 +1489,13 @@ static PyObject *__pyx_kp_s_stringsource;
 static PyObject *__pyx_n_s_take_turns;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_update;
-static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns); /* proto */
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_tp_new_8monopoly_10cython_ext_8monopoly_Monopoly(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static int __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly___init__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns); /* proto */
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_tp_new_3app_10cython_ext_8monopoly_Monopoly(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_copy = {0, &__pyx_n_s_copy, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_pop = {0, &__pyx_n_s_pop, 0, 0, 0};
 static PyObject *__pyx_int_0;
@@ -1519,7 +1519,7 @@ static PyObject *__pyx_tuple_;
 static PyObject *__pyx_codeobj__2;
 /* Late includes */
 
-/* "monopoly/cython_ext/monopoly.pyx":26
+/* "app/cython_ext/monopoly.pyx":26
  *     cdef int doubles
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -1528,22 +1528,22 @@ static PyObject *__pyx_codeobj__2;
  */
 
 /* Python wrapper */
-static int __pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
   if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
     __Pyx_RaiseArgtupleInvalid("__init__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
   if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__init__", 0))) return -1;
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly___init__(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static int __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly___init__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   CYTHON_UNUSED long __pyx_7genexpr__pyx_v_i;
   CYTHON_UNUSED long __pyx_8genexpr1__pyx_v_i;
   CYTHON_UNUSED long __pyx_8genexpr2__pyx_v_i;
@@ -1560,7 +1560,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   PY_LONG_LONG __pyx_t_9[41];
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":27
+  /* "app/cython_ext/monopoly.pyx":27
  * 
  *     def __init__(self):
  *         self.num_spaces = 40             # <<<<<<<<<<<<<<
@@ -1569,7 +1569,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
  */
   __pyx_v_self->num_spaces = 40;
 
-  /* "monopoly/cython_ext/monopoly.pyx":28
+  /* "app/cython_ext/monopoly.pyx":28
  *     def __init__(self):
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}             # <<<<<<<<<<<<<<
@@ -1585,7 +1585,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->community_squares = __pyx_t_2;
 
-  /* "monopoly/cython_ext/monopoly.pyx":29
+  /* "app/cython_ext/monopoly.pyx":29
  *         self.num_spaces = 40
  *         self.community_squares = {2,17,33}
  *         self.chance_squares = {7,22,36}             # <<<<<<<<<<<<<<
@@ -1601,14 +1601,14 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->chance_squares = __pyx_t_2;
 
-  /* "monopoly/cython_ext/monopoly.pyx":30
+  /* "app/cython_ext/monopoly.pyx":30
  *         self.community_squares = {2,17,33}
  *         self.chance_squares = {7,22,36}
  *         self.community_cards = [0,JAIL] + [None for i in range(14)]             # <<<<<<<<<<<<<<
  *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_e_8monopoly_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_e_3app_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -1636,14 +1636,14 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __pyx_v_self->community_cards = ((PyObject*)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":31
+  /* "app/cython_ext/monopoly.pyx":31
  *         self.chance_squares = {7,22,36}
  *         self.community_cards = [0,JAIL] + [None for i in range(14)]
  *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]             # <<<<<<<<<<<<<<
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
  *         self.double_indices = {0,7,14,21,28,35}
  */
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_e_8monopoly_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_e_3app_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_1 = PyList_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1692,7 +1692,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __pyx_v_self->chance_cards = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":32
+  /* "app/cython_ext/monopoly.pyx":32
  *         self.community_cards = [0,JAIL] + [None for i in range(14)]
  *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]             # <<<<<<<<<<<<<<
@@ -1737,7 +1737,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __pyx_t_6[35] = 12;
   memcpy(&(__pyx_v_self->roll_values[0]), __pyx_t_6, sizeof(__pyx_v_self->roll_values[0]) * (36));
 
-  /* "monopoly/cython_ext/monopoly.pyx":33
+  /* "app/cython_ext/monopoly.pyx":33
  *         self.chance_cards = [0,5,11,24,39,'U','R','B',JAIL] + [None for i in range(7)]
  *         self.roll_values = [2,3,4,5,6,7,3,4,5,6,7,8,4,5,6,7,8,9,5,6,7,8,9,10,6,7,8,9,10,11,7,8,9,10,11,12]
  *         self.double_indices = {0,7,14,21,28,35}             # <<<<<<<<<<<<<<
@@ -1756,7 +1756,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_self->double_indices = __pyx_t_2;
 
-  /* "monopoly/cython_ext/monopoly.pyx":35
+  /* "app/cython_ext/monopoly.pyx":35
  *         self.double_indices = {0,7,14,21,28,35}
  * 
  *         self.community_deck = []             # <<<<<<<<<<<<<<
@@ -1771,7 +1771,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __pyx_v_self->community_deck = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":36
+  /* "app/cython_ext/monopoly.pyx":36
  * 
  *         self.community_deck = []
  *         self.chance_deck = []             # <<<<<<<<<<<<<<
@@ -1786,7 +1786,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":37
+  /* "app/cython_ext/monopoly.pyx":37
  *         self.community_deck = []
  *         self.chance_deck = []
  *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately             # <<<<<<<<<<<<<<
@@ -1807,7 +1807,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   memcpy(&(__pyx_v_self->results[0]), __pyx_t_9, sizeof(__pyx_v_self->results[0]) * (41));
 
-  /* "monopoly/cython_ext/monopoly.pyx":38
+  /* "app/cython_ext/monopoly.pyx":38
  *         self.chance_deck = []
  *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  *         self.total_turns = 0             # <<<<<<<<<<<<<<
@@ -1816,7 +1816,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
  */
   __pyx_v_self->total_turns = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":39
+  /* "app/cython_ext/monopoly.pyx":39
  *         self.results = [0 for i in range(self.num_spaces+1)] # +1 because we are counting jail vs visiting separately
  *         self.total_turns = 0
  *         self.current_position = 0             # <<<<<<<<<<<<<<
@@ -1825,7 +1825,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
  */
   __pyx_v_self->current_position = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":40
+  /* "app/cython_ext/monopoly.pyx":40
  *         self.total_turns = 0
  *         self.current_position = 0
  *         self.doubles = 0             # <<<<<<<<<<<<<<
@@ -1834,7 +1834,7 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
  */
   __pyx_v_self->doubles = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":26
+  /* "app/cython_ext/monopoly.pyx":26
  *     cdef int doubles
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
@@ -1849,14 +1849,14 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":42
+/* "app/cython_ext/monopoly.pyx":42
  *         self.doubles = 0
  * 
  *     cpdef take_turns(self, long long turns):             # <<<<<<<<<<<<<<
@@ -1864,8 +1864,8 @@ static int __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly___init__(struct _
  *             spaces = self.roll_dice()
  */
 
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_take_turns(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns, int __pyx_skip_dispatch) {
   int __pyx_v_spaces;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -1887,7 +1887,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       #endif
       __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_take_turns); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns)) {
+      if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_3take_turns)) {
         __Pyx_XDECREF(__pyx_r);
         __pyx_t_3 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_turns); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
@@ -1926,7 +1926,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
     #endif
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":43
+  /* "app/cython_ext/monopoly.pyx":43
  * 
  *     cpdef take_turns(self, long long turns):
  *         while self.total_turns < turns:             # <<<<<<<<<<<<<<
@@ -1937,16 +1937,16 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
     __pyx_t_6 = ((__pyx_v_self->total_turns < __pyx_v_turns) != 0);
     if (!__pyx_t_6) break;
 
-    /* "monopoly/cython_ext/monopoly.pyx":44
+    /* "app/cython_ext/monopoly.pyx":44
  *     cpdef take_turns(self, long long turns):
  *         while self.total_turns < turns:
  *             spaces = self.roll_dice()             # <<<<<<<<<<<<<<
  *             if self.doubles == 3:
  *                 self.move_to(JAIL)
  */
-    __pyx_v_spaces = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->roll_dice(__pyx_v_self);
+    __pyx_v_spaces = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->roll_dice(__pyx_v_self);
 
-    /* "monopoly/cython_ext/monopoly.pyx":45
+    /* "app/cython_ext/monopoly.pyx":45
  *         while self.total_turns < turns:
  *             spaces = self.roll_dice()
  *             if self.doubles == 3:             # <<<<<<<<<<<<<<
@@ -1956,18 +1956,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
     __pyx_t_6 = ((__pyx_v_self->doubles == 3) != 0);
     if (__pyx_t_6) {
 
-      /* "monopoly/cython_ext/monopoly.pyx":46
+      /* "app/cython_ext/monopoly.pyx":46
  *             spaces = self.roll_dice()
  *             if self.doubles == 3:
  *                 self.move_to(JAIL)             # <<<<<<<<<<<<<<
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  *             else:
  */
-      __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_8monopoly_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_3app_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "monopoly/cython_ext/monopoly.pyx":47
+      /* "app/cython_ext/monopoly.pyx":47
  *             if self.doubles == 3:
  *                 self.move_to(JAIL)
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)             # <<<<<<<<<<<<<<
@@ -1976,7 +1976,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
  */
       __pyx_v_self->doubles = 0;
 
-      /* "monopoly/cython_ext/monopoly.pyx":45
+      /* "app/cython_ext/monopoly.pyx":45
  *         while self.total_turns < turns:
  *             spaces = self.roll_dice()
  *             if self.doubles == 3:             # <<<<<<<<<<<<<<
@@ -1986,7 +1986,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       goto __pyx_L5;
     }
 
-    /* "monopoly/cython_ext/monopoly.pyx":49
+    /* "app/cython_ext/monopoly.pyx":49
  *                 self.doubles = 0 # reset after 3 doubles (differs from maths.py)
  *             else:
  *                 self.move_spaces(spaces)             # <<<<<<<<<<<<<<
@@ -1994,11 +1994,11 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
  *                     self.move_to(JAIL)
  */
     /*else*/ {
-      __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_v_spaces); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+      __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_v_spaces); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "monopoly/cython_ext/monopoly.pyx":50
+      /* "app/cython_ext/monopoly.pyx":50
  *             else:
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail             # <<<<<<<<<<<<<<
@@ -2008,18 +2008,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       __pyx_t_6 = ((__pyx_v_self->current_position == 30) != 0);
       if (__pyx_t_6) {
 
-        /* "monopoly/cython_ext/monopoly.pyx":51
+        /* "app/cython_ext/monopoly.pyx":51
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail
  *                     self.move_to(JAIL)             # <<<<<<<<<<<<<<
  *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
  */
-        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_8monopoly_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_e_3app_10cython_ext_8monopoly_JAIL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/cython_ext/monopoly.pyx":50
+        /* "app/cython_ext/monopoly.pyx":50
  *             else:
  *                 self.move_spaces(spaces)
  *                 if self.current_position == 30: # Go to Jail             # <<<<<<<<<<<<<<
@@ -2029,7 +2029,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
         goto __pyx_L6;
       }
 
-      /* "monopoly/cython_ext/monopoly.pyx":52
+      /* "app/cython_ext/monopoly.pyx":52
  *                 if self.current_position == 30: # Go to Jail
  *                     self.move_to(JAIL)
  *                 elif self.community_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
@@ -2039,18 +2039,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       __pyx_t_6 = ((__pyx_v_self->community_squares.count(__pyx_v_self->current_position) == 1) != 0);
       if (__pyx_t_6) {
 
-        /* "monopoly/cython_ext/monopoly.pyx":53
+        /* "app/cython_ext/monopoly.pyx":53
  *                     self.move_to(JAIL)
  *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()             # <<<<<<<<<<<<<<
  *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()
  */
-        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_community_chest(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_community_chest(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/cython_ext/monopoly.pyx":52
+        /* "app/cython_ext/monopoly.pyx":52
  *                 if self.current_position == 30: # Go to Jail
  *                     self.move_to(JAIL)
  *                 elif self.community_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
@@ -2060,7 +2060,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
         goto __pyx_L6;
       }
 
-      /* "monopoly/cython_ext/monopoly.pyx":54
+      /* "app/cython_ext/monopoly.pyx":54
  *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
  *                 elif self.chance_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
@@ -2070,18 +2070,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
       __pyx_t_6 = ((__pyx_v_self->chance_squares.count(__pyx_v_self->current_position) == 1) != 0);
       if (__pyx_t_6) {
 
-        /* "monopoly/cython_ext/monopoly.pyx":55
+        /* "app/cython_ext/monopoly.pyx":55
  *                     self.draw_community_chest()
  *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()             # <<<<<<<<<<<<<<
  *             self.end_turn()
  * 
  */
-        __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_chance(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+        __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->draw_chance(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-        /* "monopoly/cython_ext/monopoly.pyx":54
+        /* "app/cython_ext/monopoly.pyx":54
  *                 elif self.community_squares.count(self.current_position) == 1:
  *                     self.draw_community_chest()
  *                 elif self.chance_squares.count(self.current_position) == 1:             # <<<<<<<<<<<<<<
@@ -2093,19 +2093,19 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
     }
     __pyx_L5:;
 
-    /* "monopoly/cython_ext/monopoly.pyx":56
+    /* "app/cython_ext/monopoly.pyx":56
  *                 elif self.chance_squares.count(self.current_position) == 1:
  *                     self.draw_chance()
  *             self.end_turn()             # <<<<<<<<<<<<<<
  * 
  *     cdef int roll_dice(self):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->end_turn(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->end_turn(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":42
+  /* "app/cython_ext/monopoly.pyx":42
  *         self.doubles = 0
  * 
  *     cpdef take_turns(self, long long turns):             # <<<<<<<<<<<<<<
@@ -2122,7 +2122,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2131,8 +2131,8 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(s
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns); /*proto*/
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_3take_turns(PyObject *__pyx_v_self, PyObject *__pyx_arg_turns) {
   PY_LONG_LONG __pyx_v_turns;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -2142,24 +2142,24 @@ static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((PY_LONG_LONG)__pyx_v_turns));
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((PY_LONG_LONG)__pyx_v_turns));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns) {
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PY_LONG_LONG __pyx_v_turns) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("take_turns", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns(__pyx_v_self, __pyx_v_turns, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3app_10cython_ext_8monopoly_8Monopoly_take_turns(__pyx_v_self, __pyx_v_turns, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2168,7 +2168,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.take_turns", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2176,7 +2176,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":58
+/* "app/cython_ext/monopoly.pyx":58
  *             self.end_turn()
  * 
  *     cdef int roll_dice(self):             # <<<<<<<<<<<<<<
@@ -2184,7 +2184,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_2take_turns
  *         cdef int roll_index = int(random()*36)
  */
 
-static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static int __pyx_f_3app_10cython_ext_8monopoly_8Monopoly_roll_dice(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   int __pyx_v_roll_index;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -2195,7 +2195,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("roll_dice", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":60
+  /* "app/cython_ext/monopoly.pyx":60
  *     cdef int roll_dice(self):
  *         # cdef int roll_index = randrange(36) # This seems to take a little longer
  *         cdef int roll_index = int(random()*36)             # <<<<<<<<<<<<<<
@@ -2229,7 +2229,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_roll_index = __pyx_t_4;
 
-  /* "monopoly/cython_ext/monopoly.pyx":62
+  /* "app/cython_ext/monopoly.pyx":62
  *         cdef int roll_index = int(random()*36)
  *         # cdef int roll_index = rand()%36
  *         if self.double_indices.count(roll_index) == 1:             # <<<<<<<<<<<<<<
@@ -2239,7 +2239,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   __pyx_t_5 = ((__pyx_v_self->double_indices.count(__pyx_v_roll_index) == 1) != 0);
   if (__pyx_t_5) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":63
+    /* "app/cython_ext/monopoly.pyx":63
  *         # cdef int roll_index = rand()%36
  *         if self.double_indices.count(roll_index) == 1:
  *             self.doubles+=1             # <<<<<<<<<<<<<<
@@ -2248,7 +2248,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
  */
     __pyx_v_self->doubles = (__pyx_v_self->doubles + 1);
 
-    /* "monopoly/cython_ext/monopoly.pyx":62
+    /* "app/cython_ext/monopoly.pyx":62
  *         cdef int roll_index = int(random()*36)
  *         # cdef int roll_index = rand()%36
  *         if self.double_indices.count(roll_index) == 1:             # <<<<<<<<<<<<<<
@@ -2258,7 +2258,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
     goto __pyx_L3;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":65
+  /* "app/cython_ext/monopoly.pyx":65
  *             self.doubles+=1
  *         else:
  *             self.doubles = 0             # <<<<<<<<<<<<<<
@@ -2270,7 +2270,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   }
   __pyx_L3:;
 
-  /* "monopoly/cython_ext/monopoly.pyx":66
+  /* "app/cython_ext/monopoly.pyx":66
  *         else:
  *             self.doubles = 0
  *         return self.roll_values[roll_index]             # <<<<<<<<<<<<<<
@@ -2280,7 +2280,7 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   __pyx_r = (__pyx_v_self->roll_values[__pyx_v_roll_index]);
   goto __pyx_L0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":58
+  /* "app/cython_ext/monopoly.pyx":58
  *             self.end_turn()
  * 
  *     cdef int roll_dice(self):             # <<<<<<<<<<<<<<
@@ -2293,14 +2293,14 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_WriteUnraisable("monopoly.cython_ext.monopoly.Monopoly.roll_dice", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("app.cython_ext.monopoly.Monopoly.roll_dice", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":68
+/* "app/cython_ext/monopoly.pyx":68
  *         return self.roll_values[roll_index]
  * 
  *     cdef move_spaces(self, int spaces):             # <<<<<<<<<<<<<<
@@ -2308,23 +2308,23 @@ static int __pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice(struct _
  *             self.current_position = 10
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_spaces(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_spaces) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("move_spaces", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":69
+  /* "app/cython_ext/monopoly.pyx":69
  * 
  *     cdef move_spaces(self, int spaces):
  *         if self.current_position == JAIL: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
  *             self.current_position = 10
  *         self.current_position += spaces
  */
-  __pyx_t_1 = ((__pyx_v_self->current_position == __pyx_e_8monopoly_10cython_ext_8monopoly_JAIL) != 0);
+  __pyx_t_1 = ((__pyx_v_self->current_position == __pyx_e_3app_10cython_ext_8monopoly_JAIL) != 0);
   if (__pyx_t_1) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":70
+    /* "app/cython_ext/monopoly.pyx":70
  *     cdef move_spaces(self, int spaces):
  *         if self.current_position == JAIL: # We are in jail, move us to just visiting
  *             self.current_position = 10             # <<<<<<<<<<<<<<
@@ -2333,7 +2333,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  */
     __pyx_v_self->current_position = 10;
 
-    /* "monopoly/cython_ext/monopoly.pyx":69
+    /* "app/cython_ext/monopoly.pyx":69
  * 
  *     cdef move_spaces(self, int spaces):
  *         if self.current_position == JAIL: # We are in jail, move us to just visiting             # <<<<<<<<<<<<<<
@@ -2342,7 +2342,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":71
+  /* "app/cython_ext/monopoly.pyx":71
  *         if self.current_position == JAIL: # We are in jail, move us to just visiting
  *             self.current_position = 10
  *         self.current_position += spaces             # <<<<<<<<<<<<<<
@@ -2351,7 +2351,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  */
   __pyx_v_self->current_position = (__pyx_v_self->current_position + __pyx_v_spaces);
 
-  /* "monopoly/cython_ext/monopoly.pyx":72
+  /* "app/cython_ext/monopoly.pyx":72
  *             self.current_position = 10
  *         self.current_position += spaces
  *         if self.current_position >= self.num_spaces:             # <<<<<<<<<<<<<<
@@ -2361,7 +2361,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
   __pyx_t_1 = ((__pyx_v_self->current_position >= __pyx_v_self->num_spaces) != 0);
   if (__pyx_t_1) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":73
+    /* "app/cython_ext/monopoly.pyx":73
  *         self.current_position += spaces
  *         if self.current_position >= self.num_spaces:
  *             self.current_position -= self.num_spaces             # <<<<<<<<<<<<<<
@@ -2370,7 +2370,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  */
     __pyx_v_self->current_position = (__pyx_v_self->current_position - __pyx_v_self->num_spaces);
 
-    /* "monopoly/cython_ext/monopoly.pyx":72
+    /* "app/cython_ext/monopoly.pyx":72
  *             self.current_position = 10
  *         self.current_position += spaces
  *         if self.current_position >= self.num_spaces:             # <<<<<<<<<<<<<<
@@ -2379,7 +2379,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":68
+  /* "app/cython_ext/monopoly.pyx":68
  *         return self.roll_values[roll_index]
  * 
  *     cdef move_spaces(self, int spaces):             # <<<<<<<<<<<<<<
@@ -2394,7 +2394,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":75
+/* "app/cython_ext/monopoly.pyx":75
  *             self.current_position -= self.num_spaces
  * 
  *     cdef move_to(self, int square):             # <<<<<<<<<<<<<<
@@ -2402,12 +2402,12 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces(
  * 
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, int __pyx_v_square) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("move_to", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":76
+  /* "app/cython_ext/monopoly.pyx":76
  * 
  *     cdef move_to(self, int square):
  *         self.current_position = square             # <<<<<<<<<<<<<<
@@ -2416,7 +2416,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to(stru
  */
   __pyx_v_self->current_position = __pyx_v_square;
 
-  /* "monopoly/cython_ext/monopoly.pyx":75
+  /* "app/cython_ext/monopoly.pyx":75
  *             self.current_position -= self.num_spaces
  * 
  *     cdef move_to(self, int square):             # <<<<<<<<<<<<<<
@@ -2431,7 +2431,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to(stru
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":78
+/* "app/cython_ext/monopoly.pyx":78
  *         self.current_position = square
  * 
  *     cdef end_turn(self):             # <<<<<<<<<<<<<<
@@ -2439,13 +2439,13 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to(stru
  *         self.total_turns+=1
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_end_turn(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("end_turn", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":79
+  /* "app/cython_ext/monopoly.pyx":79
  * 
  *     cdef end_turn(self):
  *         self.results[self.current_position]+=1             # <<<<<<<<<<<<<<
@@ -2455,7 +2455,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(str
   __pyx_t_1 = __pyx_v_self->current_position;
   (__pyx_v_self->results[__pyx_t_1]) = ((__pyx_v_self->results[__pyx_t_1]) + 1);
 
-  /* "monopoly/cython_ext/monopoly.pyx":80
+  /* "app/cython_ext/monopoly.pyx":80
  *     cdef end_turn(self):
  *         self.results[self.current_position]+=1
  *         self.total_turns+=1             # <<<<<<<<<<<<<<
@@ -2464,7 +2464,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(str
  */
   __pyx_v_self->total_turns = (__pyx_v_self->total_turns + 1);
 
-  /* "monopoly/cython_ext/monopoly.pyx":78
+  /* "app/cython_ext/monopoly.pyx":78
  *         self.current_position = square
  * 
  *     cdef end_turn(self):             # <<<<<<<<<<<<<<
@@ -2479,7 +2479,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(str
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":82
+/* "app/cython_ext/monopoly.pyx":82
  *         self.total_turns+=1
  * 
  *     cdef move_to_utility(self):             # <<<<<<<<<<<<<<
@@ -2487,7 +2487,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn(str
  *             self.move_to(28)
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -2495,7 +2495,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("move_to_utility", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":83
+  /* "app/cython_ext/monopoly.pyx":83
  * 
  *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:             # <<<<<<<<<<<<<<
@@ -2513,18 +2513,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":84
+    /* "app/cython_ext/monopoly.pyx":84
  *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:
  *             self.move_to(28)             # <<<<<<<<<<<<<<
  *         else:
  *             self.move_to(12)
  */
-    __pyx_t_3 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 28); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 28); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":83
+    /* "app/cython_ext/monopoly.pyx":83
  * 
  *     cdef move_to_utility(self):
  *         if self.current_position > 12 and self.current_position < 28:             # <<<<<<<<<<<<<<
@@ -2534,7 +2534,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
     goto __pyx_L3;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":86
+  /* "app/cython_ext/monopoly.pyx":86
  *             self.move_to(28)
  *         else:
  *             self.move_to(12)             # <<<<<<<<<<<<<<
@@ -2542,13 +2542,13 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
  *     cdef move_to_railroad(self):
  */
   /*else*/ {
-    __pyx_t_3 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, 12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_L3:;
 
-  /* "monopoly/cython_ext/monopoly.pyx":82
+  /* "app/cython_ext/monopoly.pyx":82
  *         self.total_turns+=1
  * 
  *     cdef move_to_utility(self):             # <<<<<<<<<<<<<<
@@ -2561,7 +2561,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.move_to_utility", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.move_to_utility", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2569,7 +2569,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":88
+/* "app/cython_ext/monopoly.pyx":88
  *             self.move_to(12)
  * 
  *     cdef move_to_railroad(self):             # <<<<<<<<<<<<<<
@@ -2577,7 +2577,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_util
  *         if distance_rr != 0:
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_distance_rr = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2586,7 +2586,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("move_to_railroad", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":89
+  /* "app/cython_ext/monopoly.pyx":89
  * 
  *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10             # <<<<<<<<<<<<<<
@@ -2598,7 +2598,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
   __pyx_v_distance_rr = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":90
+  /* "app/cython_ext/monopoly.pyx":90
  *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:             # <<<<<<<<<<<<<<
@@ -2611,7 +2611,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":91
+    /* "app/cython_ext/monopoly.pyx":91
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:
  *             distance_rr = 10-distance_rr             # <<<<<<<<<<<<<<
@@ -2623,7 +2623,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
     __Pyx_DECREF_SET(__pyx_v_distance_rr, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":90
+    /* "app/cython_ext/monopoly.pyx":90
  *     cdef move_to_railroad(self):
  *         distance_rr = (self.current_position+5)%10
  *         if distance_rr != 0:             # <<<<<<<<<<<<<<
@@ -2632,7 +2632,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":92
+  /* "app/cython_ext/monopoly.pyx":92
  *         if distance_rr != 0:
  *             distance_rr = 10-distance_rr
  *         self.move_spaces(distance_rr)             # <<<<<<<<<<<<<<
@@ -2640,11 +2640,11 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
  *     cdef draw_community_chest(self):
  */
   __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_distance_rr); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L1_error)
-  __pyx_t_1 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":88
+  /* "app/cython_ext/monopoly.pyx":88
  *             self.move_to(12)
  * 
  *     cdef move_to_railroad(self):             # <<<<<<<<<<<<<<
@@ -2657,7 +2657,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.move_to_railroad", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.move_to_railroad", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_distance_rr);
@@ -2666,7 +2666,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":94
+/* "app/cython_ext/monopoly.pyx":94
  *         self.move_spaces(distance_rr)
  * 
  *     cdef draw_community_chest(self):             # <<<<<<<<<<<<<<
@@ -2674,7 +2674,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_rail
  *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2686,7 +2686,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("draw_community_chest", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":95
+  /* "app/cython_ext/monopoly.pyx":95
  * 
  *     cdef draw_community_chest(self):
  *         if len(self.community_deck) == 0:             # <<<<<<<<<<<<<<
@@ -2704,7 +2704,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":97
+    /* "app/cython_ext/monopoly.pyx":97
  *         if len(self.community_deck) == 0:
  *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
  *             self.community_deck = self.shuffle_deck(self.community_cards)             # <<<<<<<<<<<<<<
@@ -2713,7 +2713,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
  */
     __pyx_t_1 = __pyx_v_self->community_cards;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_4);
@@ -2722,7 +2722,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
     __pyx_v_self->community_deck = ((PyObject*)__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":95
+    /* "app/cython_ext/monopoly.pyx":95
  * 
  *     cdef draw_community_chest(self):
  *         if len(self.community_deck) == 0:             # <<<<<<<<<<<<<<
@@ -2731,7 +2731,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":98
+  /* "app/cython_ext/monopoly.pyx":98
  *             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))
  *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()             # <<<<<<<<<<<<<<
@@ -2747,7 +2747,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   __pyx_v_card = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":99
+  /* "app/cython_ext/monopoly.pyx":99
  *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()
  *         if card is not None:             # <<<<<<<<<<<<<<
@@ -2758,7 +2758,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   __pyx_t_5 = (__pyx_t_3 != 0);
   if (__pyx_t_5) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":100
+    /* "app/cython_ext/monopoly.pyx":100
  *         card = self.community_deck.pop()
  *         if card is not None:
  *             self.move_to(card)             # <<<<<<<<<<<<<<
@@ -2766,11 +2766,11 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
  *     cdef draw_chance(self):
  */
     __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L1_error)
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":99
+    /* "app/cython_ext/monopoly.pyx":99
  *             self.community_deck = self.shuffle_deck(self.community_cards)
  *         card = self.community_deck.pop()
  *         if card is not None:             # <<<<<<<<<<<<<<
@@ -2779,7 +2779,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":94
+  /* "app/cython_ext/monopoly.pyx":94
  *         self.move_spaces(distance_rr)
  * 
  *     cdef draw_community_chest(self):             # <<<<<<<<<<<<<<
@@ -2793,7 +2793,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.draw_community_chest", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.draw_community_chest", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_card);
@@ -2802,7 +2802,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":102
+/* "app/cython_ext/monopoly.pyx":102
  *             self.move_to(card)
  * 
  *     cdef draw_chance(self):             # <<<<<<<<<<<<<<
@@ -2810,7 +2810,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_communi
  *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2822,7 +2822,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("draw_chance", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":103
+  /* "app/cython_ext/monopoly.pyx":103
  * 
  *     cdef draw_chance(self):
  *         if len(self.chance_deck) == 0:             # <<<<<<<<<<<<<<
@@ -2840,7 +2840,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":105
+    /* "app/cython_ext/monopoly.pyx":105
  *         if len(self.chance_deck) == 0:
  *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
  *             self.chance_deck = self.shuffle_deck(self.chance_cards)             # <<<<<<<<<<<<<<
@@ -2849,7 +2849,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
  */
     __pyx_t_1 = __pyx_v_self->chance_cards;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GIVEREF(__pyx_t_4);
@@ -2858,7 +2858,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
     __pyx_v_self->chance_deck = ((PyObject*)__pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":103
+    /* "app/cython_ext/monopoly.pyx":103
  * 
  *     cdef draw_chance(self):
  *         if len(self.chance_deck) == 0:             # <<<<<<<<<<<<<<
@@ -2867,7 +2867,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
  */
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":106
+  /* "app/cython_ext/monopoly.pyx":106
  *             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))
  *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()             # <<<<<<<<<<<<<<
@@ -2883,7 +2883,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_v_card = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":107
+  /* "app/cython_ext/monopoly.pyx":107
  *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()
  *         if card == 'U':             # <<<<<<<<<<<<<<
@@ -2893,18 +2893,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_U, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 107, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":108
+    /* "app/cython_ext/monopoly.pyx":108
  *         card = self.chance_deck.pop()
  *         if card == 'U':
  *             self.move_to_utility()             # <<<<<<<<<<<<<<
  *         elif card == 'R':
  *             self.move_to_railroad()
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_utility(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_utility(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":107
+    /* "app/cython_ext/monopoly.pyx":107
  *             self.chance_deck = self.shuffle_deck(self.chance_cards)
  *         card = self.chance_deck.pop()
  *         if card == 'U':             # <<<<<<<<<<<<<<
@@ -2914,7 +2914,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
     goto __pyx_L4;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":109
+  /* "app/cython_ext/monopoly.pyx":109
  *         if card == 'U':
  *             self.move_to_utility()
  *         elif card == 'R':             # <<<<<<<<<<<<<<
@@ -2924,18 +2924,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_R, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":110
+    /* "app/cython_ext/monopoly.pyx":110
  *             self.move_to_utility()
  *         elif card == 'R':
  *             self.move_to_railroad()             # <<<<<<<<<<<<<<
  *         elif card == 'B':
  *             self.move_spaces(-3)
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_railroad(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to_railroad(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":109
+    /* "app/cython_ext/monopoly.pyx":109
  *         if card == 'U':
  *             self.move_to_utility()
  *         elif card == 'R':             # <<<<<<<<<<<<<<
@@ -2945,7 +2945,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
     goto __pyx_L4;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":111
+  /* "app/cython_ext/monopoly.pyx":111
  *         elif card == 'R':
  *             self.move_to_railroad()
  *         elif card == 'B':             # <<<<<<<<<<<<<<
@@ -2955,18 +2955,18 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_card, __pyx_n_u_B, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
   if (__pyx_t_3) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":112
+    /* "app/cython_ext/monopoly.pyx":112
  *             self.move_to_railroad()
  *         elif card == 'B':
  *             self.move_spaces(-3)             # <<<<<<<<<<<<<<
  *         elif card is not None:
  *             self.move_to(card)
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, -3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_spaces(__pyx_v_self, -3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":111
+    /* "app/cython_ext/monopoly.pyx":111
  *         elif card == 'R':
  *             self.move_to_railroad()
  *         elif card == 'B':             # <<<<<<<<<<<<<<
@@ -2976,7 +2976,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
     goto __pyx_L4;
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":113
+  /* "app/cython_ext/monopoly.pyx":113
  *         elif card == 'B':
  *             self.move_spaces(-3)
  *         elif card is not None:             # <<<<<<<<<<<<<<
@@ -2987,7 +2987,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_t_5 = (__pyx_t_3 != 0);
   if (__pyx_t_5) {
 
-    /* "monopoly/cython_ext/monopoly.pyx":114
+    /* "app/cython_ext/monopoly.pyx":114
  *             self.move_spaces(-3)
  *         elif card is not None:
  *             self.move_to(card)             # <<<<<<<<<<<<<<
@@ -2995,11 +2995,11 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
  *     cdef list shuffle_deck(self, list deck):
  */
     __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
-    __pyx_t_4 = ((struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self->__pyx_vtab)->move_to(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":113
+    /* "app/cython_ext/monopoly.pyx":113
  *         elif card == 'B':
  *             self.move_spaces(-3)
  *         elif card is not None:             # <<<<<<<<<<<<<<
@@ -3009,7 +3009,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   }
   __pyx_L4:;
 
-  /* "monopoly/cython_ext/monopoly.pyx":102
+  /* "app/cython_ext/monopoly.pyx":102
  *             self.move_to(card)
  * 
  *     cdef draw_chance(self):             # <<<<<<<<<<<<<<
@@ -3023,7 +3023,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.draw_chance", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.draw_chance", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_card);
@@ -3032,7 +3032,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":116
+/* "app/cython_ext/monopoly.pyx":116
  *             self.move_to(card)
  * 
  *     cdef list shuffle_deck(self, list deck):             # <<<<<<<<<<<<<<
@@ -3040,7 +3040,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance(
  *         cdef int i,r
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck) {
   PyObject *__pyx_v_shuffled = 0;
   int __pyx_v_i;
   int __pyx_v_r;
@@ -3056,7 +3056,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   int __pyx_t_6;
   __Pyx_RefNannySetupContext("shuffle_deck", 0);
 
-  /* "monopoly/cython_ext/monopoly.pyx":117
+  /* "app/cython_ext/monopoly.pyx":117
  * 
  *     cdef list shuffle_deck(self, list deck):
  *         cdef list shuffled = deck.copy()             # <<<<<<<<<<<<<<
@@ -3069,7 +3069,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   __pyx_v_shuffled = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":120
+  /* "app/cython_ext/monopoly.pyx":120
  *         cdef int i,r
  *         cdef move
  *         cdef int n = len(shuffled)             # <<<<<<<<<<<<<<
@@ -3083,7 +3083,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   __pyx_t_2 = PyList_GET_SIZE(__pyx_v_shuffled); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 120, __pyx_L1_error)
   __pyx_v_n = __pyx_t_2;
 
-  /* "monopoly/cython_ext/monopoly.pyx":121
+  /* "app/cython_ext/monopoly.pyx":121
  *         cdef move
  *         cdef int n = len(shuffled)
  *         for i in range(n-1,0,-1):             # <<<<<<<<<<<<<<
@@ -3093,7 +3093,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   for (__pyx_t_3 = (__pyx_v_n - 1); __pyx_t_3 > 0; __pyx_t_3-=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "monopoly/cython_ext/monopoly.pyx":122
+    /* "app/cython_ext/monopoly.pyx":122
  *         cdef int n = len(shuffled)
  *         for i in range(n-1,0,-1):
  *             r = int(random()*i)             # <<<<<<<<<<<<<<
@@ -3130,7 +3130,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_r = __pyx_t_6;
 
-    /* "monopoly/cython_ext/monopoly.pyx":123
+    /* "app/cython_ext/monopoly.pyx":123
  *         for i in range(n-1,0,-1):
  *             r = int(random()*i)
  *             move = shuffled[r]             # <<<<<<<<<<<<<<
@@ -3146,7 +3146,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
     __Pyx_XDECREF_SET(__pyx_v_move, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":124
+    /* "app/cython_ext/monopoly.pyx":124
  *             r = int(random()*i)
  *             move = shuffled[r]
  *             shuffled[r] = shuffled[i]             # <<<<<<<<<<<<<<
@@ -3166,7 +3166,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
     if (unlikely(__Pyx_SetItemInt(__pyx_v_shuffled, __pyx_v_r, __pyx_t_4, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 124, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "monopoly/cython_ext/monopoly.pyx":125
+    /* "app/cython_ext/monopoly.pyx":125
  *             move = shuffled[r]
  *             shuffled[r] = shuffled[i]
  *             shuffled[i] = move             # <<<<<<<<<<<<<<
@@ -3179,7 +3179,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
     if (unlikely(__Pyx_SetItemInt(__pyx_v_shuffled, __pyx_v_i, __pyx_v_move, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 125, __pyx_L1_error)
   }
 
-  /* "monopoly/cython_ext/monopoly.pyx":126
+  /* "app/cython_ext/monopoly.pyx":126
  *             shuffled[r] = shuffled[i]
  *             shuffled[i] = move
  *         return shuffled             # <<<<<<<<<<<<<<
@@ -3189,7 +3189,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   __pyx_r = __pyx_v_shuffled;
   goto __pyx_L0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":116
+  /* "app/cython_ext/monopoly.pyx":116
  *             self.move_to(card)
  * 
  *     cdef list shuffle_deck(self, list deck):             # <<<<<<<<<<<<<<
@@ -3202,7 +3202,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.shuffle_deck", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.shuffle_deck", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_shuffled);
@@ -3212,7 +3212,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
   return __pyx_r;
 }
 
-/* "monopoly/cython_ext/monopoly.pyx":21
+/* "app/cython_ext/monopoly.pyx":21
  *     cdef list community_deck
  *     cdef list chance_deck
  *     cdef readonly long long[41] results             # <<<<<<<<<<<<<<
@@ -3221,19 +3221,19 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7results_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___get__(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_7results___get__(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_7results___get__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3248,7 +3248,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.results.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.results.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3263,19 +3263,19 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_7results___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_4__reduce_cython__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -3570,7 +3570,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_4__reduce_c
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -3588,19 +3588,19 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_4__reduce_c
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_6__setstate_cython__(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3612,7 +3612,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate
  *     __pyx_unpickle_Monopoly__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 17, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3628,7 +3628,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.Monopoly.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.Monopoly.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3643,9 +3643,9 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly_8Monopoly_6__setstate
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly = {"__pyx_unpickle_Monopoly", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_3app_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly = {"__pyx_unpickle_Monopoly", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_3app_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_3app_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -3704,18 +3704,18 @@ static PyObject *__pyx_pw_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monop
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Monopoly", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.__pyx_unpickle_Monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.__pyx_unpickle_Monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = 0;
   PyObject *__pyx_v___pyx_result = 0;
   PyObject *__pyx_r = NULL;
@@ -3809,7 +3809,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopo
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Monopoly__set_state(<Monopoly> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_8monopoly_10cython_ext_8monopoly_Monopoly), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_3app_10cython_ext_8monopoly_Monopoly), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3848,7 +3848,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopo
  * cdef __pyx_unpickle_Monopoly__set_state(Monopoly __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 9, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -3885,7 +3885,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopo
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.__pyx_unpickle_Monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.__pyx_unpickle_Monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -3903,7 +3903,7 @@ static PyObject *__pyx_pf_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopo
  *     if len(__pyx_state) > 13 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_3app_10cython_ext_8monopoly___pyx_unpickle_Monopoly__set_state(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4139,7 +4139,7 @@ static PyObject *__pyx_f_8monopoly_10cython_ext_8monopoly___pyx_unpickle_Monopol
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("monopoly.cython_ext.monopoly.__pyx_unpickle_Monopoly__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("app.cython_ext.monopoly.__pyx_unpickle_Monopoly__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5445,10 +5445,10 @@ static int __Pyx_carray_from_py_int(PyObject *__pyx_v_o, int *__pyx_v_v, Py_ssiz
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_8monopoly_10cython_ext_8monopoly_Monopoly __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly;
+static struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly;
 
-static PyObject *__pyx_tp_new_8monopoly_10cython_ext_8monopoly_Monopoly(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *p;
+static PyObject *__pyx_tp_new_3app_10cython_ext_8monopoly_Monopoly(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -5456,8 +5456,8 @@ static PyObject *__pyx_tp_new_8monopoly_10cython_ext_8monopoly_Monopoly(PyTypeOb
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)o);
-  p->__pyx_vtab = __pyx_vtabptr_8monopoly_10cython_ext_8monopoly_Monopoly;
+  p = ((struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)o);
+  p->__pyx_vtab = __pyx_vtabptr_3app_10cython_ext_8monopoly_Monopoly;
   new((void*)&(p->community_squares)) std::set<int> ();
   new((void*)&(p->chance_squares)) std::set<int> ();
   new((void*)&(p->double_indices)) std::set<int> ();
@@ -5468,8 +5468,8 @@ static PyObject *__pyx_tp_new_8monopoly_10cython_ext_8monopoly_Monopoly(PyTypeOb
   return o;
 }
 
-static void __pyx_tp_dealloc_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject *o) {
-  struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)o;
+static void __pyx_tp_dealloc_3app_10cython_ext_8monopoly_Monopoly(PyObject *o) {
+  struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)o;
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -5486,9 +5486,9 @@ static void __pyx_tp_dealloc_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject 
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_3app_10cython_ext_8monopoly_Monopoly(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)o;
+  struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)o;
   if (p->community_cards) {
     e = (*v)(p->community_cards, a); if (e) return e;
   }
@@ -5504,9 +5504,9 @@ static int __pyx_tp_traverse_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject 
   return 0;
 }
 
-static int __pyx_tp_clear_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject *o) {
+static int __pyx_tp_clear_3app_10cython_ext_8monopoly_Monopoly(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *)o;
+  struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *p = (struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *)o;
   tmp = ((PyObject*)p->community_cards);
   p->community_cards = ((PyObject*)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -5522,28 +5522,28 @@ static int __pyx_tp_clear_8monopoly_10cython_ext_8monopoly_Monopoly(PyObject *o)
   return 0;
 }
 
-static PyObject *__pyx_getprop_8monopoly_10cython_ext_8monopoly_8Monopoly_results(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7results_1__get__(o);
+static PyObject *__pyx_getprop_3app_10cython_ext_8monopoly_8Monopoly_results(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7results_1__get__(o);
 }
 
-static PyMethodDef __pyx_methods_8monopoly_10cython_ext_8monopoly_Monopoly[] = {
-  {"take_turns", (PyCFunction)__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_3take_turns, METH_O, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_3app_10cython_ext_8monopoly_Monopoly[] = {
+  {"take_turns", (PyCFunction)__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_3take_turns, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_7__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_8monopoly_10cython_ext_8monopoly_Monopoly[] = {
-  {(char *)"results", __pyx_getprop_8monopoly_10cython_ext_8monopoly_8Monopoly_results, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_3app_10cython_ext_8monopoly_Monopoly[] = {
+  {(char *)"results", __pyx_getprop_3app_10cython_ext_8monopoly_8Monopoly_results, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly = {
+static PyTypeObject __pyx_type_3app_10cython_ext_8monopoly_Monopoly = {
   PyVarObject_HEAD_INIT(0, 0)
-  "monopoly.cython_ext.monopoly.Monopoly", /*tp_name*/
-  sizeof(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly), /*tp_basicsize*/
+  "app.cython_ext.monopoly.Monopoly", /*tp_name*/
+  sizeof(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_dealloc*/
+  __pyx_tp_dealloc_3app_10cython_ext_8monopoly_Monopoly, /*tp_dealloc*/
   #if PY_VERSION_HEX < 0x030800b4
   0, /*tp_print*/
   #endif
@@ -5570,23 +5570,23 @@ static PyTypeObject __pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly = {
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   0, /*tp_doc*/
-  __pyx_tp_traverse_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_traverse*/
-  __pyx_tp_clear_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_clear*/
+  __pyx_tp_traverse_3app_10cython_ext_8monopoly_Monopoly, /*tp_traverse*/
+  __pyx_tp_clear_3app_10cython_ext_8monopoly_Monopoly, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_methods*/
+  __pyx_methods_3app_10cython_ext_8monopoly_Monopoly, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_getset*/
+  __pyx_getsets_3app_10cython_ext_8monopoly_Monopoly, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_8monopoly_10cython_ext_8monopoly_8Monopoly_1__init__, /*tp_init*/
+  __pyx_pw_3app_10cython_ext_8monopoly_8Monopoly_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_8monopoly_10cython_ext_8monopoly_Monopoly, /*tp_new*/
+  __pyx_tp_new_3app_10cython_ext_8monopoly_Monopoly, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -5662,6 +5662,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_u_R, __pyx_k_R, sizeof(__pyx_k_R), 0, 1, 0, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_u_U, __pyx_k_U, sizeof(__pyx_k_U), 0, 1, 0, 1},
+  {&__pyx_n_s_app_cython_ext_monopoly, __pyx_k_app_cython_ext_monopoly, sizeof(__pyx_k_app_cython_ext_monopoly), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
@@ -5669,7 +5670,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_monopoly_cython_ext_monopoly, __pyx_k_monopoly_cython_ext_monopoly, sizeof(__pyx_k_monopoly_cython_ext_monopoly), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_n_s_new, __pyx_k_new, sizeof(__pyx_k_new), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
@@ -5787,28 +5787,28 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  __pyx_vtabptr_8monopoly_10cython_ext_8monopoly_Monopoly = &__pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.take_turns = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PY_LONG_LONG, int __pyx_skip_dispatch))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_take_turns;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.roll_dice = (int (*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_roll_dice;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.move_spaces = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_spaces;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.move_to = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, int))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.end_turn = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_end_turn;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.move_to_utility = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_utility;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.move_to_railroad = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_move_to_railroad;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.draw_community_chest = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_community_chest;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.draw_chance = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_draw_chance;
-  __pyx_vtable_8monopoly_10cython_ext_8monopoly_Monopoly.shuffle_deck = (PyObject *(*)(struct __pyx_obj_8monopoly_10cython_ext_8monopoly_Monopoly *, PyObject *))__pyx_f_8monopoly_10cython_ext_8monopoly_8Monopoly_shuffle_deck;
-  if (PyType_Ready(&__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_vtabptr_3app_10cython_ext_8monopoly_Monopoly = &__pyx_vtable_3app_10cython_ext_8monopoly_Monopoly;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.take_turns = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, PY_LONG_LONG, int __pyx_skip_dispatch))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_take_turns;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.roll_dice = (int (*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_roll_dice;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.move_spaces = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, int))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_spaces;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.move_to = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, int))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.end_turn = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_end_turn;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.move_to_utility = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_utility;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.move_to_railroad = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_railroad;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.draw_community_chest = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_community_chest;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.draw_chance = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_chance;
+  __pyx_vtable_3app_10cython_ext_8monopoly_Monopoly.shuffle_deck = (PyObject *(*)(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *, PyObject *))__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_shuffle_deck;
+  if (PyType_Ready(&__pyx_type_3app_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
-  __pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly.tp_print = 0;
+  __pyx_type_3app_10cython_ext_8monopoly_Monopoly.tp_print = 0;
   #endif
-  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly.tp_dictoffset && __pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly.tp_getattro == PyObject_GenericGetAttr)) {
-    __pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly.tp_getattro = __Pyx_PyObject_GenericGetAttr;
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_3app_10cython_ext_8monopoly_Monopoly.tp_dictoffset && __pyx_type_3app_10cython_ext_8monopoly_Monopoly.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_3app_10cython_ext_8monopoly_Monopoly.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly.tp_dict, __pyx_vtabptr_8monopoly_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Monopoly, (PyObject *)&__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
-  __pyx_ptype_8monopoly_10cython_ext_8monopoly_Monopoly = &__pyx_type_8monopoly_10cython_ext_8monopoly_Monopoly;
+  if (__Pyx_SetVtable(__pyx_type_3app_10cython_ext_8monopoly_Monopoly.tp_dict, __pyx_vtabptr_3app_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Monopoly, (PyObject *)&__pyx_type_3app_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_3app_10cython_ext_8monopoly_Monopoly) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_ptype_3app_10cython_ext_8monopoly_Monopoly = &__pyx_type_3app_10cython_ext_8monopoly_Monopoly;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6010,14 +6010,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_monopoly__cython_ext__monopoly) {
+  if (__pyx_module_is_main_app__cython_ext__monopoly) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "monopoly.cython_ext.monopoly")) {
-      if (unlikely(PyDict_SetItemString(modules, "monopoly.cython_ext.monopoly", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "app.cython_ext.monopoly")) {
+      if (unlikely(PyDict_SetItemString(modules, "app.cython_ext.monopoly", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -6038,7 +6038,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "monopoly/cython_ext/monopoly.pyx":6
+  /* "app/cython_ext/monopoly.pyx":6
  * from libcpp.set cimport set
  * 
  * from random import random             # <<<<<<<<<<<<<<
@@ -6064,12 +6064,12 @@ if (!__Pyx_RefNanny) {
  *     cdef object __pyx_PickleError
  *     cdef object __pyx_result
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_8monopoly_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly, NULL, __pyx_n_s_monopoly_cython_ext_monopoly); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3app_10cython_ext_8monopoly_1__pyx_unpickle_Monopoly, NULL, __pyx_n_s_app_cython_ext_monopoly); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Monopoly, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "monopoly/cython_ext/monopoly.pyx":1
+  /* "app/cython_ext/monopoly.pyx":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
  * # distutils: language = c++
  * 
@@ -6095,11 +6095,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init monopoly.cython_ext.monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init app.cython_ext.monopoly", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init monopoly.cython_ext.monopoly");
+    PyErr_SetString(PyExc_ImportError, "init app.cython_ext.monopoly");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

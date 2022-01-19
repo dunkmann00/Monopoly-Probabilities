@@ -2,17 +2,17 @@
 from setuptools import setup
 
 packages = \
-['monopoly', 'monopoly.data']
+['app', 'app.cython_ext', 'app.data']
 
 package_data = \
 {'': ['*']}
 
 extras_require = \
-{u'cython': ['cython>=0.29.15,<0.30.0']}
+{'cython': ['cython>=0.29.15,<0.30.0']}
 
 entry_points = \
 {'console_scripts': ['monopolize = build:cythonize_monopoly',
-                     'monopoly = monopoly:main']}
+                     'monopoly = app:main']}
 
 setup_kwargs = {
     'name': 'monopoly-probabilities',
@@ -28,7 +28,7 @@ setup_kwargs = {
     'package_data': package_data,
     'extras_require': extras_require,
     'entry_points': entry_points,
-    'python_requires': '>=3.7,<4.0',
+    'python_requires': '>=3.7,<3.11',
 }
 from build import *
 build(setup_kwargs)
