@@ -8,8 +8,7 @@ all:
 install:
 	@echo " -- Install monopoly-probabilties with pip into venv --"
 	$(PYTHON) -m venv venv
-	. venv/bin/activate
-	pip install -e .
+	. venv/bin/activate; pip install -e .
 	@echo " -- Done --"
 
 remove:
