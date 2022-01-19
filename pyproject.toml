@@ -23,5 +23,5 @@ monopolize = "build:cythonize_monopoly"
 cython = ["cython"]
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=0.12", "setuptools>=59.0.1"]
 build-backend = "poetry.masonry.api"

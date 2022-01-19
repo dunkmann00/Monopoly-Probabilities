@@ -6,3 +6,4 @@ venv/
 results/
 pyinstaller-build/
 monopoly.spec
+*.so
