@@ -6,4 +6,5 @@ venv/
 results/
 pyinstaller-build/
 monopoly.spec
+pyoxidizer-build/
 *.so

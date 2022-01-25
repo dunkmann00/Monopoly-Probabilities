@@ -1,18 +1,40 @@
 PYINSTALLER_BUILD_DIR = pyinstaller-build
+PYOXIDIZER_BUILD_DIR = pyoxidizer-build
 
 PYTHON = python3
 
-all:
-	@echo "\nThere is no default Makefile target right now. Try:\n"
+.PHONY: help build install remove clean monopolize pyinstaller pyoxidizer
 
-install:
-	@echo " -- Install monopoly-probabilties with pip into venv --"
+help:
+	@echo "Please use 'make <target>' where <target> is one of"
+
+build:
+	@echo " -- Build monopoly-probabilties with pip in venv --"
+	@echo " -- This allows monopoly-probabilities to be run locally with"
+	@echo "    Python. --"
 	$(PYTHON) -m venv venv
 	. venv/bin/activate; pip install -e .
 	@echo " -- Done --"
 
+install:
+	@echo " -- Install monopoly-probabilties dependencies with pip into venv --"
+	@echo " -- This is needed to build binaries of monopoly-probabilties. --"
+	$(PYTHON) -m venv venv
+	. venv/bin/activate; pip install -r bin-requirements.txt
+	@echo " -- Done --"
+
 remove:
 	rm -rf venv/
+
+clean:
+	@echo " -- Removing build artifacts. --"
+	rm -rf build/
+	rm -rf dist/
+	rm -rf $(PYINSTALLER_BUILD_DIR)/
+	rm -f monopoly.spec
+	rm -rf $(PYOXIDIZER_BUILD_DIR)/
+	rm -rf monopoly_probabilities.egg-info/
+	@echo " -- Done --"
 
 monopolize:
 	@echo " -- Running cythonize on monopoly.pyx file. --"
@@ -20,18 +42,18 @@ monopolize:
 	@echo " -- Done --"
 
 pyinstaller:
-	@echo " -- Building Package. --"
+	@echo " -- Building Package with PyInstaller. --"
 	$(PYTHON) setup.py build --build-lib $(PYINSTALLER_BUILD_DIR)
 	cp -f monopoly.py $(PYINSTALLER_BUILD_DIR)
 	@echo " -- Done --"
 	@echo " -- Creating PyInstaller single file executable. --"
-	pyinstaller $(PYINSTALLER_BUILD_DIR)/monopoly.py --add-data $(PYINSTALLER_BUILD_DIR)/app/data/:app/data -F
+	pyinstaller $(PYINSTALLER_BUILD_DIR)/monopoly.py --add-data $(PYINSTALLER_BUILD_DIR)/app/data/:app/data --distpath dist/pyinstaller/ -F
 	@echo " -- Done. File can be found in dist/ --"
 
-clean:
-	@echo " -- Removing Build artifacts. --"
-	rm -rf build/
-	rm -rf dist/
-	rm -rf $(PYINSTALLER_BUILD_DIR)/
-	rm -f monopoly.spec
-	@echo " -- Done --"
+pyoxidizer:
+	@echo " -- Building Package with PyOxidizer. --"
+	pyoxidizer build --release --var PYOXIDIZER_BUILD_DIR $(PYOXIDIZER_BUILD_DIR)
+	@echo " -- Done. Copying package files into dist/ --"
+	mkdir -p dist/pyoxidizer/
+	cp -rf $(PYOXIDIZER_BUILD_DIR)/*/release/install/ dist/pyoxidizer/
+	@echo " -- Done. Files can be found in dist/ --"

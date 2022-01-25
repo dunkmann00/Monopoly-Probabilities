@@ -7,9 +7,6 @@ packages = \
 package_data = \
 {'': ['*']}
 
-extras_require = \
-{'cython': ['cython>=0.29.15,<0.30.0']}
-
 entry_points = \
 {'console_scripts': ['monopolize = build:cythonize_monopoly',
                      'monopoly = app:main']}
@@ -26,7 +23,6 @@ setup_kwargs = {
     'url': None,
     'packages': packages,
     'package_data': package_data,
-    'extras_require': extras_require,
     'entry_points': entry_points,
     'python_requires': '>=3.7,<3.11',
 }
