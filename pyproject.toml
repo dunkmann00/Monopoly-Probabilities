@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Calculate the probabilties of landing on each different square on a monopoly board."
 authors = ["George Waters <george@georgeh2os.com>"]
 packages = [
-    { include = "monopoly" }
+    { include = "app" }
 ]
 build = "build.py"
 
@@ -24,7 +24,7 @@ pyoxidizer = ["pyoxidizer"]
 Nuitka = ["Nuitka"]
 
 [tool.poetry.scripts]
-monopoly = "monopoly:main"
+monopoly = "app:main"
 monopolize = "build:cythonize_monopoly"
 
 [build-system]
