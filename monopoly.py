@@ -1,5 +1,5 @@
-import monopoly
-# from multiprocessing import freeze_support
+import app
+from multiprocessing import freeze_support
 # import sys
 
 # This file is only needed as an entry point for PyInstaller

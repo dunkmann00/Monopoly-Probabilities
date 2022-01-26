@@ -7,4 +7,5 @@ results/
 pyinstaller-build/
 monopoly.spec
 pyoxidizer-build/
+nuitka-build/
 *.so
