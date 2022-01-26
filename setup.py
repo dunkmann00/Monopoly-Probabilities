@@ -2,14 +2,14 @@
 from setuptools import setup
 
 packages = \
-['app', 'app.cython_ext', 'app.data']
+['monopoly', 'monopoly.cython_ext', 'monopoly.data']
 
 package_data = \
 {'': ['*']}
 
 entry_points = \
 {'console_scripts': ['monopolize = build:cythonize_monopoly',
-                     'monopoly = app:main']}
+                     'monopoly = monopoly:main']}
 
 setup_kwargs = {
     'name': 'monopoly-probabilities',

@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Calculate the probabilties of landing on each different square on a monopoly board."
 authors = ["George Waters <george@georgeh2os.com>"]
 packages = [
-    { include = "app" }
+    { include = "monopoly" }
 ]
 build = "build.py"
 
@@ -17,7 +17,7 @@ pyoxidizer = {version = "^0.18.0", optional = true}
 [tool.poetry.dev-dependencies]
 
 [tool.poetry.scripts]
-monopoly = "app:main"
+monopoly = "monopoly:main"
 monopolize = "build:cythonize_monopoly"
 
 [build-system]

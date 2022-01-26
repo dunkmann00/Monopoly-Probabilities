@@ -1,4 +1,4 @@
-import app
+import monopoly
 from multiprocessing import freeze_support
 import sys
 
@@ -6,4 +6,4 @@ import sys
 
 if __name__ == '__main__':
     freeze_support() # Needed for PyInstaller
-    app.main()
+    monopoly.main()
