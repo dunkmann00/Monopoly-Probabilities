@@ -51,6 +51,14 @@ python-versions = "*"
 altgraph = ">=0.15"
 
 [[package]]
+name = "nuitka"
+version = "0.6.19.4"
+description = "Python compiler with full language support and CPython compatibility"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pefile"
 version = "2021.9.3"
 description = "Python PE parsing module"
@@ -125,10 +133,16 @@ python-versions = ">=3.7"
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
+[extras]
+Nuitka = ["Nuitka"]
+cython = ["cython"]
+pyinstaller = ["pyinstaller"]
+pyoxidizer = ["pyoxidizer"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.11"
-content-hash = "9831d4934e4845b12e1b482cc6712dddcde988fafd0f9fc703c92608e9e58b32"
+content-hash = "6f8a5982c32b96ba8a557a793321cbef7a5304fbc90770aaa0670dc4a4bd7d8f"
 
 [metadata.files]
 altgraph = [
@@ -193,6 +207,9 @@ importlib-metadata = [
 macholib = [
     {file = "macholib-1.15.2-py2.py3-none-any.whl", hash = "sha256:885613dd02d3e26dbd2b541eb4cc4ce611b841f827c0958ab98656e478b9e6f6"},
     {file = "macholib-1.15.2.tar.gz", hash = "sha256:1542c41da3600509f91c165cb897e7e54c0e74008bd8da5da7ebbee519d593d2"},
+]
+nuitka = [
+    {file = "Nuitka-0.6.19.4.tar.gz", hash = "sha256:964ace59ec02fd67954d957a07a78ae02a32f0b56cf2c2266c1b4ce078d51fdf"},
 ]
 pefile = [
     {file = "pefile-2021.9.3.tar.gz", hash = "sha256:344a49e40a94e10849f0fe34dddc80f773a12b40675bf2f7be4b8be578bdd94a"},

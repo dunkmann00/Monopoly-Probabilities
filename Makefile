@@ -1,5 +1,6 @@
 PYINSTALLER_BUILD_DIR = pyinstaller-build
 PYOXIDIZER_BUILD_DIR = pyoxidizer-build
+NUITKA_BUILD_DIR = nuitka-build
 
 PYTHON = python3
 
@@ -44,10 +45,12 @@ monopolize:
 pyinstaller:
 	@echo " -- Building Package with PyInstaller. --"
 	$(PYTHON) setup.py build --build-lib $(PYINSTALLER_BUILD_DIR)
-	cp -f monopoly.py $(PYINSTALLER_BUILD_DIR)
+	# cp -f monopoly.py $(PYINSTALLER_BUILD_DIR)
 	@echo " -- Done --"
 	@echo " -- Creating PyInstaller single file executable. --"
-	pyinstaller $(PYINSTALLER_BUILD_DIR)/monopoly.py --add-data $(PYINSTALLER_BUILD_DIR)/app/data/:app/data --distpath dist/pyinstaller/ -F
+	pyinstaller $(PYINSTALLER_BUILD_DIR)/monopoly/__main__.py -n monopoly \
+				--add-data $(PYINSTALLER_BUILD_DIR)/monopoly/data/:monopoly/data \
+				--distpath dist/pyinstaller/ -F
 	@echo " -- Done. File can be found in dist/ --"
 
 pyoxidizer:
@@ -56,4 +59,17 @@ pyoxidizer:
 	@echo " -- Done. Copying package files into dist/ --"
 	mkdir -p dist/pyoxidizer/
 	cp -rf $(PYOXIDIZER_BUILD_DIR)/*/release/install/ dist/pyoxidizer/
+	@echo " -- Done. Files can be found in dist/ --"
+
+nuitka:
+	@echo " -- Building Package with Nuitka. --"
+	$(PYTHON) setup.py build --build-lib $(NUITKA_BUILD_DIR)
+	# cp -f monopoly.py $(NUITKA_BUILD_DIR)
+	@echo " -- Done --"
+	@echo " -- Creating Nuitka single file executable. --"
+	$(PYTHON) -m nuitka --enable-plugin=multiprocessing \
+						--standalone \
+						--include-data-file $(NUITKA_BUILD_DIR)/monopoly/data/*.txt=monopoly/data/ \
+						--output-dir dist/nuitka \
+						$(NUITKA_BUILD_DIR)/monopoly/__main__.py
 	@echo " -- Done. Files can be found in dist/ --"
