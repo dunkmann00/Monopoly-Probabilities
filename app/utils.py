@@ -19,11 +19,11 @@ class Spinner(object):
     WINDOWS_FRAMES = ["[    ]","[=   ]","[==  ]","[=== ]","[ ===]","[  ==]",
 			         "[   =]","[    ]","[   =]","[  ==]","[ ===]","[====]",
 			         "[=== ]","[==  ]","[=   ]"]
-    def __init__(self):
+    def __init__(self, text=""):
         self._frames = self.WINDOWS_FRAMES if os.name == "nt" else self.MAC_FRAMES
         self._interval = 80 * 0.001 # convert from ms to secs
         self._cycle = itertools.cycle(self._frames)
-        self.text = ""
+        self.text = text
         self._stdout_lock = threading.Lock()
         self._stop_spin = None
         self._spin_thread = None
@@ -42,7 +42,12 @@ class Spinner(object):
             self._hide_cursor()
         self._stop_spin = threading.Event()
         self._spin_thread = threading.Thread(target=self._spin)
-        self._spin_thread.start()
+        try:
+            self._spin_thread.start()
+        finally:
+            # Ensure cursor is not hidden if any failure occurs that prevents
+            # getting it back
+            self._show_cursor()
 
     def stop(self):
         if self._spin_thread:
@@ -69,7 +74,7 @@ class Spinner(object):
                 sys.stdout.flush()
 
             # Wait
-            time.sleep(self._interval)
+            self._stop_spin.wait(self._interval)
 
     @staticmethod
     def _hide_cursor():
