@@ -29,13 +29,10 @@ def main():
 
         turns = calculate_all_turns(flags.turns, cpu_count)
         info_text = f"Using {pluralize(len(turns),'core')} to simulate {pluralize(sum(turns),'move',',')}"
-        with Spinner() as spinner:
-            spinner.text = info_text
-            if len(turns) <= 1:
-                results = [sum(square) for square in zip(*starmap(play_game, generate_games(turns)))]
-            else:
-                with Pool() as pool:
-                    results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(turns)))]
+        with Spinner(info_text) as spinner:
+            with Pool() as pool:
+                results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(turns)))]
+
     total_turns = sum(results)
     print(f"Complete, {pluralize(total_turns,'move',',')} made")
     save_results(results)
