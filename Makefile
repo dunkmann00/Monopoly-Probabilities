@@ -69,8 +69,9 @@ nuitka:
 	@echo " -- Done --"
 	@echo " -- Creating Nuitka single file executable. --"
 	$(PYTHON) -m nuitka --enable-plugin=multiprocessing \
-						--standalone \
+						--onefile \
 						--include-data-file $(NUITKA_BUILD_DIR)/app/data/*.txt=app/data/ \
-						--output-dir dist/nuitka \
+						--output-dir $(NUITKA_BUILD_DIR)/build \
+						-o dist/nuitka/monopoly \
 						$(NUITKA_BUILD_DIR)/monopoly.py
 	@echo " -- Done. Files can be found in dist/ --"
