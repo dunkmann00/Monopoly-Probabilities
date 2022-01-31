@@ -936,8 +936,34 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   (__pyx_v_self-&gt;results[__pyx_t_1]) = ((__pyx_v_self-&gt;results[__pyx_t_1]) + 1);
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">080</span>:         self.total_turns+=1</pre>
 <pre class='cython code score-0 '>  __pyx_v_self-&gt;total_turns = (__pyx_v_self-&gt;total_turns + 1);
-</pre><pre class="cython line score-0">&#xA0;<span class="">081</span>: </pre>
-<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">082</span>:     cdef move_to_utility(self):</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">081</span>:         if self.total_turns % 100000 == 0:</pre>
+<pre class='cython code score-0 '>  __pyx_t_2 = ((__Pyx_mod_PY_LONG_LONG(__pyx_v_self-&gt;total_turns, 0x186A0) == 0) != 0);
+  if (__pyx_t_2) {
+/* … */
+  }
+</pre><pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">082</span>:             with nogil:</pre>
+<pre class='cython code score-4 '>    {
+        #ifdef WITH_THREAD
+        PyThreadState *_save;
+        Py_UNBLOCK_THREADS
+        <span class='pyx_c_api'>__Pyx_FastGIL_Remember</span>();
+        #endif
+        /*try:*/ {
+        }
+        /*finally:*/ {
+          /*normal exit:*/{
+            #ifdef WITH_THREAD
+            <span class='pyx_c_api'>__Pyx_FastGIL_Forget</span>();
+            Py_BLOCK_THREADS
+            #endif
+            goto __pyx_L6;
+          }
+          __pyx_L6:;
+        }
+    }
+</pre><pre class="cython line score-0">&#xA0;<span class="">083</span>:                 pass</pre>
+<pre class="cython line score-0">&#xA0;<span class="">084</span>: </pre>
+<pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">085</span>:     cdef move_to_utility(self):</pre>
 <pre class='cython code score-4 '>static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_utility(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
@@ -955,7 +981,7 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">083</span>:         if self.current_position &gt; 12 and self.current_position &lt; 28:</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">086</span>:         if self.current_position &gt; 12 and self.current_position &lt; 28:</pre>
 <pre class='cython code score-0 '>  __pyx_t_2 = ((__pyx_v_self-&gt;current_position &gt; 12) != 0);
   if (__pyx_t_2) {
   } else {
@@ -969,20 +995,20 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
 /* … */
     goto __pyx_L3;
   }
-</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">084</span>:             self.move_to(28)</pre>
-<pre class='cython code score-1 '>    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, 28);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)</span>
+</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">087</span>:             self.move_to(28)</pre>
+<pre class='cython code score-1 '>    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, 28);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">085</span>:         else:</pre>
-<pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">086</span>:             self.move_to(12)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">088</span>:         else:</pre>
+<pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">089</span>:             self.move_to(12)</pre>
 <pre class='cython code score-1 '>  /*else*/ {
-    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, 12);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)</span>
+    __pyx_t_3 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, 12);<span class='error_goto'> if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_3);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_L3:;
-</pre><pre class="cython line score-0">&#xA0;<span class="">087</span>: </pre>
-<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">088</span>:     cdef move_to_railroad(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">090</span>: </pre>
+<pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">091</span>:     cdef move_to_railroad(self):</pre>
 <pre class='cython code score-5 '>static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_move_to_railroad(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_distance_rr = NULL;
   PyObject *__pyx_r = NULL;
@@ -1002,31 +1028,31 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">089</span>:         distance_rr = (self.current_position+5)%10</pre>
-<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_long</span>(__Pyx_mod_long((__pyx_v_self-&gt;current_position + 5), 10));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">092</span>:         distance_rr = (self.current_position+5)%10</pre>
+<pre class='cython code score-2 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_From_long</span>(__Pyx_mod_long((__pyx_v_self-&gt;current_position + 5), 10));<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   __pyx_v_distance_rr = __pyx_t_1;
   __pyx_t_1 = 0;
-</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">090</span>:         if distance_rr != 0:</pre>
-<pre class='cython code score-5 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_NeObjC</span>(__pyx_v_distance_rr, __pyx_int_0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)</span>
+</pre><pre class="cython line score-5" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">093</span>:         if distance_rr != 0:</pre>
+<pre class='cython code score-5 '>  __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_NeObjC</span>(__pyx_v_distance_rr, __pyx_int_0, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_1); if (unlikely(__pyx_t_2 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 90, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='pyx_c_api'>__Pyx_PyObject_IsTrue</span>(__pyx_t_1); if (unlikely(__pyx_t_2 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 93, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 /* … */
   }
-</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">091</span>:             distance_rr = 10-distance_rr</pre>
-<pre class='cython code score-3 '>    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_SubtractCObj</span>(__pyx_int_10, __pyx_v_distance_rr, 10, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)</span>
+</pre><pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">094</span>:             distance_rr = 10-distance_rr</pre>
+<pre class='cython code score-3 '>    __pyx_t_1 = <span class='pyx_c_api'>__Pyx_PyInt_SubtractCObj</span>(__pyx_int_10, __pyx_v_distance_rr, 10, 0, 0);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
     <span class='pyx_macro_api'>__Pyx_DECREF_SET</span>(__pyx_v_distance_rr, __pyx_t_1);
     __pyx_t_1 = 0;
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">092</span>:         self.move_spaces(distance_rr)</pre>
-<pre class='cython code score-8 '>  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_distance_rr); if (unlikely((__pyx_t_3 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 92, __pyx_L1_error)</span>
-  __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_spaces(__pyx_v_self, __pyx_t_3);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)</span>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">095</span>:         self.move_spaces(distance_rr)</pre>
+<pre class='cython code score-8 '>  __pyx_t_3 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_distance_rr); if (unlikely((__pyx_t_3 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 95, __pyx_L1_error)</span>
+  __pyx_t_1 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_spaces(__pyx_v_self, __pyx_t_3);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">093</span>: </pre>
-<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">094</span>:     cdef draw_community_chest(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">096</span>: </pre>
+<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">097</span>:     cdef draw_community_chest(self):</pre>
 <pre class='cython code score-6 '>static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_community_chest(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
@@ -1047,24 +1073,24 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">095</span>:         if len(self.community_deck) == 0:</pre>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">098</span>:         if len(self.community_deck) == 0:</pre>
 <pre class='cython code score-8 '>  __pyx_t_1 = __pyx_v_self-&gt;community_deck;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    <span class='error_goto'>__PYX_ERR(0, 95, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 98, __pyx_L1_error)</span>
   }
-  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 95, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 98, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 /* … */
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">096</span>:             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))</pre>
-<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">097</span>:             self.community_deck = self.shuffle_deck(self.community_cards)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">099</span>:             # self.community_deck = random.sample(self.community_cards, len(self.community_cards))</pre>
+<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">100</span>:             self.community_deck = self.shuffle_deck(self.community_cards)</pre>
 <pre class='cython code score-3 '>    __pyx_t_1 = __pyx_v_self-&gt;community_cards;
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 97, __pyx_L1_error)</span>
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
@@ -1072,28 +1098,28 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;community_deck);
     __pyx_v_self-&gt;community_deck = ((PyObject*)__pyx_t_4);
     __pyx_t_4 = 0;
-</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">098</span>:         card = self.community_deck.pop()</pre>
+</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">101</span>:         card = self.community_deck.pop()</pre>
 <pre class='cython code score-7 '>  if (unlikely(__pyx_v_self-&gt;community_deck == Py_None)) {
     <span class='py_c_api'>PyErr_Format</span>(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-    <span class='error_goto'>__PYX_ERR(0, 98, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 101, __pyx_L1_error)</span>
   }
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyList_Pop</span>(__pyx_v_self-&gt;community_deck);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)</span>
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyList_Pop</span>(__pyx_v_self-&gt;community_deck);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   __pyx_v_card = __pyx_t_4;
   __pyx_t_4 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">099</span>:         if card is not None:</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">102</span>:         if card is not None:</pre>
 <pre class='cython code score-0 '>  __pyx_t_3 = (__pyx_v_card != Py_None);
   __pyx_t_5 = (__pyx_t_3 != 0);
   if (__pyx_t_5) {
 /* … */
   }
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">100</span>:             self.move_to(card)</pre>
-<pre class='cython code score-8 '>    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 100, __pyx_L1_error)</span>
-    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, __pyx_t_6);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)</span>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">103</span>:             self.move_to(card)</pre>
+<pre class='cython code score-8 '>    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 103, __pyx_L1_error)</span>
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, __pyx_t_6);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">101</span>: </pre>
-<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">102</span>:     cdef draw_chance(self):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">104</span>: </pre>
+<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">105</span>:     cdef draw_chance(self):</pre>
 <pre class='cython code score-6 '>static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_draw_chance(struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self) {
   PyObject *__pyx_v_card = NULL;
   PyObject *__pyx_r = NULL;
@@ -1114,24 +1140,24 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">103</span>:         if len(self.chance_deck) == 0:</pre>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">106</span>:         if len(self.chance_deck) == 0:</pre>
 <pre class='cython code score-8 '>  __pyx_t_1 = __pyx_v_self-&gt;chance_deck;
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    <span class='error_goto'>__PYX_ERR(0, 103, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 106, __pyx_L1_error)</span>
   }
-  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 103, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_t_1);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 106, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((__pyx_t_2 == 0) != 0);
   if (__pyx_t_3) {
 /* … */
   }
-</pre><pre class="cython line score-0">&#xA0;<span class="">104</span>:             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))</pre>
-<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">105</span>:             self.chance_deck = self.shuffle_deck(self.chance_cards)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">107</span>:             # self.chance_deck = random.sample(self.chance_cards, len(self.chance_cards))</pre>
+<pre class="cython line score-3" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">108</span>:             self.chance_deck = self.shuffle_deck(self.chance_cards)</pre>
 <pre class='cython code score-3 '>    __pyx_t_1 = __pyx_v_self-&gt;chance_cards;
     <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_t_1);
-    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)</span>
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;shuffle_deck(__pyx_v_self, ((PyObject*)__pyx_t_1));<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
     <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_t_4);
@@ -1139,59 +1165,59 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_v_self-&gt;chance_deck);
     __pyx_v_self-&gt;chance_deck = ((PyObject*)__pyx_t_4);
     __pyx_t_4 = 0;
-</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">106</span>:         card = self.chance_deck.pop()</pre>
+</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">109</span>:         card = self.chance_deck.pop()</pre>
 <pre class='cython code score-7 '>  if (unlikely(__pyx_v_self-&gt;chance_deck == Py_None)) {
     <span class='py_c_api'>PyErr_Format</span>(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-    <span class='error_goto'>__PYX_ERR(0, 106, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 109, __pyx_L1_error)</span>
   }
-  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyList_Pop</span>(__pyx_v_self-&gt;chance_deck);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)</span>
+  __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyList_Pop</span>(__pyx_v_self-&gt;chance_deck);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
   __pyx_v_card = __pyx_t_4;
   __pyx_t_4 = 0;
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">107</span>:         if card == 'U':</pre>
-<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_U, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 107, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">110</span>:         if card == 'U':</pre>
+<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_U, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 110, __pyx_L1_error)</span>
   if (__pyx_t_3) {
 /* … */
     goto __pyx_L4;
   }
-</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">108</span>:             self.move_to_utility()</pre>
-<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to_utility(__pyx_v_self);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)</span>
+</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">111</span>:             self.move_to_utility()</pre>
+<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to_utility(__pyx_v_self);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">109</span>:         elif card == 'R':</pre>
-<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_R, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 109, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">112</span>:         elif card == 'R':</pre>
+<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_R, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 112, __pyx_L1_error)</span>
   if (__pyx_t_3) {
 /* … */
     goto __pyx_L4;
   }
-</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">110</span>:             self.move_to_railroad()</pre>
-<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to_railroad(__pyx_v_self);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 110, __pyx_L1_error)</span>
+</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">113</span>:             self.move_to_railroad()</pre>
+<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to_railroad(__pyx_v_self);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">111</span>:         elif card == 'B':</pre>
-<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_B, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 111, __pyx_L1_error)</span>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">114</span>:         elif card == 'B':</pre>
+<pre class='cython code score-2 '>  __pyx_t_3 = (<span class='pyx_c_api'>__Pyx_PyUnicode_Equals</span>(__pyx_v_card, __pyx_n_u_B, Py_EQ)); if (unlikely(__pyx_t_3 &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 114, __pyx_L1_error)</span>
   if (__pyx_t_3) {
 /* … */
     goto __pyx_L4;
   }
-</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">112</span>:             self.move_spaces(-3)</pre>
-<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_spaces(__pyx_v_self, -3);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)</span>
+</pre><pre class="cython line score-1" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">115</span>:             self.move_spaces(-3)</pre>
+<pre class='cython code score-1 '>    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_spaces(__pyx_v_self, -3);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">113</span>:         elif card is not None:</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">116</span>:         elif card is not None:</pre>
 <pre class='cython code score-0 '>  __pyx_t_3 = (__pyx_v_card != Py_None);
   __pyx_t_5 = (__pyx_t_3 != 0);
   if (__pyx_t_5) {
 /* … */
   }
   __pyx_L4:;
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">114</span>:             self.move_to(card)</pre>
-<pre class='cython code score-8 '>    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 114, __pyx_L1_error)</span>
-    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, __pyx_t_6);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)</span>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">117</span>:             self.move_to(card)</pre>
+<pre class='cython code score-8 '>    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_v_card); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 117, __pyx_L1_error)</span>
+    __pyx_t_4 = ((struct __pyx_vtabstruct_3app_10cython_ext_8monopoly_Monopoly *)__pyx_v_self-&gt;__pyx_vtab)-&gt;move_to(__pyx_v_self, __pyx_t_6);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">115</span>: </pre>
-<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">116</span>:     cdef list shuffle_deck(self, list deck):</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">118</span>: </pre>
+<pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">119</span>:     cdef list shuffle_deck(self, list deck):</pre>
 <pre class='cython code score-7 '>static PyObject *__pyx_f_3app_10cython_ext_8monopoly_8Monopoly_shuffle_deck(CYTHON_UNUSED struct __pyx_obj_3app_10cython_ext_8monopoly_Monopoly *__pyx_v_self, PyObject *__pyx_v_deck) {
   PyObject *__pyx_v_shuffled = 0;
   int __pyx_v_i;
@@ -1216,26 +1242,26 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">117</span>:         cdef list shuffled = deck.copy()</pre>
-<pre class='cython code score-10 '>  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&amp;__pyx_umethod_PyList_Type_copy, __pyx_v_deck);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)</span>
+</pre><pre class="cython line score-10" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">120</span>:         cdef list shuffled = deck.copy()</pre>
+<pre class='cython code score-10 '>  __pyx_t_1 = __Pyx_CallUnboundCMethod0(&amp;__pyx_umethod_PyList_Type_copy, __pyx_v_deck);<span class='error_goto'> if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
-  if (!(likely(<span class='py_c_api'>PyList_CheckExact</span>(__pyx_t_1))||((__pyx_t_1) == Py_None)||(<span class='py_c_api'>PyErr_Format</span>(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)-&gt;tp_name), 0))) <span class='error_goto'>__PYX_ERR(0, 117, __pyx_L1_error)</span>
+  if (!(likely(<span class='py_c_api'>PyList_CheckExact</span>(__pyx_t_1))||((__pyx_t_1) == Py_None)||(<span class='py_c_api'>PyErr_Format</span>(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_1)-&gt;tp_name), 0))) <span class='error_goto'>__PYX_ERR(0, 120, __pyx_L1_error)</span>
   __pyx_v_shuffled = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
-</pre><pre class="cython line score-0">&#xA0;<span class="">118</span>:         cdef int i,r</pre>
-<pre class="cython line score-0">&#xA0;<span class="">119</span>:         cdef move</pre>
-<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">120</span>:         cdef int n = len(shuffled)</pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">121</span>:         cdef int i,r</pre>
+<pre class="cython line score-0">&#xA0;<span class="">122</span>:         cdef move</pre>
+<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">123</span>:         cdef int n = len(shuffled)</pre>
 <pre class='cython code score-6 '>  if (unlikely(__pyx_v_shuffled == Py_None)) {
     <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    <span class='error_goto'>__PYX_ERR(0, 120, __pyx_L1_error)</span>
+    <span class='error_goto'>__PYX_ERR(0, 123, __pyx_L1_error)</span>
   }
-  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_v_shuffled);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 120, __pyx_L1_error)</span>
+  __pyx_t_2 = <span class='py_macro_api'>PyList_GET_SIZE</span>(__pyx_v_shuffled);<span class='error_goto'> if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 123, __pyx_L1_error)</span>
   __pyx_v_n = __pyx_t_2;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">121</span>:         for i in range(n-1,0,-1):</pre>
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">124</span>:         for i in range(n-1,0,-1):</pre>
 <pre class='cython code score-0 '>  for (__pyx_t_3 = (__pyx_v_n - 1); __pyx_t_3 &gt; 0; __pyx_t_3-=1) {
     __pyx_v_i = __pyx_t_3;
-</pre><pre class="cython line score-38" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">122</span>:             r = int(random()*i)</pre>
-<pre class='cython code score-38 '>    <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_4, __pyx_n_s_random);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)</span>
+</pre><pre class="cython line score-38" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">125</span>:             r = int(random()*i)</pre>
+<pre class='cython code score-38 '>    <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_4, __pyx_n_s_random);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS &amp;&amp; unlikely(<span class='py_c_api'>PyMethod_Check</span>(__pyx_t_4))) {
@@ -1249,51 +1275,51 @@ static PyObject *__pyx_pf_3app_10cython_ext_8monopoly_8Monopoly_2take_turns(stru
     }
     __pyx_t_1 = (__pyx_t_5) ? <span class='pyx_c_api'>__Pyx_PyObject_CallOneArg</span>(__pyx_t_4, __pyx_t_5) : <span class='pyx_c_api'>__Pyx_PyObject_CallNoArg</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_1)) <span class='error_goto'>__PYX_ERR(0, 122, __pyx_L1_error)</span>
+    if (unlikely(!__pyx_t_1)) <span class='error_goto'>__PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_i);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)</span>
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyInt_From_int</span>(__pyx_v_i);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
-    __pyx_t_5 = <span class='py_c_api'>PyNumber_Multiply</span>(__pyx_t_1, __pyx_t_4);<span class='error_goto'> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 122, __pyx_L1_error)</span>
+    __pyx_t_5 = <span class='py_c_api'>PyNumber_Multiply</span>(__pyx_t_1, __pyx_t_4);<span class='error_goto'> if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_5);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_5);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)</span>
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_PyNumber_Int</span>(__pyx_t_5);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_4); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 122, __pyx_L1_error)</span>
+    __pyx_t_6 = <span class='pyx_c_api'>__Pyx_PyInt_As_int</span>(__pyx_t_4); if (unlikely((__pyx_t_6 == (int)-1) &amp;&amp; <span class='py_c_api'>PyErr_Occurred</span>())) <span class='error_goto'>__PYX_ERR(0, 125, __pyx_L1_error)</span>
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_r = __pyx_t_6;
-</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">123</span>:             move = shuffled[r]</pre>
+</pre><pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">126</span>:             move = shuffled[r]</pre>
 <pre class='cython code score-8 '>    if (unlikely(__pyx_v_shuffled == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 123, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 126, __pyx_L1_error)</span>
     }
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt_List</span>(__pyx_v_shuffled, __pyx_v_r, int, 1, __Pyx_PyInt_From_int, 1, 1, 1);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)</span>
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt_List</span>(__pyx_v_shuffled, __pyx_v_r, int, 1, __Pyx_PyInt_From_int, 1, 1, 1);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     <span class='pyx_macro_api'>__Pyx_XDECREF_SET</span>(__pyx_v_move, __pyx_t_4);
     __pyx_t_4 = 0;
-</pre><pre class="cython line score-15" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">124</span>:             shuffled[r] = shuffled[i]</pre>
+</pre><pre class="cython line score-15" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">127</span>:             shuffled[r] = shuffled[i]</pre>
 <pre class='cython code score-15 '>    if (unlikely(__pyx_v_shuffled == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 124, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 127, __pyx_L1_error)</span>
     }
-    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt_List</span>(__pyx_v_shuffled, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)</span>
+    __pyx_t_4 = <span class='pyx_c_api'>__Pyx_GetItemInt_List</span>(__pyx_v_shuffled, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 1, 1, 1);<span class='error_goto'> if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)</span>
     <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_4);
     if (unlikely(__pyx_v_shuffled == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 124, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 127, __pyx_L1_error)</span>
     }
-    if (unlikely(<span class='pyx_c_api'>__Pyx_SetItemInt</span>(__pyx_v_shuffled, __pyx_v_r, __pyx_t_4, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 124, __pyx_L1_error)</span>
+    if (unlikely(<span class='pyx_c_api'>__Pyx_SetItemInt</span>(__pyx_v_shuffled, __pyx_v_r, __pyx_t_4, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 127, __pyx_L1_error)</span>
     <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_4); __pyx_t_4 = 0;
-</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">125</span>:             shuffled[i] = move</pre>
+</pre><pre class="cython line score-7" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">128</span>:             shuffled[i] = move</pre>
 <pre class='cython code score-7 '>    if (unlikely(__pyx_v_shuffled == Py_None)) {
       <span class='py_c_api'>PyErr_SetString</span>(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      <span class='error_goto'>__PYX_ERR(0, 125, __pyx_L1_error)</span>
+      <span class='error_goto'>__PYX_ERR(0, 128, __pyx_L1_error)</span>
     }
-    if (unlikely(<span class='pyx_c_api'>__Pyx_SetItemInt</span>(__pyx_v_shuffled, __pyx_v_i, __pyx_v_move, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 125, __pyx_L1_error)</span>
+    if (unlikely(<span class='pyx_c_api'>__Pyx_SetItemInt</span>(__pyx_v_shuffled, __pyx_v_i, __pyx_v_move, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) &lt; 0)) <span class='error_goto'>__PYX_ERR(0, 128, __pyx_L1_error)</span>
   }
-</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">126</span>:         return shuffled</pre>
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">129</span>:         return shuffled</pre>
 <pre class='cython code score-2 '>  <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_r);
   <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_v_shuffled);
   __pyx_r = __pyx_v_shuffled;

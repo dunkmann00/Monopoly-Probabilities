@@ -78,6 +78,9 @@ cdef class Monopoly():
     cdef end_turn(self):
         self.results[self.current_position]+=1
         self.total_turns+=1
+        if self.total_turns % 100000 == 0:
+            with nogil:
+                pass
 
     cdef move_to_utility(self):
         if self.current_position > 12 and self.current_position < 28:

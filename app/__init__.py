@@ -44,7 +44,7 @@ def main():
         turns = calculate_all_turns(flags.turns, cpu_count)
         info_text = f"Using {pluralize(len(turns),'core')} to simulate {pluralize(sum(turns),'move',',')}"
         with Spinner(info_text) as spinner:
-            if NUITKA_BUILD:
+            if len(turns) <= 1 or NUITKA_BUILD:
                 results = [sum(square) for square in zip(*starmap(play_game, generate_games(turns)))]
             else:
                 with Pool() as pool:
