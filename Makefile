@@ -69,14 +69,12 @@ pyoxidizer:
 
 nuitka:
 	@echo " -- Building Package with Nuitka. --"
-	$(PYTHON) setup.py build --build-lib $(NUITKA_BUILD_DIR)
-	cp -f monopoly.py $(NUITKA_BUILD_DIR)
-	@echo " -- Done --"
-	@echo " -- Creating Nuitka single file executable. --"
 	$(PYTHON) -m nuitka --enable-plugin=multiprocessing \
 						--onefile \
-						--include-data-file $(NUITKA_BUILD_DIR)/app/data/*.txt=app/data/ \
+						--include-data-file app/data/*.txt=app/data/ \
 						--output-dir $(NUITKA_BUILD_DIR)/build \
 						-o dist/nuitka/monopoly \
-						$(NUITKA_BUILD_DIR)/monopoly.py
+						monopoly.py
 	@echo " -- Done. Files can be found in dist/ --"
+
+all-binaries: pyinstaller pyoxidizer nuitka
