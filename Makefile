@@ -4,6 +4,11 @@ NUITKA_BUILD_DIR = nuitka-build
 
 PYTHON = python3
 
+BUILD_PIP_CMD = pip install -e .
+ifdef CYTHON
+BUILD_PIP_CMD := $(BUILD_PIP_CMD)[cython]
+endif
+
 .PHONY: help build install remove clean monopolize pyinstaller pyoxidizer
 
 help:
@@ -14,7 +19,7 @@ build:
 	@echo " -- This allows monopoly-probabilities to be run locally with"
 	@echo "    Python. --"
 	$(PYTHON) -m venv venv
-	. venv/bin/activate; pip install -e .
+	. venv/bin/activate; $(BUILD_PIP_CMD)
 	@echo " -- Done --"
 
 install:

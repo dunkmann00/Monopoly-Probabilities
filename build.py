@@ -9,7 +9,7 @@ def cythonize_monopoly():
     try:
         from Cython.Build import cythonize
     except:
-        print("Cython is not installed. To install, run `poetry install -E cython`")
+        print("Cython is not installed. To install, run `make CYTHON=1 build`")
         return
     # return cythonize("app/cython_ext/monopoly.pyx", annotate=True)
     # Don't return the result, we don't actually use it and it makes the make
