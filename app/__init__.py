@@ -2,7 +2,7 @@ import os
 from multiprocessing import Pool
 from itertools import starmap
 from .utils import (Spinner, Timer, pluralize, calculate_all_turns,
-                    save_results, generate_games, play_game)
+                    save_results, get_monopoly_cls, generate_games, play_game)
 
 # This is needed to turn off multiprocessing when built with Nuitka.
 # No matter what I tried I couldn't get it to work. Hopefully I can fix
@@ -21,6 +21,7 @@ def parse_args():
         parser.add_argument("--turns", help="The number of turns to simulate.", type=int, default=100)
         parser.add_argument("--no-parallel", help="Don't run the simulation in parallel.", action="store_true")
         parser.add_argument("--max-cpu-cores", help="When running in parallel, the maximum number of CPU cores to use for the simulation.", type=int)
+        parser.add_argument("--pure-python", help="Use the pure python version for the simulation.", action="store_true")
         flags = parser.parse_args()
     except ImportError:
         flags = None
@@ -41,14 +42,15 @@ def main():
                 print("Running in single core mode.")
                 cpu_count = 1
 
+        monopoly_cls = get_monopoly_cls(pure_python=flags.pure_python)
         turns = calculate_all_turns(flags.turns, cpu_count)
         info_text = f"Using {pluralize(len(turns),'core')} to simulate {pluralize(sum(turns),'move',',')}"
         with Spinner(info_text) as spinner:
             if len(turns) <= 1 or NUITKA_BUILD:
-                results = [sum(square) for square in zip(*starmap(play_game, generate_games(turns)))]
+                results = [sum(square) for square in zip(*starmap(play_game, generate_games(monopoly_cls, turns)))]
             else:
                 with Pool() as pool:
-                    results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(turns)))]
+                    results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(monopoly_cls, turns)))]
 
     total_turns = sum(results)
     print(f"Complete, {pluralize(total_turns,'move',',')} made")

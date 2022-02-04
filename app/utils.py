@@ -4,11 +4,11 @@ import importlib.resources as resources
 
 from . import data
 
+from .monopoly import Monopoly as PyMonopoly
 try:
-    from .cython_ext import Monopoly
+    from .cython_ext import Monopoly as CMonopoly
 except ImportError:
-    print("-- Falling back to Pure Python Monopoly class --")
-    from .monopoly import Monopoly
+    CMonopoly = None
 
 """
 Extremely bareboned version of spinner from yaspin library
@@ -125,14 +125,35 @@ class Timer(object):
         format = '.0f' if mins > 0 else '.2f'
         duration_str += f"{pluralize(secs,'sec',format)}"
         return duration_str
+
+"""
+Returns either the C extension or pure Python version of the Monopoly class
+depending on:
+    - What was requested with the `pure_python` argument.
+    - If the C extension is requested then it depends if it is available.
+
+* Doing this inside a function also prevents the text that is printed from
+  being printed multiple times when run in parallel (with multiprocessing)
+"""
+def get_monopoly_cls(pure_python=False):
+    if pure_python:
+        print("-- Using Pure Python Monopoly class --")
+        return PyMonopoly
+    else:
+        if CMonopoly is not None:
+            return CMonopoly
+        else:
+            print("-- Falling back to Pure Python Monopoly class --")
+            return PyMonopoly
+
 """
 Returns a generator that yields a tuple containing a new Monopoly object and the
 number of turns to simulate for that game.
 """
-def generate_games(turns):
+def generate_games(monopoly_cls, turns):
     i=0
     while i < len(turns):
-        game = Monopoly()
+        game = monopoly_cls()
         yield game, turns[i]
         i+=1
 """
