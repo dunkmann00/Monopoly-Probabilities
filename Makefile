@@ -9,7 +9,7 @@ ifdef CYTHON
 BUILD_PIP_CMD := $(BUILD_PIP_CMD)[cython]
 endif
 
-.PHONY: help build install remove clean monopolize pyinstaller pyoxidizer
+.PHONY: help build install remove clean monopolize pyinstaller pyoxidizer nuitka all-binaries
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
