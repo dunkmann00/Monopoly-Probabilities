@@ -50,7 +50,7 @@ def make_exe():
         config=python_config,
     )
 
-    exe.add_python_resources(exe.pip_install([CWD]))
+    exe.add_python_resources(exe.pip_install([CWD, "-v"]))
 
     return exe
 
