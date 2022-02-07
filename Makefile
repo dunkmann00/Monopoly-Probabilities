@@ -13,6 +13,15 @@ endif
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
+	@echo "  build        build monopoly-probabilites so it can be run with python"
+	@echo "  install      install dependencies necessary for building binaries"
+	@echo "  remove       remove the virtual environment"
+	@echo "  clean        remove files & folders from building binaries, etc."
+	@echo "  monopolize   run cythonize command on monopoly.pyx"
+	@echo "  pyinstaller  build pyinstaller binary"
+	@echo "  pyoxidizer   build pyoxidizer binary"
+	@echo "  nuitka       build nuitka binary"
+	@echo "  all-binaries build all of the binaries"
 
 build:
 	@echo "--- Build monopoly-probabilties with pip in venv ---"
