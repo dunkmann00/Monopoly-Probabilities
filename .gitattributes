@@ -1,0 +1,4 @@
+# Github marks the project as HTML because of cython's annotated html file being
+# so large.
+# Ignoring so it will classify it as Python, as it should.
+app/cython_ext/monopoly.html linguist-detectable=false
