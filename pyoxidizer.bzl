@@ -50,7 +50,7 @@ def make_exe():
         config=python_config,
     )
 
-    exe.add_python_resources(exe.pip_install([CWD, "-v"]))
+    exe.add_python_resources(exe.pip_install([CWD]))
 
     return exe
 
@@ -73,14 +73,6 @@ register_target("resources", make_embedded_resources, depends=["exe"], default_b
 register_target("install", make_install, depends=["exe"], default=True)
 
 set_build_path(CWD + "/" + PYOXIDIZER_BUILD_DIR)
-
-print("Build Target Triple:")
-print(BUILD_TARGET_TRIPLE)
-print("")
-
-print("Build Path:")
-print(CWD + "/" + PYOXIDIZER_BUILD_DIR)
-print("")
 
 # Resolve whatever targets the invoker of this configuration file is requesting
 # be resolved.
