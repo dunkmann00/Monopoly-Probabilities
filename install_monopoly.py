@@ -277,6 +277,23 @@ def all_binaries(args, env):
     pyoxidizer(args, env)
     nuitka(args, env)
 
+@script_parser.parser(help_desc="Remove the virtual environment (along with the egg-info folder).")
+def remove_venv(args, env):
+    if env is None:
+        venv_dir = args.venvdir
+    else:
+        venv_dir = sys.prefix
+    print("--- Removing virtual environment ---")
+    venv_path = Path(venv_dir).resolve()
+    print("Virtual Environment Path:")
+    print(venv_path)
+    shutil.rmtree(venv_path, ignore_errors=True)
+    shutil.rmtree(Path("monopoly_probabilities.egg-info"), ignore_errors=True)
+    print("--- Done ---")
+    if "VIRTUAL_ENV" in os.environ:
+        print("The virtual environment is still active but will no longer work.")
+        print("Enter 'deactivate' to leave the virtual environment.")
+
 def install_venv(args):
     print("--- Installing Virtual Environment ---")
     env = VirtualEnv.make(venv_dir=args.venvdir)
@@ -284,17 +301,6 @@ def install_venv(args):
     env.pip("install", "-e", ".")
     print("--- Done ---")
     print("--- To uninstall, run this script again with --uninstall ---")
-
-def remove_venv(args):
-    if VirtualEnv.is_venv_active():
-        print("--- Virtual environment is active ---\n"
-              "--- Deactivate the virtual environment before removing it ---")
-        return
-
-    print("--- Removing virtual environment ---")
-    shutil.rmtree(Path(args.venvdir), ignore_errors=True)
-    shutil.rmtree(Path("monopoly_probabilities.egg-info"), ignore_errors=True)
-    print("--- Done ---")
 
 def run_python():
     # Still using 'DecoratedArgParse' here for the error text handling
@@ -314,7 +320,7 @@ def run_python():
     )
     args = py_parser.parse_args()
     if args.uninstall:
-        remove_venv(args)
+        remove_venv(args, VirtualEnv.get())
         return
 
     install_venv(args)
