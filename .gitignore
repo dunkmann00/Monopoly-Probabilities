@@ -9,3 +9,4 @@ monopoly.spec
 pyoxidizer-build/
 nuitka-build/
 *.so
+*.pyd
