@@ -10,6 +10,15 @@ NUITKA_BUILD_DIR = os.getenv("NUITKA_BUILD_DIR", "nuitka-build")
 PYINSTALLER = shutil.which("pyinstaller")
 PYOXIDIZER = shutil.which("pyoxidizer")
 
+# On Windows these need to be converted to Posix strings because shlex only
+# works with unix shells. 'shutil.which' produces a path string with forward
+# slashes, which shlex removes, leaving behind a path that is garbage
+if os.name == 'nt':
+    if PYINSTALLER:
+        PYINSTALLER = Path(PYINSTALLER).as_posix()
+    if PYOXIDIZER:
+        PYOXIDIZER = Path(PYOXIDIZER).as_posix()
+
 BUILD_ARTIFACTS = [
     "build",
     "dist",
@@ -56,6 +65,11 @@ class VirtualEnv():
             env = VirtualEnv(sys.executable)
         else:
             venv_path = Path(venv_dir).resolve()
+            # For Python <3.10, resolve won't return an absolute path if the
+            # file/directory does not exist on Windows
+            # https://bugs.python.org/issue38671
+            if not venv_path.is_absolute():
+                venv_path = Path().resolve() / venv_path
             print("Creating new Virtual Environment at:")
             print(venv_path, end="\n\n")
             # https://github.com/python/cpython/blob/38f331d4656394ae0f425568e26790ace778e076/Lib/venv/__init__.py#L476-L479
@@ -174,19 +188,13 @@ def extension_manager(build=True):
 
 script_parser = DecoratedArgParse(description="Helper script to perform various tasks for monopoly.")
 
+# TODO Look into Extension object optional, maybe I can just use that property instead of needing an environment variable
 @script_parser.parser(help_desc="Build the C extension version of the monopoly object.")
 def build(args, env):
     print("--- Building monopoly object C extension ---")
-    try:
-        with extension_manager():
-            env.pip("install", "-e", ".")
-    except:
-        # This is needed because the easy_install.pth entry gets removed and the cli commands
-        # stop working when the build fails. This sets it correctly again.
-        print("--- Building C extension FAILED ---")
-        print("--- Reinstalling Monopoly-Probabilites ---")
-        env.pip("install", "-e", ".")
-    print("--- Done ---")
+    with extension_manager():
+        env.setup_py("build_ext", "-i")
+        print("--- Done ---")
 
 
 @script_parser.parser(help_desc="Install dependencies necessary for building binaries.")
@@ -285,10 +293,33 @@ def remove_venv(args, env):
         venv_dir = sys.prefix
     print("--- Removing virtual environment ---")
     venv_path = Path(venv_dir).resolve()
+
+    # See note above in VirtualEnv.make for why this is needed.
+    # In this case, the only time venv_path will point to nothing is when
+    # the virtual environment has already been removed.
+    if not venv_path.is_absolute():
+        venv_path = Path().resolve() / venv_path
+
     print("Virtual Environment Path:")
     print(venv_path)
-    shutil.rmtree(venv_path, ignore_errors=True)
-    shutil.rmtree(Path("monopoly_probabilities.egg-info"), ignore_errors=True)
+
+    unremoved = []
+    def rm_error(func, path, exc_info):
+        if exc_info[0] != FileNotFoundError:
+            unremoved.append(str(path))
+
+    shutil.rmtree(Path("monopoly_probabilities.egg-info"), onerror=rm_error)
+    shutil.rmtree(venv_path, onerror=rm_error)
+
+    if len(unremoved) > 0:
+        print("\nThe following items could not be removed:")
+        print("\n".join(unremoved))
+        print(
+            "\nIf ran from inside the virtual environment, deactivate and try to\n"
+            "uninstall again by running the install_monopoly script with the\n"
+            "--uninstall flag.\n"
+        )
+
     print("--- Done ---")
     if "VIRTUAL_ENV" in os.environ:
         print("The virtual environment is still active but will no longer work.")
