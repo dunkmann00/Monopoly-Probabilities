@@ -193,7 +193,7 @@ script_parser = DecoratedArgParse(description="Helper script to perform various 
 def build(args, env):
     print("--- Building monopoly object C extension ---")
     with extension_manager():
-        env.setup_py("build_ext", "-i")
+        env.setup_py("build_ext", "-i", "-f")
         print("--- Done ---")
 
 
