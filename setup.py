@@ -14,8 +14,8 @@ extras_require = \
  'pyoxidizer': ['pyoxidizer==0.18.0']}
 
 entry_points = \
-{'console_scripts': ['monopolize = build:cythonize_monopoly',
-                     'monopoly = app:main']}
+{'console_scripts': ['monopoly = app:main',
+                     'scriptopoly = install_monopoly:main']}
 
 setup_kwargs = {
     'name': 'monopoly-probabilities',
