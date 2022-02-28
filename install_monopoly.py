@@ -188,13 +188,12 @@ def extension_manager(build=True):
 
 script_parser = DecoratedArgParse(description="Helper script to perform various tasks for monopoly.")
 
-# TODO Look into Extension object optional, maybe I can just use that property instead of needing an environment variable
 @script_parser.parser(help_desc="Build the C extension version of the monopoly object.")
 def build(args, env):
     print("--- Building monopoly object C extension ---")
     with extension_manager():
-        env.setup_py("build_ext", "-i")
-        print("--- Done ---")
+        env.setup_py("build_ext", "-i", "-f")
+    print("--- Done ---")
 
 
 @script_parser.parser(help_desc="Install dependencies necessary for building binaries.")
