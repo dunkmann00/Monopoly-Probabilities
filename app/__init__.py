@@ -27,6 +27,11 @@ def parse_args():
         flags = None
     return flags
 
+def pyoxidizer_main():
+    from multiprocessing import freeze_support
+    freeze_support()
+    main()
+
 def main():
     flags = parse_args()
     with Timer():
