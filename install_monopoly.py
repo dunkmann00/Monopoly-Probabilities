@@ -275,6 +275,8 @@ def nuitka(args, env):
     shutil.copy2(Path("monopoly.py"), Path(NUITKA_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating Nuitka single file executable. ---")
+    # Making the directories ourselves is only needed for Windows
+    # but is okay to do regardless of platform
     dist_dir.mkdir(parents=True, exist_ok=True)
     env.python(*split(NUITKA_BUILD_COMMAND))
     print("--- Done. Files can be found in dist/ ---")
