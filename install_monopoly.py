@@ -41,10 +41,10 @@ PYOXIDIZER_BUILD_COMMAND = f"""
 """
 
 NUITKA_BUILD_COMMAND = f"""
--m nuitka --enable-plugin=multiprocessing --onefile
-    --include-data-file {NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
-    --output-dir {NUITKA_BUILD_DIR}/build
-    -o dist/nuitka/monopoly
+-m nuitka --onefile
+    --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
+    --output-dir={NUITKA_BUILD_DIR}/build
+    -o dist/nuitka/monopoly{'.exe' if os.name == 'nt' else ''}
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
@@ -268,12 +268,14 @@ def nuitka(args, env):
         print("--- Nuitka not installed. Run 'scriptopoly install' to install ---")
         return
     print("--- Building binary with Nuitka. ---")
-    shutil.rmtree(Path("dist/nuitka"), ignore_errors=True)
+    dist_dir = Path("dist/nuitka")
+    shutil.rmtree(dist_dir, ignore_errors=True)
     with extension_manager(build=args.no_extension):
         env.setup_py("build", "--build-lib", NUITKA_BUILD_DIR)
     shutil.copy2(Path("monopoly.py"), Path(NUITKA_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating Nuitka single file executable. ---")
+    dist_dir.mkdir(parents=True, exist_ok=True)
     env.python(*split(NUITKA_BUILD_COMMAND))
     print("--- Done. Files can be found in dist/ ---")
 
