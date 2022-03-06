@@ -44,7 +44,6 @@ NUITKA_BUILD_COMMAND = f"""
 -m nuitka --onefile
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
     --output-dir={NUITKA_BUILD_DIR}/build
-    -o dist/nuitka/monopoly{'.exe' if os.name == 'nt' else ''}
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
@@ -253,7 +252,6 @@ def pyoxidizer(args, env):
     with extension_manager(build=args.no_extension):
         env.run(*split(PYOXIDIZER_BUILD_COMMAND))
     print("--- Done. Copying package files into dist/ ---")
-    dist_dir.mkdir(parents=True, exist_ok=True)
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():
         install_dir = platform_dir / "release/install"
         shutil.copytree(install_dir, dist_dir, dirs_exist_ok=True)
@@ -275,10 +273,11 @@ def nuitka(args, env):
     shutil.copy2(Path("monopoly.py"), Path(NUITKA_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating Nuitka single file executable. ---")
-    # Making the directories ourselves is only needed for Windows
-    # but is okay to do regardless of platform
-    dist_dir.mkdir(parents=True, exist_ok=True)
     env.python(*split(NUITKA_BUILD_COMMAND))
+    print("--- Done. Copying package file into dist/ ---")
+    dist_dir.mkdir(parents=True, exist_ok=True)
+    monopoly_file = Path(NUITKA_BUILD_DIR) / "build" / f"monopoly{'.exe' if os.name == 'nt' else ''}"
+    shutil.copy2(monopoly_file, dist_dir)
     print("--- Done. Files can be found in dist/ ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with all packaging tools.")
