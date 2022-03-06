@@ -276,8 +276,9 @@ def nuitka(args, env):
     env.python(*split(NUITKA_BUILD_COMMAND))
     print("--- Done. Copying package file into dist/ ---")
     dist_dir.mkdir(parents=True, exist_ok=True)
-    monopoly_file = Path(NUITKA_BUILD_DIR) / "build" / f"monopoly{'.exe' if os.name == 'nt' else ''}"
-    shutil.copy2(monopoly_file, dist_dir)
+    monopoly_file_src = Path(NUITKA_BUILD_DIR) / "build" / f"monopoly{'.exe' if os.name == 'nt' else '.bin'}"
+    monopoly_file_dest = dist_dir / f"monopoly{'.exe' if os.name == 'nt' else ''}"
+    shutil.copy2(monopoly_file_src, monopoly_file_dest)
     print("--- Done. Files can be found in dist/ ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with all packaging tools.")
