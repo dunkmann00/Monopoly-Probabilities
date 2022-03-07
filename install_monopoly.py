@@ -25,7 +25,9 @@ BUILD_ARTIFACTS = [
     PYINSTALLER_BUILD_DIR,
     "monopoly.spec",
     PYOXIDIZER_BUILD_DIR,
-    NUITKA_BUILD_DIR
+    NUITKA_BUILD_DIR,
+    "app/cython_ext/*.so",
+    "app/cython_ext/*.pyd"
 ]
 
 PYINSTALLER_BUILD_COMMAND = f"""
@@ -204,12 +206,14 @@ def install(args, env):
 @script_parser.parser(help_desc="Remove files & folders from building binaries, etc.")
 def clean(args, env):
     print("--- Removing build artifacts ---")
+    mp_dir = Path(__file__).parent.resolve()
     for artifact in BUILD_ARTIFACTS:
-        artifact_path = Path(artifact)
-        if artifact_path.is_dir():
-            shutil.rmtree(artifact_path, ignore_errors=True)
-        else:
-            artifact_path.unlink(missing_ok=True)
+        artifact_paths = mp_dir.glob(artifact)
+        for artifact_path in artifact_paths:
+            if artifact_path.is_dir():
+                shutil.rmtree(artifact_path, ignore_errors=True)
+            else:
+                artifact_path.unlink(missing_ok=True)
     print("--- Done ---")
 
 @script_parser.parser(help_desc="Run the cythonize command on monopoly.pyx.")
