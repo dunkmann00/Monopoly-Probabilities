@@ -24,7 +24,7 @@ Nuitka = ["Nuitka"]
 
 [tool.poetry.scripts]
 monopoly = "app:main"
-scriptopoly = "install_monopoly:main"
+scriptopoly = "script:main"
 
 [build-system]
 requires = ["setuptools>=59.0.1"]
