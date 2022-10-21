@@ -206,7 +206,7 @@ def install(args, env):
 @script_parser.parser(help_desc="Remove files & folders from building binaries, etc.")
 def clean(args, env):
     print("--- Removing build artifacts ---")
-    mp_dir = Path(__file__).parent.resolve()
+    mp_dir = Path(__file__).parent.parent.resolve()
     for artifact in BUILD_ARTIFACTS:
         artifact_paths = mp_dir.glob(artifact)
         for artifact_path in artifact_paths:
