@@ -333,7 +333,7 @@ def remove_venv(args, env):
         print("Enter 'deactivate' to leave the virtual environment.")
 
 def add_script_pth(env):
-    site_packages = env.python("-c", "import site; print(site.getsitepackages()[0])", stdout=subprocess.PIPE).stdout.decode().strip()
+    site_packages = env.python("-c", "import site; print(site.getsitepackages()[0])", stdout=subprocess.PIPE, text=True).stdout.strip()
     site_packages_dir = Path(site_packages)
     script_pth = site_packages_dir / "script.pth"
     script_pth.write_text(str(Path("script").resolve()))
