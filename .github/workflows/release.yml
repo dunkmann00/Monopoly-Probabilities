@@ -1,0 +1,42 @@
+name: Build Release Binaries
+
+on:
+  release:
+    types: [published]
+
+
+jobs:
+  build:
+    name: Build & Add Binaries to Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix: [macos-12, windows-2022, ubuntu-22.04]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@4
+        with:
+          python-version: '3.10'
+      - name: Install Monopoly Virtual Environment
+        run: python install_monopoly.py
+      - run: source venv/bin/activate
+        if: runner.os != 'windows-2022'
+      - run: venv\Scripts\activate.bat
+        if: runner.os == 'windows-2022'
+      - name: Install Binary Requirements
+        run: scriptopoly install
+      - name: Build All Binaries
+        run: scriptopoly all_binaries
+      - name: Create tar.gz from dist folder
+        run: tar cvzf dist/Monopoly.tar.gz dist/*
+        if: runner.os != 'windows-2022'
+      - name: Create zip from dist folder
+        run: 7z a -tzip dist\Monopoly.zip dist\*
+        if: runner.os == 'windows-2022'
+      - name: Release Binaries
+        uses: softprops/action-gh-release@v1
+        with:
+          fail_on_unmatched_files: false
+          files: |
+            dist/Monopoly.tar.gz
+            dist\Monopoly.zip
