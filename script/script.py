@@ -49,14 +49,35 @@ NUITKA_BUILD_COMMAND = f"""
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
-
-class VirtualEnv():
+class Env():
     def __init__(self, python):
         self._python = python
 
     @classmethod
     def get(cls):
-        return VirtualEnv(sys.executable) if cls.is_venv_active() else None
+        return cls(sys.executable)
+
+    @staticmethod
+    def run(*args, **kwargs):
+        print(" ".join(args))
+        completed_process = subprocess.run(args, **kwargs)
+        completed_process.check_returncode()
+        return completed_process
+
+    def python(self, *args, **kwargs):
+        return self.run(self._python, *args, **kwargs)
+
+    def pip(self, *args, **kwargs):
+        return self.python("-m", "pip", "--isolated", "--disable-pip-version-check", *args, **kwargs)
+
+    def setup_py(self, *args, **kwargs):
+        return self.python("setup.py", *args, **kwargs)
+
+
+class VirtualEnv(Env):
+    @classmethod
+    def get(cls):
+        return cls(sys.executable) if cls.is_venv_active() else None
 
     @classmethod
     def make(cls, venv_dir="venv"):
@@ -95,22 +116,6 @@ class VirtualEnv():
     @classmethod
     def is_venv_active(self):
         return sys.prefix != sys.base_prefix
-
-    @staticmethod
-    def run(*args, **kwargs):
-        print(" ".join(args))
-        completed_process = subprocess.run(args, **kwargs)
-        completed_process.check_returncode()
-        return completed_process
-
-    def python(self, *args, **kwargs):
-        return self.run(self._python, *args, **kwargs)
-
-    def pip(self, *args, **kwargs):
-        return self.python("-m", "pip", "--isolated", "--disable-pip-version-check", *args, **kwargs)
-
-    def setup_py(self, *args, **kwargs):
-        return self.python("setup.py", *args, **kwargs)
 
 
 class DecoratedArgParse():
@@ -341,6 +346,10 @@ def add_script_pth(env):
 def install_venv(args):
     print("--- Installing Virtual Environment ---")
     env = VirtualEnv.make(venv_dir=args.venvdir)
+    print("--- Done ---")
+    return env
+
+def install_monopoly(env):
     print("--- Installing Monopoly-Probabilites ---")
     env.pip("install", "-e", ".")
     add_script_pth(env)
@@ -368,10 +377,11 @@ def run_python():
         remove_venv(args, VirtualEnv.get())
         return
 
-    install_venv(args)
+    env = Env.get() if os.getenv("NO_VIRTUAL_ENV") else install_venv(args)
+    install_monopoly(env)
 
 def run_script():
-    env = VirtualEnv.get()
+    env = Env.get() if os.getenv("NO_VIRTUAL_ENV") else VirtualEnv.get()
     args = script_parser.parse_args()
     args.func(args, env)
 
