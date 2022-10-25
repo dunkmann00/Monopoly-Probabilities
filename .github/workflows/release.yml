@@ -32,14 +32,18 @@ jobs:
           echo "scriptopoly=$(where scriptopoly)" >> $env:GITHUB_ENV
       - name: Install Binary Requirements
         run: ${{ env.scriptopoly }} install
-      - name: Build All Binaries
-        run: ${{ env.scriptopoly }} all-binaries
+      - name: Build PyInstaller
+        run: ${{ env.scriptopoly }} pyinstaller
+      - name: Build PyOxidizer
+        run: ${{ env.scriptopoly }} pyoxidizer
+      - name: Build Nuitka
+        run: ${{ env.scriptopoly }} nuitka
       - name: Create tar.gz from dist folder
         if: runner.os != 'Windows'
-        run: tar cvzf dist/Monopoly.tar.gz dist/*
+        run: tar cvzf dist/Monopoly-${{ runner.os }}.tar.gz dist/*
       - name: Create zip from dist folder
         if: runner.os == 'Windows'
-        run: 7z a -tzip dist\Monopoly.zip dist\*
+        run: 7z a -tzip dist\Monopoly-${{ runner.os }}.zip dist\*
       - name: Release Binaries
         uses: softprops/action-gh-release@v1
         with:
