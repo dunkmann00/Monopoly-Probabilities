@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-12, windows-2022, ubuntu-22.04]
+        os: [macos-11, windows-2022, ubuntu-22.04]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -28,14 +28,14 @@ jobs:
         run: scriptopoly all-binaries
       - name: Create tar.gz from dist folder
         if: runner.os != 'Windows'
-        run: tar cvzf dist/Monopoly-${{ runner.os }}.tar.gz dist/*
+        run: tar cvzf dist/monopoly-${{ matrix.os }}-${{ runner.arch }}.tar.gz dist/*
       - name: Create zip from dist folder
         if: runner.os == 'Windows'
-        run: 7z a -tzip dist\Monopoly-${{ runner.os }}.zip dist\*
+        run: 7z a -tzip dist\monopoly-${{ matrix.os }}-${{ runner.arch }}.zip dist\*
       - name: Release Binaries
         uses: softprops/action-gh-release@v1
         with:
           fail_on_unmatched_files: false
           files: |
-            dist/Monopoly.tar.gz
-            dist\Monopoly.zip
+            dist/monopoly-${{ matrix.os }}-${{ runner.arch }}.tar.gz
+            dist\monopoly-${{ matrix.os }}-${{ runner.arch }}.zip
