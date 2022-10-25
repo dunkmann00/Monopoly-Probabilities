@@ -43,7 +43,7 @@ PYOXIDIZER_BUILD_COMMAND = f"""
 """
 
 NUITKA_BUILD_COMMAND = f"""
--m nuitka --onefile
+-m nuitka --onefile --assume-yes-for-downloads
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
     --output-dir={NUITKA_BUILD_DIR}/build
     {NUITKA_BUILD_DIR}/monopoly.py
