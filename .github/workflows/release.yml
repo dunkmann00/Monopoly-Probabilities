@@ -21,19 +21,19 @@ jobs:
       - name: Install Monopoly Virtual Environment
         run: python install_monopoly.py
       - run: source venv/bin/activate
-        if: runner.os != 'windows-2022'
+        if: runner.os != 'Windows'
       - run: venv\Scripts\activate.bat
-        if: runner.os == 'windows-2022'
+        if: runner.os == 'Windows'
       - name: Install Binary Requirements
         run: scriptopoly install
       - name: Build All Binaries
         run: scriptopoly all_binaries
       - name: Create tar.gz from dist folder
         run: tar cvzf dist/Monopoly.tar.gz dist/*
-        if: runner.os != 'windows-2022'
+        if: runner.os != 'Windows'
       - name: Create zip from dist folder
         run: 7z a -tzip dist\Monopoly.zip dist\*
-        if: runner.os == 'windows-2022'
+        if: runner.os == 'Windows'
       - name: Release Binaries
         uses: softprops/action-gh-release@v1
         with:
