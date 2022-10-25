@@ -31,9 +31,9 @@ jobs:
           venv\Scripts\activate.bat
           echo "scriptopoly=$(where scriptopoly)" >> $env:GITHUB_ENV
       - name: Install Binary Requirements
-        run: scriptopoly install
+        run: ${{ env.scriptopoly }} install
       - name: Build All Binaries
-        run: scriptopoly all_binaries
+        run: ${{ env.scriptopoly }} all_binaries
       - name: Create tar.gz from dist folder
         if: runner.os != 'Windows'
         run: tar cvzf dist/Monopoly.tar.gz dist/*
