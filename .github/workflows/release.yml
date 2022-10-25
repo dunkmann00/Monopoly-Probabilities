@@ -32,6 +32,10 @@ jobs:
           echo "scriptopoly=$(where scriptopoly)" >> $env:GITHUB_ENV
       - name: Install Binary Requirements
         run: ${{ env.scriptopoly }} install
+      - name: Pip Freeze
+        run: |
+          source venv/bin/activate
+          pip freeze
       - name: Build PyInstaller
         run: ${{ env.scriptopoly }} pyinstaller
       - name: Build PyOxidizer
