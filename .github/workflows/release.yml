@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build & Add Binaries to Release
+    name: Build & Release
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -21,7 +21,9 @@ jobs:
       - name: Install Monopoly Virtual Environment
         run: python install_monopoly.py
       - name: Activate Virtual Environment
-        run: echo ${{ runner.os }}
+        run: |
+          echo ${{ runner.os }}
+          ecoh ${{ runner.os != 'Windows' }}
       - if: runner.os != 'Windows'
         run: source venv/bin/activate
       - if: runner.os == 'Windows'
