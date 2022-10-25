@@ -33,7 +33,7 @@ jobs:
       - name: Install Binary Requirements
         run: ${{ env.scriptopoly }} install
       - name: Build All Binaries
-        run: ${{ env.scriptopoly }} all_binaries
+        run: ${{ env.scriptopoly }} all-binaries
       - name: Create tar.gz from dist folder
         if: runner.os != 'Windows'
         run: tar cvzf dist/Monopoly.tar.gz dist/*
