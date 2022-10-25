@@ -24,18 +24,14 @@ jobs:
         run: python install_monopoly.py
       - name: Install Binary Build Requirements
         run: scriptopoly install
+      - name: Set BUILD_DISTPATH Environment Variable
+        run: echo "BUILD_DISTPATH=monopoly-$(${{ github.ref }})-$(python -c "import platform; print(platform.platform())")" >> ${{ github.env }}
       - name: Build All Binaries
         run: scriptopoly all-binaries
-      - name: Create tar.gz from dist folder
-        if: runner.os != 'Windows'
-        run: tar cvzf dist/monopoly-${{ matrix.os }}-${{ runner.arch }}.tar.gz dist/*
-      - name: Create zip from dist folder
-        if: runner.os == 'Windows'
-        run: 7z a -tzip dist\monopoly-${{ matrix.os }}-${{ runner.arch }}.zip dist\*
+      - name: Create Build Archive
+        run: scriptopoly archive-binaries
       - name: Release Binaries
         uses: softprops/action-gh-release@v1
         with:
           fail_on_unmatched_files: false
-          files: |
-            dist/monopoly-${{ matrix.os }}-${{ runner.arch }}.tar.gz
-            dist\monopoly-${{ matrix.os }}-${{ runner.arch }}.zip
+          files: ${{ env.BUILD_DISTPATH }}.*

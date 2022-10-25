@@ -10,6 +10,9 @@ NUITKA_BUILD_DIR = os.getenv("NUITKA_BUILD_DIR", "nuitka-build")
 PYINSTALLER = shutil.which("pyinstaller")
 PYOXIDIZER = shutil.which("pyoxidizer")
 
+NO_VIRTUAL_ENV = os.getenv("NO_VIRTUAL_ENV")
+BUILD_DISTPATH = os.getenv("BUILD_DISTPATH")
+
 # On Windows these need to be converted to Posix strings because shlex only
 # works with unix shells. 'shutil.which' produces a path string with forward
 # slashes, which shlex removes, leaving behind a path that is garbage
@@ -33,7 +36,7 @@ BUILD_ARTIFACTS = [
 PYINSTALLER_BUILD_COMMAND = f"""
 {PYINSTALLER} {PYINSTALLER_BUILD_DIR}/monopoly.py
     --add-data {PYINSTALLER_BUILD_DIR}/app/data/{os.pathsep}app/data
-    --distpath dist/pyinstaller
+    --distpath {{}}
     --workpath {PYINSTALLER_BUILD_DIR}/build
     -F
 """
@@ -234,39 +237,45 @@ def monopolize(args, env):
     print("--- Done ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with PyInstaller.")
+@script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
 def pyinstaller(args, env):
     if PYINSTALLER is None:
         print("--- PyInstaller not installed. Run 'scriptopoly install' to install ---")
         return
     print("--- Building binary with PyInstaller. ---")
-    shutil.rmtree(Path("dist/pyinstaller"), ignore_errors=True)
+    distpath = BUILD_DISTPATH or args.distpath
+    distpath = Path(distpath) / "pyinstaller"
+    shutil.rmtree(distpath, ignore_errors=True)
     with extension_manager(build=args.no_extension):
         env.setup_py("build", "--build-lib", PYINSTALLER_BUILD_DIR)
     shutil.copy2(Path("monopoly.py"), Path(PYINSTALLER_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating PyInstaller single file executable. ---")
-    env.run(*split(PYINSTALLER_BUILD_COMMAND))
-    print("--- Done. File can be found in dist/ ---")
+    env.run(*split(PYINSTALLER_BUILD_COMMAND.format(distpath)))
+    print(f"--- Done. File can be found in {distpath} ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with PyOxidizer.")
+@script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
 def pyoxidizer(args, env):
     if PYOXIDIZER is None:
         print("--- PyOxidizer not installed. Run 'scriptopoly install' to install ---")
         return
     print("--- Building binary with PyOxidizer. ---")
-    dist_dir = Path("dist/pyoxidizer")
-    shutil.rmtree(dist_dir, ignore_errors=True)
+    distpath = BUILD_DISTPATH or args.distpath
+    distpath = Path(distpath) / "pyoxidizer"
+    shutil.rmtree(distpath, ignore_errors=True)
     with extension_manager(build=args.no_extension):
         env.run(*split(PYOXIDIZER_BUILD_COMMAND))
-    print("--- Done. Copying package files into dist/ ---")
+    print(f"--- Done. Copying package files into {distpath} ---")
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():
         install_dir = platform_dir / "release/install"
-        shutil.copytree(install_dir, dist_dir, dirs_exist_ok=True)
-    print("--- Done. Files can be found in dist/ ---")
+        shutil.copytree(install_dir, distpath, dirs_exist_ok=True)
+    print(f"--- Done. Files can be found in {distpath} ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with Nuitka.")
+@script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
 def nuitka(args, env):
     try:
@@ -275,27 +284,41 @@ def nuitka(args, env):
         print("--- Nuitka not installed. Run 'scriptopoly install' to install ---")
         return
     print("--- Building binary with Nuitka. ---")
-    dist_dir = Path("dist/nuitka")
-    shutil.rmtree(dist_dir, ignore_errors=True)
+    distpath = BUILD_DISTPATH or args.distpath
+    distpath = Path(distpath) / "nuitka"
+    shutil.rmtree(distpath, ignore_errors=True)
     with extension_manager(build=args.no_extension):
         env.setup_py("build", "--build-lib", NUITKA_BUILD_DIR)
     shutil.copy2(Path("monopoly.py"), Path(NUITKA_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating Nuitka single file executable. ---")
     env.python(*split(NUITKA_BUILD_COMMAND))
-    print("--- Done. Copying package file into dist/ ---")
-    dist_dir.mkdir(parents=True, exist_ok=True)
+    print(f"--- Done. Copying package file into {distpath} ---")
+    distpath.mkdir(parents=True, exist_ok=True)
     monopoly_file_src = Path(NUITKA_BUILD_DIR) / "build" / f"monopoly{'.exe' if os.name == 'nt' else '.bin'}"
-    monopoly_file_dest = dist_dir / f"monopoly{'.exe' if os.name == 'nt' else ''}"
+    monopoly_file_dest = distpath / f"monopoly{'.exe' if os.name == 'nt' else ''}"
     shutil.copy2(monopoly_file_src, monopoly_file_dest)
-    print("--- Done. Files can be found in dist/ ---")
+    print(f"--- Done. Files can be found in {distpath} ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with all packaging tools.")
+@script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binaries without the C extension.", action="store_false")
 def all_binaries(args, env):
     pyinstaller(args, env)
     pyoxidizer(args, env)
     nuitka(args, env)
+
+@script_parser.parser(help_desc="Create either a zip or tar compressed archive of the binariy builds.")
+@script_parser.argument("--distpath", help="Where to find the binary builds. (Default: dist)", default="dist")
+@script_parser.argument("--format", help="Force a specific archive format to be used. (Default: zip on Windows, gztar otherwise)")
+def archive_binaries(args, env):
+    print("--- Archiving Binary Builds. ---")
+    distpath = BUILD_DISTPATH or args.distpath
+    distpath = Path(distpath)
+    format = format or 'zip' if os.name == 'nt' else 'gztar'
+    archive_name = shutil.make_archive(str(distpath), format, base_dir=distpath)
+    print(f"--- Done. Archive can be found at {archive_name} ---")
+
 
 @script_parser.parser(help_desc="Remove the virtual environment (along with the egg-info folder).")
 def remove_venv(args, env):
@@ -377,11 +400,11 @@ def run_python():
         remove_venv(args, VirtualEnv.get())
         return
 
-    env = Env.get() if os.getenv("NO_VIRTUAL_ENV") else install_venv(args)
+    env = Env.get() if NO_VIRTUAL_ENV else install_venv(args)
     install_monopoly(env)
 
 def run_script():
-    env = Env.get() if os.getenv("NO_VIRTUAL_ENV") else VirtualEnv.get()
+    env = Env.get() if NO_VIRTUAL_ENV else VirtualEnv.get()
     args = script_parser.parse_args()
     args.func(args, env)
 
