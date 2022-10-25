@@ -14,6 +14,8 @@ jobs:
       matrix:
         os: [macos-12, windows-2022, ubuntu-22.04]
     steps:
+      - run: echo runner.os
+      - run: echo ${{ runner.os }}
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
