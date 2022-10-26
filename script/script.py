@@ -315,7 +315,7 @@ def archive_binaries(args, env):
     print("--- Archiving Binary Builds. ---")
     distpath = BUILD_DISTPATH or args.distpath
     distpath = Path(distpath)
-    format = format or 'zip' if os.name == 'nt' else 'gztar'
+    format = args.format or ('zip' if os.name == 'nt' else 'gztar')
     archive_name = shutil.make_archive(str(distpath), format, base_dir=distpath)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
