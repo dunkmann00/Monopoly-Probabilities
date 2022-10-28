@@ -1,6 +1,8 @@
 altgraph==0.17.3
 macholib==1.16.2
 Nuitka==1.1.6
-pyinstaller==5.5
+ordered-set==4.1.0
+pyinstaller==5.6.1
 pyinstaller-hooks-contrib==2022.10
 pyoxidizer==0.22.0
+zstandard==0.18.0
