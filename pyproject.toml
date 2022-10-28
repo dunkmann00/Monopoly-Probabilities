@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monopoly-probabilities"
-version = "0.1.0"
+version = "0.2.0"
 description = "Calculate the probabilties of landing on each different square on a monopoly board."
 authors = ["George Waters <george@georgeh2os.com>"]
 packages = [
