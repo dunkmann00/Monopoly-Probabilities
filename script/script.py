@@ -252,7 +252,7 @@ def pyinstaller(args, env):
     shutil.copy2(Path("monopoly.py"), Path(PYINSTALLER_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating PyInstaller single file executable. ---")
-    env.run(*split(PYINSTALLER_BUILD_COMMAND.format(distpath)))
+    env.run(*split(PYINSTALLER_BUILD_COMMAND.format(distpath.as_posix())))
     print(f"--- Done. File can be found in {distpath} ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with PyOxidizer.")
