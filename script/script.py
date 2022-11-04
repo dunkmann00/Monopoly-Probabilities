@@ -1,7 +1,7 @@
 from pathlib import Path
 from shlex import split
 from contextlib import contextmanager
-import sys, shutil, os, venv, argparse, subprocess
+import sys, shutil, os, venv, argparse, subprocess, glob
 
 PYINSTALLER_BUILD_DIR = os.getenv("PYINSTALLER_BUILD_DIR", "pyinstaller-build")
 PYOXIDIZER_BUILD_DIR = os.getenv("PYOXIDIZER_BUILD_DIR", "pyoxidizer-build")
@@ -49,6 +49,7 @@ NUITKA_BUILD_COMMAND = f"""
 -m nuitka --onefile --assume-yes-for-downloads
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
     --output-dir={NUITKA_BUILD_DIR}/build
+    --experimental=onefile-section-payload
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
@@ -239,6 +240,7 @@ def monopolize(args, env):
 @script_parser.parser(help_desc="Build a monopoly binary with PyInstaller.")
 @script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
+@script_parser.argument("--macos-codesign-identity", help="Sign the binary build with the provided identity (macOS only).")
 def pyinstaller(args, env):
     if PYINSTALLER is None:
         print("--- PyInstaller not installed. Run 'scriptopoly install' to install ---")
@@ -252,12 +254,16 @@ def pyinstaller(args, env):
     shutil.copy2(Path("monopoly.py"), Path(PYINSTALLER_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating PyInstaller single file executable. ---")
-    env.run(*split(PYINSTALLER_BUILD_COMMAND.format(distpath.as_posix())))
+    build_command = PYINSTALLER_BUILD_COMMAND
+    if sys.platform == 'darwin' and args.macos_codesign_identity:
+        build_command += f"--codesign-identity {args.macos_codesign_identity}"
+    env.run(*split(build_command.format(distpath.as_posix())))
     print(f"--- Done. File can be found in {distpath} ---")
 
 @script_parser.parser(help_desc="Build a monopoly binary with PyOxidizer.")
 @script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
+@script_parser.argument("--macos-codesign-identity", help="Sign the binary build with the provided identity (macOS only).")
 def pyoxidizer(args, env):
     if PYOXIDIZER is None:
         print("--- PyOxidizer not installed. Run 'scriptopoly install' to install ---")
@@ -268,6 +274,10 @@ def pyoxidizer(args, env):
     shutil.rmtree(distpath, ignore_errors=True)
     with extension_manager(build=args.no_extension):
         env.run(*split(PYOXIDIZER_BUILD_COMMAND))
+    print("--- Signing Binaries ---")
+    if sys.platform == 'darwin' and args.macos_codesign_identity:
+        files = glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly*", recursive=True)
+        env.run("/usr/bin/codesign", "--force", "-s", args.macos_codesign_identity, "--options", "runtime", *files, "-v")
     print(f"--- Done. Copying package files into {distpath} ---")
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():
         install_dir = platform_dir / "release/install"
@@ -277,6 +287,7 @@ def pyoxidizer(args, env):
 @script_parser.parser(help_desc="Build a monopoly binary with Nuitka.")
 @script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binary without the C extension.", action="store_false")
+@script_parser.argument("--macos-codesign-identity", help="Sign the binary build with the provided identity (macOS only).")
 def nuitka(args, env):
     try:
         import nuitka
@@ -292,7 +303,10 @@ def nuitka(args, env):
     shutil.copy2(Path("monopoly.py"), Path(NUITKA_BUILD_DIR))
     print("--- Done ---")
     print("--- Creating Nuitka single file executable. ---")
-    env.python(*split(NUITKA_BUILD_COMMAND))
+    build_command = NUITKA_BUILD_COMMAND
+    if sys.platform == 'darwin' and args.macos_codesign_identity:
+        build_command += f"--macos-sign-identity={args.macos_codesign_identity} --experimental=macos-sign-runtime"
+    env.python(*split(build_command))
     print(f"--- Done. Copying package file into {distpath} ---")
     distpath.mkdir(parents=True, exist_ok=True)
     monopoly_file_src = Path(NUITKA_BUILD_DIR) / "build" / f"monopoly{'.exe' if os.name == 'nt' else '.bin'}"
@@ -303,20 +317,23 @@ def nuitka(args, env):
 @script_parser.parser(help_desc="Build a monopoly binary with all packaging tools.")
 @script_parser.argument("--distpath", help="Where to put the binary build. (Default: dist)", default="dist")
 @script_parser.argument("--no-extension", help="Build the binaries without the C extension.", action="store_false")
+@script_parser.argument("--macos-codesign-identity", help="Sign the binary build with the provided identity (macOS only).")
 def all_binaries(args, env):
     pyinstaller(args, env)
     pyoxidizer(args, env)
     nuitka(args, env)
 
 @script_parser.parser(help_desc="Create either a zip or tar compressed archive of the binariy builds.")
+@script_parser.argument("--base-name", help="The name of the file to create, including the path, minus any format-specific extension.")
 @script_parser.argument("--distpath", help="Where to find the binary builds. (Default: dist)", default="dist")
 @script_parser.argument("--format", help="Force a specific archive format to be used. (Default: zip on Windows, gztar otherwise)")
 def archive_binaries(args, env):
     print("--- Archiving Binary Builds. ---")
     distpath = BUILD_DISTPATH or args.distpath
     distpath = Path(distpath)
+    base_name = args.base_name or str(distpath)
     format = args.format or ('zip' if os.name == 'nt' else 'gztar')
-    archive_name = shutil.make_archive(str(distpath), format, base_dir=distpath)
+    archive_name = shutil.make_archive(base_name, format, base_dir=distpath)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
 
