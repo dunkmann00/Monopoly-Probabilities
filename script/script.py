@@ -49,7 +49,6 @@ NUITKA_BUILD_COMMAND = f"""
 -m nuitka --onefile --assume-yes-for-downloads
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
     --output-dir={NUITKA_BUILD_DIR}/build
-    --experimental=onefile-section-payload
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
@@ -305,7 +304,7 @@ def nuitka(args, env):
     print("--- Creating Nuitka single file executable. ---")
     build_command = NUITKA_BUILD_COMMAND
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        build_command += f"--macos-sign-identity={args.macos_codesign_identity} --experimental=macos-sign-runtime"
+        build_command += f"--macos-sign-identity={args.macos_codesign_identity} --macos-sign-notarization"
     env.python(*split(build_command))
     print(f"--- Done. Copying package file into {distpath} ---")
     distpath.mkdir(parents=True, exist_ok=True)
