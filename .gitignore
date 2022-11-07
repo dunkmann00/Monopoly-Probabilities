@@ -1,6 +1,6 @@
 __pycache__/
 build/
-dist/
+dist*
 venv/
 *.egg-info
 results/
@@ -10,3 +10,5 @@ pyoxidizer-build/
 nuitka-build/
 *.so
 *.pyd
+macos-signing/
+notary_log.json

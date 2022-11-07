@@ -1,6 +1,6 @@
 altgraph==0.17.3
 macholib==1.16.2
-Nuitka==1.1.6
+Nuitka @ https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac77238fed1fc4fd5a2f.zip
 ordered-set==4.1.0
 pyinstaller==5.6.1
 pyinstaller-hooks-contrib==2022.10

@@ -26,7 +26,60 @@ jobs:
         run: scriptopoly install
       - name: Set BUILD_DISTPATH Environment Variable
         run: echo "BUILD_DISTPATH=monopoly-${{ github.ref_name }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
+      - name: Setup keychain (macOS only)
+        if: runner.os == 'macOS'
+        run: |
+          # Based on blog post by Federico Terzi & Localazy:
+          # https://federicoterzi.com/blog/automatic-code-signing-and-notarization-for-macos-apps-using-github-actions/
+          # https://localazy.com/blog/how-to-automatically-sign-macos-apps-using-github-actions
+
+          # Turn our base64-encoded certificate back to a regular .p12 file
+
+          echo ${{ secrets.PROD_MACOS_CERTIFICATE }} | base64 --decode > certificate.p12
+
+          # We need to create a new keychain, otherwise using the certificate will prompt
+          # with a UI dialog asking for the certificate password, which we can't
+          # use in a headless CI environment
+
+          security create-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
+          security import certificate.p12 -k build.keychain -P "${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
+
+      - name: Build All Binaries (macOS Only)
+        if: runner.os == 'macOS'
+        run: scriptopoly all-binaries --macos-codesign-identity ${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}
+      - name: "Notarize app bundle (macOS Only)"
+        if: runner.os == 'macOS'
+        run: |
+          # Store the notarization credentials so that we can prevent a UI password dialog
+          # from blocking the CI
+
+          echo "Create keychain profile"
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.PROD_MACOS_NOTARIZATION_APPLE_ID }}" --team-id "${{ secrets.PROD_MACOS_NOTARIZATION_TEAM_ID }}" --password "${{ secrets.PROD_MACOS_NOTARIZATION_PWD }}"
+
+          echo "Creating temp notarization archive"
+          scriptopoly archive-binaries --base-name notary/notarization --format zip
+
+          # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
+          # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
+          # characteristics.
+
+          echo "Notarize app"
+          xcrun notarytool submit "notary/notarization.zip" --keychain-profile "notarytool-profile" --wait
+
+          # This is where we would normally "attach the staple" to our executable. Unfortunately that can't be done at
+          # this time:
+          #
+          #   "Although tickets are created for standalone binaries, it’s not currently possible to staple tickets to them."
+          #   (Source: https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/customizing_the_notarization_workflow#3087720)
+          #
+          # This isn't a huge problem because our binary can still be verified on a users machine as long as there is an
+          # internet connection.
+
       - name: Build All Binaries
+        if: runner.os != 'macOS'
         run: scriptopoly all-binaries
       - name: Create Build Archive
         run: scriptopoly archive-binaries
