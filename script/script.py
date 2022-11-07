@@ -335,13 +335,14 @@ def archive_binaries(args, env):
     archive_name = shutil.make_archive(base_name, format, base_dir=distpath)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
-
-@script_parser.parser(help_desc="Remove the virtual environment (along with the egg-info folder).")
 def remove_venv(args, env):
     if env is None:
         venv_dir = args.venvdir
     else:
-        venv_dir = sys.prefix
+        print("Virtual Environment must not be active when uninstalling.")
+        print("Enter 'deactivate' to leave the virtual environment.")
+        return
+
     print("--- Removing virtual environment ---")
     venv_path = Path(venv_dir).resolve()
 
@@ -354,6 +355,15 @@ def remove_venv(args, env):
     print("Virtual Environment Path:")
     print(venv_path)
 
+    if not venv_path.exists():
+        print("Virtual Environment directory not found.")
+        print("--- Aborting ---")
+        return
+    elif not venv_path.is_dir():
+        print("Virtual Environment path is not a directory.")
+        print("--- Aborting ---")
+        return
+
     unremoved = []
     def rm_error(func, path, exc_info):
         if exc_info[0] != FileNotFoundError:
@@ -365,16 +375,8 @@ def remove_venv(args, env):
     if len(unremoved) > 0:
         print("\nThe following items could not be removed:")
         print("\n".join(unremoved))
-        print(
-            "\nIf ran from inside the virtual environment, deactivate and try to\n"
-            "uninstall again by running the install_monopoly script with the\n"
-            "--uninstall flag.\n"
-        )
 
     print("--- Done ---")
-    if "VIRTUAL_ENV" in os.environ:
-        print("The virtual environment is still active but will no longer work.")
-        print("Enter 'deactivate' to leave the virtual environment.")
 
 def add_script_pth(env):
     site_packages = env.python("-c", "import site; print(site.getsitepackages()[0])", stdout=subprocess.PIPE, text=True).stdout.strip()
