@@ -30,7 +30,7 @@ if os.name == 'nt':
 
 BUILD_ARTIFACTS = [
     "build",
-    "dist",
+    "dist*",
     PYINSTALLER_BUILD_DIR,
     "monopoly.spec",
     PYOXIDIZER_BUILD_DIR,
