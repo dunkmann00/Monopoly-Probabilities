@@ -17,7 +17,7 @@ extras_require = \
 
 entry_points = \
 {'console_scripts': ['monopoly = app:main',
-                     'scriptopoly = script:main']}
+                     'scriptopoly = scripts:scriptopoly.main']}
 
 setup_kwargs = {
     'name': 'monopoly-probabilities',
