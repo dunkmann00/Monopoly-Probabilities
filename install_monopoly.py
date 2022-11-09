@@ -1,3 +1,4 @@
-from script.script import main
+from scripts import install
 
-main(setup_venv=True)
+if __name__ == '__main__':
+    install.main()

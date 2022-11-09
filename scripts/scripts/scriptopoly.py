@@ -1,7 +1,14 @@
+from .utils import (
+    DecoratedArgParse,
+    Env,
+    VirtualEnv,
+    use_virtual_env,
+    monopoly_probabilities_dir
+)
+from contextlib import contextmanager
 from pathlib import Path
 from shlex import split
-from contextlib import contextmanager
-import sys, shutil, os, venv, argparse, subprocess, glob
+import sys, shutil, os, glob
 
 PYINSTALLER_BUILD_DIR = os.getenv("PYINSTALLER_BUILD_DIR", "pyinstaller-build")
 PYOXIDIZER_BUILD_DIR = os.getenv("PYOXIDIZER_BUILD_DIR", "pyoxidizer-build")
@@ -10,7 +17,6 @@ NUITKA_BUILD_DIR = os.getenv("NUITKA_BUILD_DIR", "nuitka-build")
 PYINSTALLER = shutil.which("pyinstaller")
 PYOXIDIZER = shutil.which("pyoxidizer")
 
-NO_VIRTUAL_ENV = os.getenv("NO_VIRTUAL_ENV")
 BUILD_DISTPATH = os.getenv("BUILD_DISTPATH")
 
 # On Windows these need to be converted to Posix strings because shlex only
@@ -52,139 +58,6 @@ NUITKA_BUILD_COMMAND = f"""
     {NUITKA_BUILD_DIR}/monopoly.py
 """
 
-class Env():
-    def __init__(self, python):
-        self._python = python
-
-    @classmethod
-    def get(cls):
-        return cls(sys.executable)
-
-    @staticmethod
-    def run(*args, **kwargs):
-        print(" ".join(args))
-        completed_process = subprocess.run(args, **kwargs)
-        completed_process.check_returncode()
-        return completed_process
-
-    def python(self, *args, **kwargs):
-        return self.run(self._python, *args, **kwargs)
-
-    def pip(self, *args, **kwargs):
-        return self.python("-m", "pip", "--isolated", "--disable-pip-version-check", *args, **kwargs)
-
-    def setup_py(self, *args, **kwargs):
-        return self.python("setup.py", *args, **kwargs)
-
-
-class VirtualEnv(Env):
-    @classmethod
-    def get(cls):
-        return cls(sys.executable) if cls.is_venv_active() else None
-
-    @classmethod
-    def make(cls, venv_dir="venv"):
-        if cls.is_venv_active():
-            print("Virtual Environment already active at:")
-            print(sys.prefix, end="\n\n")
-            env = VirtualEnv(sys.executable)
-        else:
-            venv_path = Path(venv_dir).resolve()
-            # For Python <3.10, resolve won't return an absolute path if the
-            # file/directory does not exist on Windows
-            # https://bugs.python.org/issue38671
-            if not venv_path.is_absolute():
-                venv_path = Path().resolve() / venv_path
-            print("Creating new Virtual Environment at:")
-            print(venv_path, end="\n\n")
-            # https://github.com/python/cpython/blob/38f331d4656394ae0f425568e26790ace778e076/Lib/venv/__init__.py#L476-L479
-            if os.name == 'nt':
-                use_symlinks = False
-            else:
-                use_symlinks = True
-            builder = venv.EnvBuilder(system_site_packages=False,
-                                      clear=False,
-                                      symlinks=use_symlinks,
-                                      upgrade=False,
-                                      with_pip=True,
-                                      prompt=None,
-                                      upgrade_deps=False
-            )
-            context = builder.ensure_directories(venv_path)
-            builder.create(venv_path)
-            env = VirtualEnv(context.env_exec_cmd)
-
-        return env
-
-    @classmethod
-    def is_venv_active(self):
-        return sys.prefix != sys.base_prefix
-
-
-class DecoratedArgParse():
-    def __init__(self, *args, **kwargs):
-        self.arg_parser = argparse.ArgumentParser(*args, **kwargs)
-        self.arg_parser.error = self.error #Provide our own error function
-        self._subparsers = None
-
-    @property
-    def subparsers(self):
-        if self._subparsers is None:
-            self._subparsers = self.arg_parser.add_subparsers(
-                title="Available Commands",
-                required=True,
-                metavar=""
-            )
-        return self._subparsers
-
-    def make_subparsers(self, *args, **kwargs):
-        self._subparsers = self.arg_parser.add_subparsers(*args, **kwargs)
-
-    def parse_args(self, args=None):
-        return self.arg_parser.parse_args(args)
-
-    def parser(self, *args, **kwargs):
-        def decorator(f):
-            parser_args, parser_kwargs = self.check_params((args, kwargs))
-            parser = self.subparsers.add_parser(f.__name__.lower().replace("_", "-"), *parser_args, **parser_kwargs)
-            if hasattr(f, "__argparse_params__"):
-                for params in f.__argparse_params__:
-                    parser_args, parser_kwargs = params
-                    parser.add_argument(*parser_args, **parser_kwargs)
-                del f.__argparse_params__
-            parser.set_defaults(func=f)
-            return f
-        return decorator
-
-    def argument(self, *args, **kwargs):
-        def decorator(f):
-            params = (args, kwargs)
-            if not hasattr(f, "__argparse_params__"):
-                f.__argparse_params__ = []
-            f.__argparse_params__.append(params)
-            return f
-        return decorator
-
-    @staticmethod
-    def check_params(params):
-        args, kwargs = params
-        help_desc = kwargs.pop("help_desc", None)
-        if help_desc is not None:
-            kwargs["help"] = help_desc
-            kwargs["description"] = help_desc
-        return (args, kwargs)
-
-    def error(self, message):
-        """error(message: string)
-        Prints a usage message incorporating the message to stderr,
-        followed by the help message, and then exits.
-        If you override this in a subclass, it should not return -- it
-        should either exit or raise an exception.
-        """
-        sys.stderr.write(f"error: {message}\n")
-        self.arg_parser.print_help(sys.stderr)
-        sys.exit(2)
-
 @contextmanager
 def extension_manager(build=True):
     if build:
@@ -214,7 +87,7 @@ def install(args, env):
 @script_parser.parser(help_desc="Remove files & folders from building binaries, etc.")
 def clean(args, env):
     print("--- Removing build artifacts ---")
-    mp_dir = Path(__file__).parent.parent.resolve()
+    mp_dir = monopoly_probabilities_dir()
     for artifact in BUILD_ARTIFACTS:
         artifact_paths = mp_dir.glob(artifact)
         for artifact_path in artifact_paths:
@@ -335,102 +208,10 @@ def archive_binaries(args, env):
     archive_name = shutil.make_archive(base_name, format, base_dir=distpath)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
-def remove_venv(args, env):
-    if env is None:
-        venv_dir = args.venvdir
-    else:
-        print("Virtual Environment must not be active when uninstalling.")
-        print("Enter 'deactivate' to leave the virtual environment.")
-        return
-
-    print("--- Removing virtual environment ---")
-    venv_path = Path(venv_dir).resolve()
-
-    # See note above in VirtualEnv.make for why this is needed.
-    # In this case, the only time venv_path will point to nothing is when
-    # the virtual environment has already been removed.
-    if not venv_path.is_absolute():
-        venv_path = Path().resolve() / venv_path
-
-    print("Virtual Environment Path:")
-    print(venv_path)
-
-    if not venv_path.exists():
-        print("Virtual Environment directory not found.")
-        print("--- Aborting ---")
-        return
-    elif not venv_path.is_dir():
-        print("Virtual Environment path is not a directory.")
-        print("--- Aborting ---")
-        return
-
-    unremoved = []
-    def rm_error(func, path, exc_info):
-        if exc_info[0] != FileNotFoundError:
-            unremoved.append(str(path))
-
-    shutil.rmtree(Path("monopoly_probabilities.egg-info"), onerror=rm_error)
-    shutil.rmtree(venv_path, onerror=rm_error)
-
-    if len(unremoved) > 0:
-        print("\nThe following items could not be removed:")
-        print("\n".join(unremoved))
-
-    print("--- Done ---")
-
-def add_script_pth(env):
-    site_packages = env.python("-c", "import site; print(site.getsitepackages()[0])", stdout=subprocess.PIPE, text=True).stdout.strip()
-    site_packages_dir = Path(site_packages)
-    script_pth = site_packages_dir / "script.pth"
-    script_pth.write_text(str(Path("script").resolve()))
-
-def install_venv(args):
-    print("--- Installing Virtual Environment ---")
-    env = VirtualEnv.make(venv_dir=args.venvdir)
-    print("--- Done ---")
-    return env
-
-def install_monopoly(env):
-    print("--- Installing Monopoly-Probabilites ---")
-    env.pip("install", "-e", ".")
-    add_script_pth(env)
-    print("--- Done ---")
-    print("--- To uninstall, run this script again with --uninstall ---")
-
-def run_python():
-    # Still using 'DecoratedArgParse' here for the error text handling
-    py_parser = DecoratedArgParse(
-        description=("Install monopoly into a virtual environment. This exposes two commands, 'monopoly', "
-                     "which runs the simulation, and 'scriptopoly', which is a helper script which can "
-                     "perform various tasks for the monopoly project.")
-    )
-    py_parser.arg_parser.add_argument("--venvdir",
-                                      help="The directory for the virtual environment. Default: venv",
-                                      default="venv"
-    )
-    py_parser.arg_parser.add_argument("--uninstall",
-                                      help=("Remove the virtual environment (along with the egg-info folder) "
-                                            "that monopoly was installed in."),
-                                      action="store_true"
-    )
-    args = py_parser.parse_args()
-    if args.uninstall:
-        remove_venv(args, VirtualEnv.get())
-        return
-
-    env = Env.get() if NO_VIRTUAL_ENV else install_venv(args)
-    install_monopoly(env)
-
-def run_script():
-    env = Env.get() if NO_VIRTUAL_ENV else VirtualEnv.get()
+def main():
+    env = VirtualEnv.get() if use_virtual_env() else Env.get()
     args = script_parser.parse_args()
     args.func(args, env)
 
-def main(setup_venv=False):
-    if setup_venv:
-        run_python()
-    else:
-        run_script()
-
 if __name__ == '__main__':
-    main(setup_venv=True)
+    main()
