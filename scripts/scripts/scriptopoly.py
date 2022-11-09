@@ -195,7 +195,7 @@ def all_binaries(args, env):
     pyoxidizer(args, env)
     nuitka(args, env)
 
-@script_parser.parser(help_desc="Create either a zip or tar compressed archive of the binariy builds.")
+@script_parser.parser(help_desc="Create an archive of the binariy builds.")
 @script_parser.argument("--base-name", help="The name of the file to create, including the path, minus any format-specific extension.")
 @script_parser.argument("--distpath", help="Where to find the binary builds. (Default: dist)", default="dist")
 @script_parser.argument("--format", help="Force a specific archive format to be used. (Default: zip on Windows, gztar otherwise)")
