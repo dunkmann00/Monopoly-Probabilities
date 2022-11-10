@@ -1,4 +1,5 @@
 import threading, time, itertools, sys, os
+from plotly import graph_objects as go
 from pathlib import Path
 import importlib.resources as resources
 
@@ -108,23 +109,31 @@ with Timer():
 class Timer(object):
     def __init__(self):
         self.start = None
+        self.end = None
 
     def __enter__(self):
         self.start = time.monotonic()
 
     def __exit__(self, exc_type, exc_val, traceback):
-        print(f"Run time: {self.format_duration(time.monotonic()-self.start)}")
+        self.end = time.monotonic()
         return False
 
-    def format_duration(self, duration):
-        duration_str = ''
-        mins = int(duration / 60)
-        if mins > 0:
-            duration_str = f"{pluralize(mins,'min')} "
-        secs = duration - (mins * 60)
-        format = '.0f' if mins > 0 else '.2f'
-        duration_str += f"{pluralize(secs,'sec',format)}"
-        return duration_str
+    @property
+    def duration(self):
+        if self.start is None or self.end is None:
+            return None
+        return self.end - self.start
+
+def format_duration(duration):
+    if duration is None:
+        return ''
+    duration_str = ''
+    mins, secs = divmod(duration, 60)
+    if mins > 0:
+        duration_str = f"{pluralize(mins,'min','.0f')} "
+    format = '.0f' if mins > 0 else '.2f'
+    duration_str += f"{pluralize(secs,'sec',format)}"
+    return duration_str
 
 """
 Returns either the C extension or pure Python version of the Monopoly class
@@ -197,11 +206,49 @@ def calculate_all_turns(total_turns, cpu_count):
         turns_remaining-=1
     return turns
 
+def generate_chart(results, names, total_turns, duration, num_cores_used):
+    xvalues = list(range(len(results)))
+    chart = go.Figure(
+        go.Bar(
+            x = xvalues,
+            y = results,
+            hovertemplate = "(%{x}, %{y:.2%})<extra></extra>",
+            marker_color = "blue",
+            text = results,
+            texttemplate = "%{y:.2%}",
+            textposition = "outside"),
+        go.Layout(
+            title = dict(
+                text = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})",
+                font = dict(size = 21),
+            ),
+            xaxis = dict(
+                tickmode = "array",
+                tickvals = xvalues,
+                ticktext = names,
+                title = dict(
+                    text = "Board Space Names",
+                    font = dict(size = 16)
+                )
+            ),
+            yaxis = dict(
+                tickformat = ".1%",
+                title = dict(
+                    text = "Percentage (%) of moves ended on",
+                    font = dict(size = 16)
+                ),
+                ticksuffix = " "
+            )
+        )
+    )
+    chart.show()
+
 """
 Save the results from the simulation to a txt and a csv file
 """
-def save_results(results):
+def save_results(results, duration, num_cores_used):
     total_turns = sum(results)
+    percentages = [result/total_turns for result in results]
 
     results_dir = Path('results')
     results_dir.mkdir(parents=True, exist_ok=True)
@@ -209,8 +256,9 @@ def save_results(results):
     probs_csv = results_dir / 'board-probabilities.csv'
 
     with resources.open_text(data, 'board-spaces.txt') as fnames:
+        names = [name.rstrip() for name in fnames]
+        generate_chart(percentages, names, total_turns, duration, num_cores_used)
         with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
-            for i,square_name in enumerate(fnames):
-                if i < len(results):
-                    fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
-                    fprobs_csv.write(f"{square_name.rstrip()},{results[i]/total_turns:.3%}\n")
+            for percentage, square_name in zip(percentages, names):
+                fprobs.write(f"{square_name:<21} - {percentage:.3%}\n")
+                fprobs_csv.write(f"{square_name},{percentage:.3%}\n")

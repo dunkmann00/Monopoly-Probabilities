@@ -15,6 +15,7 @@ pyoxidizer = {version = "^0.22.0", optional = true}
 Nuitka = {url = "https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac77238fed1fc4fd5a2f.zip", optional = true}
 zstandard = {version = "^0.18.0", optional = true}
 ordered-set = {version = "^4.1.0", optional = true}
+plotly = "^5.11.0"
 
 [tool.poetry.dev-dependencies]
 
