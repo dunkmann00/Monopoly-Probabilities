@@ -1,5 +1,5 @@
 import threading, time, itertools, sys, os
-from plotly import graph_objects as go
+import pygal
 from pathlib import Path
 import importlib.resources as resources
 
@@ -206,42 +206,60 @@ def calculate_all_turns(total_turns, cpu_count):
         turns_remaining-=1
     return turns
 
+class Bar(pygal.Bar):
+    def _compute_margin(self):
+        super()._compute_margin()
+        self.margin_box.right = 20
+
 def generate_chart(results, names, total_turns, duration, num_cores_used):
-    xvalues = list(range(len(results)))
-    chart = go.Figure(
-        go.Bar(
-            x = xvalues,
-            y = results,
-            hovertemplate = "(%{x}, %{y:.2%})<extra></extra>",
-            marker_color = "blue",
-            text = results,
-            texttemplate = "%{y:.2%}",
-            textposition = "outside"),
-        go.Layout(
-            title = dict(
-                text = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})",
-                font = dict(size = 21),
-            ),
-            xaxis = dict(
-                tickmode = "array",
-                tickvals = xvalues,
-                ticktext = names,
-                title = dict(
-                    text = "Board Space Names",
-                    font = dict(size = 16)
-                )
-            ),
-            yaxis = dict(
-                tickformat = ".1%",
-                title = dict(
-                    text = "Percentage (%) of moves ended on",
-                    font = dict(size = 16)
-                ),
-                ticksuffix = " "
-            )
-        )
-    )
-    chart.show()
+    style = pygal.style.Style(font_family="verdana, sans-serif")
+    style.plot_background = "#e5ecf6"
+    style.opacity = "1"
+    style.guide_stroke_dasharray = "1,0"
+    style.guide_stroke_color = "white"
+    style.colors = ["#6a6afb"]
+    style.label_font_size = 20
+    style.major_label_font_size = style.label_font_size
+    style.title_font_size = 32
+    style.value_font_size = 18
+    style.value_colors = ["black"]
+    style.tooltip_font_size = 29
+    style.foreground = ["black"]
+
+    config = pygal.Config()
+    config.show_legend = False
+    config.human_readable = True
+    config.title = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})"
+    config.x_title = "Board Space Names"
+    config.y_title = "Percentage (%) of moves ended on"
+    config.x_labels = names
+    config.x_label_rotation = 30
+    config.margin_left = 30
+    config.value_formatter = lambda y: f"{y:.1%}"
+    config.stroke = False
+    config.width = 2400
+    config.height = 1200
+    config.print_values = True
+    config.print_values_position = "top"
+    custom_css = '''
+        {id} .axis.x .guides {{
+            transform: translate(-10px, 0px);
+        }}
+    '''
+    # Can't do:
+    # config.css.append('inline:' + custom_css) and have it insert the id
+    # This is a bug, adding text with inline doesn't add the id
+    # https://github.com/Kozea/pygal/blob/4a32a53c691021b864b96f426a8aa339dadee55f/pygal/svg.py#L103-L123
+    # Instead of not adding it or using a temporary file, I'm getting the id
+    # myself after creating the bar chart and adding it into the 'custom_css'
+    # string manually
+
+    chart = Bar(config=config, style=style)
+    chart.config.css.append('inline:' + custom_css.format(id=f"#chart-{chart.uuid}"))
+
+    chart.add('Probabilities', results)
+    chart.render_to_file("results/chart.svg")
+    chart.render_to_png("results/chart.png")
 
 """
 Save the results from the simulation to a txt and a csv file
