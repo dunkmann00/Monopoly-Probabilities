@@ -128,7 +128,7 @@ def pyinstaller(args, env):
     print("--- Creating PyInstaller single file executable. ---")
     build_command = PYINSTALLER_BUILD_COMMAND
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        build_command += f"--codesign-identity {args.macos_codesign_identity}"
+        build_command += f"--codesign-identity \"{args.macos_codesign_identity}\""
     env.run(*split(build_command.format(distpath.as_posix())))
     print(f"--- Done. File can be found in {distpath} ---")
 
@@ -177,7 +177,7 @@ def nuitka(args, env):
     print("--- Creating Nuitka single file executable. ---")
     build_command = NUITKA_BUILD_COMMAND
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        build_command += f"--macos-sign-identity={args.macos_codesign_identity} --macos-sign-notarization"
+        build_command += f"--macos-sign-identity=\"{args.macos_codesign_identity}\" --macos-sign-notarization"
     env.python(*split(build_command))
     print(f"--- Done. Copying package file into {distpath} ---")
     distpath.mkdir(parents=True, exist_ok=True)
