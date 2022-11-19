@@ -1,13 +1,16 @@
-name: Build Release Binaries
+name: Build Binaries
 
 on:
+  push:
+    branches: [main]
+  pull_request:
   release:
     types: [published]
 
 
 jobs:
   build:
-    name: Build & Release
+    name: Build
     runs-on: ${{ matrix.os }}
     env:
       NO_VIRTUAL_ENV: 1
@@ -24,8 +27,14 @@ jobs:
         run: python install_monopoly.py
       - name: Install Binary Build Requirements
         run: scriptopoly install
+      - name: Get Version (non-release)
+        if: github.event.release == null
+        run: echo "VERSION=$(git rev-parse --short ${{ github.sha }})" >> ${{ github.env }}
+      - name: Get Version (release)
+        if: github.event.release
+        run: echo "VERSION=${{ github.ref_name }}" >> ${{ github.env }}
       - name: Set BUILD_DISTPATH Environment Variable
-        run: echo "BUILD_DISTPATH=monopoly-${{ github.ref_name }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
+        run: echo "BUILD_DISTPATH=monopoly-${{ env.VERSION }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
       - name: Setup keychain (macOS only)
         if: runner.os == 'macOS'
         run: |
@@ -49,7 +58,7 @@ jobs:
 
       - name: Build All Binaries (macOS Only)
         if: runner.os == 'macOS'
-        run: scriptopoly all-binaries --macos-codesign-identity ${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}
+        run: scriptopoly all-binaries --macos-codesign-identity "${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}"
       - name: "Notarize app bundle (macOS Only)"
         if: runner.os == 'macOS'
         run: |
@@ -81,9 +90,19 @@ jobs:
       - name: Build All Binaries
         if: runner.os != 'macOS'
         run: scriptopoly all-binaries
-      - name: Create Build Archive
+      - name: Create Release Archive
         run: scriptopoly archive-binaries
+      - name: Upload Binaries
+        # Even though downloading artifacts wraps them in another zip file we still want to archive
+        # the binaries ourselves. Doing so preserves file permissions and keeps the binaries exectuable.
+        # https://github.com/actions/upload-artifact/blob/v3/README.md#zipped-artifact-downloads
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.BUILD_DISTPATH }}
+          path: ${{ env.BUILD_DISTPATH }}.*
+          if-no-files-found: error
       - name: Release Binaries
+        if: github.event.release
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ env.BUILD_DISTPATH }}.*
