@@ -50,6 +50,7 @@ BUILD_ARTIFACTS = [
 PYINSTALLER_BUILD_COMMAND = f"""
 {PYINSTALLER} {PYINSTALLER_BUILD_DIR}/monopoly.py
     --add-data {PYINSTALLER_BUILD_DIR}/app/data/{os.pathsep}app/data
+    --collect-data pygal
     --distpath {{}}
     --workpath {PYINSTALLER_BUILD_DIR}/build
     -F
@@ -62,6 +63,7 @@ PYOXIDIZER_BUILD_COMMAND = f"""
 NUITKA_BUILD_COMMAND = f"""
 -m nuitka --onefile --assume-yes-for-downloads
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
+    --include-package-data=pygal
     --output-dir={NUITKA_BUILD_DIR}/build
     {NUITKA_BUILD_DIR}/monopoly.py
 """

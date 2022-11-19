@@ -2,6 +2,7 @@ import threading, time, itertools, sys, os
 import pygal
 from pathlib import Path
 import importlib.resources as resources
+from collections import namedtuple
 
 from . import data
 
@@ -211,20 +212,20 @@ class Bar(pygal.Bar):
         super()._compute_margin()
         self.margin_box.right = 20
 
-def generate_chart(results, names, total_turns, duration, num_cores_used):
+def generate_chart(results, board_spaces, total_turns, duration, num_cores_used):
     style = pygal.style.Style(font_family="verdana, sans-serif")
-    style.plot_background = "#e5ecf6"
+    style.plot_background = "white"
     style.opacity = "1"
     style.guide_stroke_dasharray = "1,0"
-    style.guide_stroke_color = "white"
-    style.colors = ["#6a6afb"]
+    style.guide_stroke_color = "#dcdcdc"
+    style.colors = ["black"]
     style.label_font_size = 20
     style.major_label_font_size = style.label_font_size
     style.title_font_size = 32
     style.value_font_size = 18
     style.value_colors = ["black"]
     style.tooltip_font_size = 29
-    style.foreground = ["black"]
+    style.foreground = "black"
 
     config = pygal.Config()
     config.show_legend = False
@@ -232,7 +233,7 @@ def generate_chart(results, names, total_turns, duration, num_cores_used):
     config.title = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})"
     config.x_title = "Board Space Names"
     config.y_title = "Percentage (%) of moves ended on"
-    config.x_labels = names
+    config.x_labels = [board_space.name for board_space in board_spaces]
     config.x_label_rotation = 30
     config.margin_left = 30
     config.value_formatter = lambda y: f"{y:.1%}"
@@ -257,9 +258,13 @@ def generate_chart(results, names, total_turns, duration, num_cores_used):
     chart = Bar(config=config, style=style)
     chart.config.css.append('inline:' + custom_css.format(id=f"#chart-{chart.uuid}"))
 
-    chart.add('Probabilities', results)
+    values = [{"value": result, "color": board_space.color} for result, board_space in zip(results, board_spaces)]
+
+    chart.add('Probabilities', values)
     chart.render_to_file("results/chart.svg")
     chart.render_to_png("results/chart.png")
+
+BoardSpace = namedtuple("BoardSpace", ["name", "color"])
 
 """
 Save the results from the simulation to a txt and a csv file
@@ -273,10 +278,10 @@ def save_results(results, duration, num_cores_used):
     probs_txt = results_dir / 'board-probabilities.txt'
     probs_csv = results_dir / 'board-probabilities.csv'
 
-    with resources.open_text(data, 'board-spaces.txt') as fnames:
-        names = [name.rstrip() for name in fnames]
-        generate_chart(percentages, names, total_turns, duration, num_cores_used)
+    with resources.open_text(data, 'board-spaces.txt') as fp_board_spaces:
+        board_spaces = [BoardSpace(*value.rstrip().split(":")) for value in fp_board_spaces]
+        generate_chart(percentages, board_spaces, total_turns, duration, num_cores_used)
         with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
-            for percentage, square_name in zip(percentages, names):
-                fprobs.write(f"{square_name:<21} - {percentage:.3%}\n")
-                fprobs_csv.write(f"{square_name},{percentage:.3%}\n")
+            for percentage, board_space in zip(percentages, board_spaces):
+                fprobs.write(f"{board_space.name:<21} - {percentage:.3%}\n")
+                fprobs_csv.write(f"{board_space.name},{percentage:.3%}\n")
