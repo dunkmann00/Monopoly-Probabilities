@@ -14,6 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       NO_VIRTUAL_ENV: 1
+      PYTHONUNBUFFERED: 1
     strategy:
       fail-fast: false
       matrix:
