@@ -86,7 +86,8 @@ jobs:
           MACOS_NOTARIZATION_PWD: ${{ secrets.PROD_MACOS_NOTARIZATION_PWD }}
         run: |
           echo "Creating temp notarization archive"
-          scriptopoly archive-binaries --base-name notary/notarization --format zip
+          NOTARIZATION_PATH=$RUNNER_TEMP/notary/notarization
+          scriptopoly archive-binaries --base-name $NOTARIZATION_PATH --format zip
 
           # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
           # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
@@ -94,7 +95,7 @@ jobs:
           # UI password dialog from blocking the CI
 
           echo "Notarize app"
-          xcrun notarytool submit "notary/notarization.zip" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD" --wait
+          xcrun notarytool submit "$NOTARIZATION_PATH.zip" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD" --wait
 
           # This is where we would normally "attach the staple" to our executable. Unfortunately that can't be done at
           # this time:
@@ -108,9 +109,9 @@ jobs:
       - name: Build All Binaries
         if: runner.os != 'macOS'
         run: scriptopoly all-binaries
-      - name: Create Release Archive
+      - name: Create Binary Archive
         run: scriptopoly archive-binaries
-      - name: Upload Binaries
+      - name: Upload Binary Archive
         # Even though downloading artifacts wraps them in another zip file we still want to archive
         # the binaries ourselves. Doing so preserves file permissions and keeps the binaries exectuable.
         # https://github.com/actions/upload-artifact/blob/v3/README.md#zipped-artifact-downloads
@@ -119,7 +120,7 @@ jobs:
           name: ${{ env.BUILD_NAME }}
           path: ${{ env.BUILD_DISTPATH }}.*
           if-no-files-found: error
-      - name: Release Binaries
+      - name: Release Binary Archive
         if: github.event.release
         uses: softprops/action-gh-release@v1
         with:
