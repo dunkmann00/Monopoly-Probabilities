@@ -30,7 +30,7 @@ jobs:
         run: scriptopoly install
       - name: Get Version (non-release)
         if: github.event.release == null
-        run: echo "VERSION=$(git rev-parse --short ${{ github.sha }})" >> ${{ github.env }}
+        run: echo "VERSION=dev-$(git rev-parse --short ${{ github.sha }})" >> ${{ github.env }}
       - name: Get Version (release)
         if: github.event.release
         run: echo "VERSION=${{ github.ref_name }}" >> ${{ github.env }}
@@ -38,6 +38,10 @@ jobs:
         run: echo "BUILD_DISTPATH=monopoly-${{ env.VERSION }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
       - name: Setup keychain (macOS only)
         if: runner.os == 'macOS'
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.PROD_MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}
+          MACOS_CI_KEYCHAIN_PWD: ${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}
         run: |
           # Based on blog post by Federico Terzi & Localazy:
           # https://federicoterzi.com/blog/automatic-code-signing-and-notarization-for-macos-apps-using-github-actions/
@@ -45,45 +49,50 @@ jobs:
           # Also based on Github's guide for signing Xcode applications
           # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
 
-          # Turn our base64-encoded certificate back to a regular .p12 file
+          # create path variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/build.keychain
 
-          echo ${{ secrets.PROD_MACOS_CERTIFICATE }} | base64 --decode > certificate.p12
+          # Turn our base64-encoded certificate back to a regular .p12 file
+          echo $MACOS_CERTIFICATE | base64 --decode > $CERTIFICATE_PATH
 
           # We need to create a new keychain, otherwise using the certificate will prompt
           # with a UI dialog asking for the certificate password, which we can't
           # use in a headless CI environment
 
-          KEYCHAIN_PATH=$RUNNER_TEMP/build.keychain
-
-          security create-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
+          # Create keychain
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" $KEYCHAIN_PATH
           security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
           security default-keychain -s $KEYCHAIN_PATH
-          security unlock-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
-          security import certificate.p12 -k $KEYCHAIN_PATH -P "${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
+          security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" $KEYCHAIN_PATH
+
+          # Import certificate to keychain
+          security import $CERTIFICATE_PATH -k $KEYCHAIN_PATH -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
           security list-keychain -d user -s $KEYCHAIN_PATH
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" $KEYCHAIN_PATH
 
       - name: Build All Binaries (macOS Only)
         if: runner.os == 'macOS'
-        run: scriptopoly all-binaries --macos-codesign-identity "${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}"
+        env:
+          MACOS_CERTIFICATE_NAME: ${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}
+        run: scriptopoly all-binaries --macos-codesign-identity "$MACOS_CERTIFICATE_NAME"
       - name: "Notarize app bundle (macOS Only)"
         if: runner.os == 'macOS'
+        env:
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.PROD_MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.PROD_MACOS_NOTARIZATION_TEAM_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.PROD_MACOS_NOTARIZATION_PWD }}
         run: |
-          # Store the notarization credentials so that we can prevent a UI password dialog
-          # from blocking the CI
-
-          echo "Create keychain profile"
-          xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.PROD_MACOS_NOTARIZATION_APPLE_ID }}" --team-id "${{ secrets.PROD_MACOS_NOTARIZATION_TEAM_ID }}" --password "${{ secrets.PROD_MACOS_NOTARIZATION_PWD }}"
-
           echo "Creating temp notarization archive"
           scriptopoly archive-binaries --base-name notary/notarization --format zip
 
           # Here we send the notarization request to the Apple's Notarization service, waiting for the result.
           # This typically takes a few seconds inside a CI environment, but it might take more depending on the App
-          # characteristics.
+          # characteristics. We pass in all the credentials, including the password so that we can prevent a
+          # UI password dialog from blocking the CI
 
           echo "Notarize app"
-          xcrun notarytool submit "notary/notarization.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "notary/notarization.zip" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD" --wait
 
           # This is where we would normally "attach the staple" to our executable. Unfortunately that can't be done at
           # this time:
