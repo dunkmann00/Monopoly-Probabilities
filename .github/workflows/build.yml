@@ -121,7 +121,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.BUILD_NAME }}
-          path: ${{ env.BUILD_DISTPATH }}.*
+          path: |
+            ${{ env.BUILD_DISTPATH }}.zip # Needed to avoid including all the intermediate directories in the zip -_-
+            ${{ env.BUILD_DISTPATH }}.tar.gz
           if-no-files-found: error
       - name: Release Binary Archive
         if: github.event.release
