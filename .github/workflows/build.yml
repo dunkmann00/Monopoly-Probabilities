@@ -42,6 +42,8 @@ jobs:
           # Based on blog post by Federico Terzi & Localazy:
           # https://federicoterzi.com/blog/automatic-code-signing-and-notarization-for-macos-apps-using-github-actions/
           # https://localazy.com/blog/how-to-automatically-sign-macos-apps-using-github-actions
+          # Also based on Github's guide for signing Xcode applications
+          # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
 
           # Turn our base64-encoded certificate back to a regular .p12 file
 
@@ -51,11 +53,15 @@ jobs:
           # with a UI dialog asking for the certificate password, which we can't
           # use in a headless CI environment
 
-          security create-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
-          security import certificate.p12 -k build.keychain -P "${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" build.keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/build.keychain
+
+          security create-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security default-keychain -s $KEYCHAIN_PATH
+          security unlock-keychain -p "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
+          security import certificate.p12 -k $KEYCHAIN_PATH -P "${{ secrets.PROD_MACOS_CERTIFICATE_PWD }}" -T /usr/bin/codesign
+          security list-keychain -d user -s $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.PROD_MACOS_CI_KEYCHAIN_PWD }}" $KEYCHAIN_PATH
 
       - name: Build All Binaries (macOS Only)
         if: runner.os == 'macOS'
