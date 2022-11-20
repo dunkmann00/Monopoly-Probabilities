@@ -34,8 +34,10 @@ jobs:
       - name: Get Version (release)
         if: github.event.release
         run: echo "VERSION=${{ github.ref_name }}" >> ${{ github.env }}
+      - name: Get Build Name
+        run: echo "BUILD_NAME=monopoly-${{ env.VERSION }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
       - name: Set BUILD_DISTPATH Environment Variable
-        run: echo "BUILD_DISTPATH=monopoly-${{ env.VERSION }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
+        run: echo "BUILD_DISTPATH=${{ runner.temp }}/dist/${{ env.BUILD_NAME }}" >> ${{ github.env }}
       - name: Setup keychain (macOS only)
         if: runner.os == 'macOS'
         env:
@@ -114,7 +116,7 @@ jobs:
         # https://github.com/actions/upload-artifact/blob/v3/README.md#zipped-artifact-downloads
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.BUILD_DISTPATH }}
+          name: ${{ env.BUILD_NAME }}
           path: ${{ env.BUILD_DISTPATH }}.*
           if-no-files-found: error
       - name: Release Binaries
