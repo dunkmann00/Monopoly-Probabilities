@@ -205,7 +205,7 @@ def archive_binaries(args, env):
     distpath = Path(distpath)
     base_name = args.base_name or str(distpath)
     format = args.format or ('zip' if os.name == 'nt' else 'gztar')
-    archive_name = shutil.make_archive(base_name, format, base_dir=distpath)
+    archive_name = shutil.make_archive(base_name, format, root_dir=distpath.parent, base_dir=distpath.name)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
 def main():
