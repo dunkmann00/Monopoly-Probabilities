@@ -129,4 +129,4 @@ jobs:
         if: github.event.release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.BUILD_DISTPATH }}.*
+          files: ${{ env.BUILD_DISTPATH }}.*(zip|tar.gz)
