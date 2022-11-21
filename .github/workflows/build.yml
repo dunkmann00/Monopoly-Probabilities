@@ -37,7 +37,7 @@ jobs:
       - name: Get Build Name
         run: echo "BUILD_NAME=monopoly-${{ env.VERSION }}-$(python -c "import sysconfig; print(sysconfig.get_platform())")" >> ${{ github.env }}
       - name: Set BUILD_DISTPATH Environment Variable
-        run: echo "BUILD_DISTPATH=${{ runner.temp }}/dist/${{ env.BUILD_NAME }}" >> ${{ github.env }}
+        run: echo "BUILD_DISTPATH=$(python -c "import pathlib; print(pathlib.Path(r'${{ runner.temp }}') / 'dist' / '${{ env.BUILD_NAME }}')")" >> ${{ github.env }}
       - name: Setup keychain (macOS only)
         if: runner.os == 'macOS'
         env:
