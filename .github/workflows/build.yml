@@ -121,6 +121,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.BUILD_NAME }}
+          # By entering the paths separately we get the parent directory as the root, which is what we want
           path: |
             ${{ env.BUILD_DISTPATH }}.zip
             ${{ env.BUILD_DISTPATH }}.tar.gz
