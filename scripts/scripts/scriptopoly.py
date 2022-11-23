@@ -28,6 +28,14 @@ if os.name == 'nt':
     if PYOXIDIZER:
         PYOXIDIZER = Path(PYOXIDIZER).as_posix()
 
+    if PYINSTALLER_BUILD_DIR:
+        PYINSTALLER_BUILD_DIR = Path(PYINSTALLER_BUILD_DIR).as_posix()
+    if PYOXIDIZER_BUILD_DIR:
+        PYOXIDIZER_BUILD_DIR = Path(PYOXIDIZER_BUILD_DIR).as_posix()
+    if NUITKA_BUILD_DIR:
+        NUITKA_BUILD_DIR = Path(NUITKA_BUILD_DIR).as_posix()
+
+
 BUILD_ARTIFACTS = [
     "build",
     "dist*",
@@ -128,7 +136,7 @@ def pyinstaller(args, env):
     print("--- Creating PyInstaller single file executable. ---")
     build_command = PYINSTALLER_BUILD_COMMAND
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        build_command += f"--codesign-identity {args.macos_codesign_identity}"
+        build_command += f"--codesign-identity \"{args.macos_codesign_identity}\""
     env.run(*split(build_command.format(distpath.as_posix())))
     print(f"--- Done. File can be found in {distpath} ---")
 
@@ -149,7 +157,7 @@ def pyoxidizer(args, env):
     print("--- Signing Binaries ---")
     if sys.platform == 'darwin' and args.macos_codesign_identity:
         files = glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly*", recursive=True)
-        env.run("/usr/bin/codesign", "--force", "-s", args.macos_codesign_identity, "--options", "runtime", *files, "-v")
+        env.run("/usr/bin/codesign", "--force", "-s", args.macos_codesign_identity, "--timestamp", "--options", "runtime", *files, "-v")
     print(f"--- Done. Copying package files into {distpath} ---")
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():
         install_dir = platform_dir / "release/install"
@@ -177,7 +185,7 @@ def nuitka(args, env):
     print("--- Creating Nuitka single file executable. ---")
     build_command = NUITKA_BUILD_COMMAND
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        build_command += f"--macos-sign-identity={args.macos_codesign_identity} --macos-sign-notarization"
+        build_command += f"--macos-sign-identity=\"{args.macos_codesign_identity}\" --macos-sign-notarization"
     env.python(*split(build_command))
     print(f"--- Done. Copying package file into {distpath} ---")
     distpath.mkdir(parents=True, exist_ok=True)
@@ -205,7 +213,7 @@ def archive_binaries(args, env):
     distpath = Path(distpath)
     base_name = args.base_name or str(distpath)
     format = args.format or ('zip' if os.name == 'nt' else 'gztar')
-    archive_name = shutil.make_archive(base_name, format, base_dir=distpath)
+    archive_name = shutil.make_archive(base_name, format, root_dir=distpath.parent, base_dir=distpath.name)
     print(f"--- Done. Archive can be found at {archive_name} ---")
 
 def main():
