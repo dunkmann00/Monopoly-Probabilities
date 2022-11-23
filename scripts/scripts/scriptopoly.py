@@ -91,7 +91,7 @@ def build(args, env):
 @script_parser.parser(help_desc="Install dependencies necessary for building binaries.")
 def install(args, env):
     print("--- Installing dependencies needed for building binaries ---")
-    env.pip("install", "-r", "requirements-binaries.txt")
+    env.pip("install", "--use-pep517", "-r", "requirements-binaries.txt")
     print("--- Done ---")
 
 @script_parser.parser(help_desc="Remove files & folders from building binaries, etc.")
@@ -114,7 +114,7 @@ def monopolize(args, env):
         from Cython.Build import cythonize
     except:
         print("--- Cython not installed...installing now ---")
-        env.pip("install", "-r", "requirements-cython.txt")
+        env.pip("install", "--use-pep517", "-r", "requirements-cython.txt")
         from Cython.Build import cythonize
     cythonize("app/cython_ext/monopoly.pyx", annotate=True)
     print("--- Done ---")
