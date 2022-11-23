@@ -51,9 +51,12 @@ jobs:
           # Also based on Github's guide for signing Xcode applications
           # https://docs.github.com/en/actions/deployment/deploying-xcode-applications/installing-an-apple-certificate-on-macos-runners-for-xcode-development
 
-          # create path variables
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          KEYCHAIN_PATH=$RUNNER_TEMP/build.keychain
+          # Make keychain temporary directory
+          mkdir $RUNNER_TEMP/keychain
+
+          # Create path variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/keychain/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/keychain/build.keychain
 
           # Turn our base64-encoded certificate back to a regular .p12 file
           echo $MACOS_CERTIFICATE | base64 --decode > $CERTIFICATE_PATH
