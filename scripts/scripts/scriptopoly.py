@@ -28,6 +28,14 @@ if os.name == 'nt':
     if PYOXIDIZER:
         PYOXIDIZER = Path(PYOXIDIZER).as_posix()
 
+    if PYINSTALLER_BUILD_DIR:
+        PYINSTALLER_BUILD_DIR = Path(PYINSTALLER_BUILD_DIR).as_posix()
+    if PYOXIDIZER_BUILD_DIR:
+        PYOXIDIZER_BUILD_DIR = Path(PYOXIDIZER_BUILD_DIR).as_posix()
+    if NUITKA_BUILD_DIR:
+        NUITKA_BUILD_DIR = Path(NUITKA_BUILD_DIR).as_posix()
+
+
 BUILD_ARTIFACTS = [
     "build",
     "dist*",
