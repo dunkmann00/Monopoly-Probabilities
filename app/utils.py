@@ -212,21 +212,24 @@ class Bar(pygal.Bar):
         super()._compute_margin()
         self.margin_box.right = 20
 
-def generate_chart(results, board_spaces, total_turns, duration, num_cores_used):
-    style = pygal.style.Style(font_family="verdana, sans-serif")
-    style.plot_background = "white"
-    style.opacity = "1"
-    style.guide_stroke_dasharray = "1,0"
-    style.guide_stroke_color = "#dcdcdc"
-    style.colors = ["black"]
-    style.label_font_size = 20
-    style.major_label_font_size = style.label_font_size
-    style.title_font_size = 32
-    style.value_font_size = 18
-    style.value_colors = ["black"]
-    style.tooltip_font_size = 29
-    style.foreground = "black"
+class CustomStyle(pygal.style.Style):
+    font_family = "verdana, sans-serif"
+    plot_background = "white"
+    opacity = "1"
+    guide_stroke_dasharray = "1,0"
+    guide_stroke_color = "#dcdcdc"
+    major_guide_stroke_dasharray = guide_stroke_dasharray
+    major_guide_stroke_color = guide_stroke_color
+    colors = ("black",)
+    label_font_size = 20
+    major_label_font_size = label_font_size
+    title_font_size = 32
+    value_font_size = 18
+    value_colors = ("black",)
+    tooltip_font_size = 29
+    foreground = "black"
 
+def generate_chart(results, board_spaces, total_turns, duration, num_cores_used):
     config = pygal.Config()
     config.show_legend = False
     config.human_readable = True
@@ -255,7 +258,7 @@ def generate_chart(results, board_spaces, total_turns, duration, num_cores_used)
     # myself after creating the bar chart and adding it into the 'custom_css'
     # string manually
 
-    chart = Bar(config=config, style=style)
+    chart = Bar(config=config, style=CustomStyle())
     chart.config.css.append('inline:' + custom_css.format(id=f"#chart-{chart.uuid}"))
 
     values = [{"value": result, "color": board_space.color} for result, board_space in zip(results, board_spaces)]
