@@ -31,5 +31,5 @@ monopoly = "app:main"
 scriptopoly = "scripts:scriptopoly.main"
 
 [build-system]
-requires = ["setuptools>=59.0.1,<60.0.0"]
+requires = ["setuptools>=59.0.1"]
 build-backend = "setuptools.build_meta"
