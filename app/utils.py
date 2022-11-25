@@ -262,7 +262,8 @@ def generate_chart(results, board_spaces, total_turns, duration, num_cores_used)
 
     chart.add('Probabilities', values)
     chart.render_to_file("results/chart.svg")
-    chart.render_to_png("results/chart.png")
+    if not getattr(sys, 'oxidized', False):
+        chart.render_to_png("results/chart.png")
 
 BoardSpace = namedtuple("BoardSpace", ["name", "color"])
 
