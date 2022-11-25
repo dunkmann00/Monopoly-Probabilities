@@ -155,13 +155,17 @@ version = "3.0.0"
 description = "A Python svg graph plotting library"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 
 [package.extras]
 docs = ["pygal-sphinx-directives", "sphinx", "sphinx-rtd-theme"]
 lxml = ["lxml"]
 png = ["cairosvg"]
 test = ["cairosvg", "coveralls", "flask", "lxml", "pygal-maps-ch", "pygal-maps-fr", "pygal-maps-world", "pyquery", "pytest", "pytest-cov", "pytest-flake8", "pytest-isort", "pytest-runner"]
+
+[package.source]
+type = "url"
+url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"
 
 [[package]]
 name = "pyinstaller"
@@ -266,7 +270,7 @@ pyoxidizer = ["pyoxidizer"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "a183d001cd37165e258b3f0533e49959b393074fa78e7625c54583c601cbaed7"
+content-hash = "fff244d54e8a394d2d35230a06105ec9bc4d444c731df91c660b25e06eabf1a5"
 
 [metadata.files]
 altgraph = [
@@ -412,10 +416,7 @@ pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
-pygal = [
-    {file = "pygal-3.0.0-py2.py3-none-any.whl", hash = "sha256:9ae06e32dec1422f9cd0d606fe2728f78e0b5d644551137480d8d5806e2426f0"},
-    {file = "pygal-3.0.0.tar.gz", hash = "sha256:2923f95d2e515930aa5a997219dccefbf3d92b7eaf5fc1c9febb95b09935fdb2"},
-]
+pygal = []
 pyinstaller = [
     {file = "pyinstaller-5.6.2-py3-none-macosx_10_13_universal2.whl", hash = "sha256:1b1e3b37a22fb36555d917f0c3dfb998159ff4af6d8fa7cc0074d630c6fe81ad"},
     {file = "pyinstaller-5.6.2-py3-none-manylinux2014_aarch64.whl", hash = "sha256:05df5d2b9ca645cc6ef61d8a85451d2aabe5501997f1f50cd94306fd6bc0485d"},
