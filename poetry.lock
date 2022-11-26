@@ -45,16 +45,12 @@ python-versions = "*"
 altgraph = ">=0.17"
 
 [[package]]
-name = "Nuitka"
-version = "1.2rc8"
+name = "nuitka"
+version = "1.2.3"
 description = "Python compiler with full language support and CPython compatibility"
 category = "main"
 optional = true
 python-versions = "*"
-
-[package.source]
-type = "url"
-url = "https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac77238fed1fc4fd5a2f.zip"
 
 [[package]]
 name = "ordered-set"
@@ -177,14 +173,14 @@ cffi = ["cffi (>=1.11)"]
 
 [extras]
 cython = ["cython"]
-nuitka = ["Nuitka", "zstandard", "ordered-set"]
+nuitka = ["zstandard", "ordered-set"]
 pyinstaller = ["pyinstaller"]
 pyoxidizer = ["pyoxidizer"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "2d35c7f5166fd5c63561263acce94f927d78e631ecae5bc06eb8751ff584c71b"
+content-hash = "8e607ea24e0d578ff57f238be2d6867c3a23b6a06b3c14673fd1b64f6e30d605"
 
 [metadata.files]
 altgraph = [
@@ -306,7 +302,9 @@ macholib = [
     {file = "macholib-1.16.2-py2.py3-none-any.whl", hash = "sha256:44c40f2cd7d6726af8fa6fe22549178d3a4dfecc35a9cd15ea916d9c83a688e0"},
     {file = "macholib-1.16.2.tar.gz", hash = "sha256:557bbfa1bb255c20e9abafe7ed6cd8046b48d9525db2f9b77d3122a63a2a8bf8"},
 ]
-Nuitka = []
+nuitka = [
+    {file = "Nuitka-1.2.3.tar.gz", hash = "sha256:81cbfc4adfab521b69718f92e92d6de65c2565876fc95dc054b79b4ed5e4c611"},
+]
 ordered-set = [
     {file = "ordered-set-4.1.0.tar.gz", hash = "sha256:694a8e44c87657c59292ede72891eb91d34131f6531463aab3009191c77364a8"},
     {file = "ordered_set-4.1.0-py3-none-any.whl", hash = "sha256:046e1132c71fcf3330438a539928932caf51ddbc582496833e23de611de14562"},

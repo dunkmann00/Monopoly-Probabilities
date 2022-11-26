@@ -14,8 +14,7 @@ install_requires = \
 
 extras_require = \
 {'cython': ['cython>=0.29.15,<0.30.0'],
- 'nuitka': ['Nuitka @ '
-            'https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac77238fed1fc4fd5a2f.zip',
+ 'nuitka': ['nuitka>=1.2.3,<2.0.0',
             'zstandard>=0.18.0,<0.19.0',
             'ordered-set>=4.1.0,<5.0.0'],
  'pyinstaller': ['pyinstaller>=5.0,<6.0'],
@@ -28,7 +27,7 @@ entry_points = \
 setup_kwargs = {
     'name': 'monopoly-probabilities',
     'version': '0.2.0',
-    'description': 'Calculate the probabilties of landing on each different square on a monopoly board.',
+    'description': 'Calculate the probabilities of landing on each different square on a monopoly board.',
     'long_description': 'None',
     'author': 'George Waters',
     'author_email': 'george@georgeh2os.com',
