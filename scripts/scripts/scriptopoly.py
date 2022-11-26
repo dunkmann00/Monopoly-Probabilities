@@ -158,7 +158,8 @@ def pyoxidizer(args, env):
         env.run(*split(PYOXIDIZER_BUILD_COMMAND))
     print("--- Signing Binaries ---")
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        files = glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly*", recursive=True)
+        files = (glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly", recursive=True) +
+                 glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/*.so", recursive=True))
         env.run("/usr/bin/codesign", "--force", "-s", args.macos_codesign_identity, "--timestamp", "--options", "runtime", *files, "-v")
     print(f"--- Done. Copying package files into {distpath} ---")
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():
