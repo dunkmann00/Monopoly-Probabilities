@@ -10,9 +10,7 @@ package_data = \
 {'': ['*']}
 
 install_requires = \
-['cairosvg @ '
- 'https://github.com/dunkmann00/CairoSVG/archive/refs/heads/freeze.zip',
- 'pygal @ https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip']
+['pygal @ https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip']
 
 extras_require = \
 {'cython': ['cython>=0.29.15,<0.30.0'],

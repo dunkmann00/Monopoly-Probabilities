@@ -314,11 +314,3 @@ def save_results(result, results_dir=None):
     probs_svg_chart = results_dir / 'board-probabilities-chart.svg'
     chart.render_to_file(str(probs_svg_chart))
     print(probs_svg_chart.name)
-
-    if not getattr(sys, 'oxidized', False):
-        probs_png_chart = results_dir / 'board-probabilities-chart.png'
-        chart.render_to_png(str(probs_png_chart))
-        print(probs_png_chart.name)
-    else:
-        print("* Couldn't save .png version of chart, not supported with "
-              "PyOxidizer build.")

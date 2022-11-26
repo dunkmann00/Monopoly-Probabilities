@@ -16,7 +16,6 @@ Nuitka = {url = "https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac
 zstandard = {version = "^0.18.0", optional = true}
 ordered-set = {version = "^4.1.0", optional = true}
 pygal = {url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"}
-cairosvg = {url = "https://github.com/dunkmann00/CairoSVG/archive/refs/heads/freeze.zip"}
 
 [tool.poetry.dev-dependencies]
 
