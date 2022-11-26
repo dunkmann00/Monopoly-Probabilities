@@ -50,6 +50,7 @@ BUILD_ARTIFACTS = [
 PYINSTALLER_BUILD_COMMAND = f"""
 {PYINSTALLER} {PYINSTALLER_BUILD_DIR}/monopoly.py
     --add-data {PYINSTALLER_BUILD_DIR}/app/data/{os.pathsep}app/data
+    --collect-data pygal
     --distpath {{}}
     --workpath {PYINSTALLER_BUILD_DIR}/build
     -F
@@ -62,6 +63,7 @@ PYOXIDIZER_BUILD_COMMAND = f"""
 NUITKA_BUILD_COMMAND = f"""
 -m nuitka --onefile --assume-yes-for-downloads
     --include-data-file={NUITKA_BUILD_DIR}/app/data/*.txt=app/data/
+    --include-package-data=pygal
     --output-dir={NUITKA_BUILD_DIR}/build
     {NUITKA_BUILD_DIR}/monopoly.py
 """
@@ -89,7 +91,7 @@ def build(args, env):
 @script_parser.parser(help_desc="Install dependencies necessary for building binaries.")
 def install(args, env):
     print("--- Installing dependencies needed for building binaries ---")
-    env.pip("install", "-r", "requirements-binaries.txt")
+    env.pip("install", "--use-pep517", "-r", "requirements-binaries.txt")
     print("--- Done ---")
 
 @script_parser.parser(help_desc="Remove files & folders from building binaries, etc.")
@@ -112,7 +114,7 @@ def monopolize(args, env):
         from Cython.Build import cythonize
     except:
         print("--- Cython not installed...installing now ---")
-        env.pip("install", "-r", "requirements-cython.txt")
+        env.pip("install", "--use-pep517", "-r", "requirements-cython.txt")
         from Cython.Build import cythonize
     cythonize("app/cython_ext/monopoly.pyx", annotate=True)
     print("--- Done ---")
@@ -156,7 +158,8 @@ def pyoxidizer(args, env):
         env.run(*split(PYOXIDIZER_BUILD_COMMAND))
     print("--- Signing Binaries ---")
     if sys.platform == 'darwin' and args.macos_codesign_identity:
-        files = glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly*", recursive=True)
+        files = (glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/monopoly", recursive=True) +
+                 glob.glob(f"{PYOXIDIZER_BUILD_DIR}/**/*.so", recursive=True))
         env.run("/usr/bin/codesign", "--force", "-s", args.macos_codesign_identity, "--timestamp", "--options", "runtime", *files, "-v")
     print(f"--- Done. Copying package files into {distpath} ---")
     for platform_dir in Path(PYOXIDIZER_BUILD_DIR).iterdir():

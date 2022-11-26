@@ -1,6 +1,8 @@
 import threading, time, itertools, sys, os
+import pygal
 from pathlib import Path
 import importlib.resources as resources
+from collections import namedtuple
 
 from . import data
 
@@ -108,23 +110,31 @@ with Timer():
 class Timer(object):
     def __init__(self):
         self.start = None
+        self.end = None
 
     def __enter__(self):
         self.start = time.monotonic()
 
     def __exit__(self, exc_type, exc_val, traceback):
-        print(f"Run time: {self.format_duration(time.monotonic()-self.start)}")
+        self.end = time.monotonic()
         return False
 
-    def format_duration(self, duration):
-        duration_str = ''
-        mins = int(duration / 60)
-        if mins > 0:
-            duration_str = f"{pluralize(mins,'min')} "
-        secs = duration - (mins * 60)
-        format = '.0f' if mins > 0 else '.2f'
-        duration_str += f"{pluralize(secs,'sec',format)}"
-        return duration_str
+    @property
+    def duration(self):
+        if self.start is None or self.end is None:
+            return None
+        return self.end - self.start
+
+def format_duration(duration):
+    if duration is None:
+        return ''
+    duration_str = ''
+    mins, secs = divmod(duration, 60)
+    if mins > 0:
+        duration_str = f"{pluralize(mins,'min','.0f')} "
+    format = '.0f' if mins > 0 else '.2f'
+    duration_str += f"{pluralize(secs,'sec',format)}"
+    return duration_str
 
 """
 Returns either the C extension or pure Python version of the Monopoly class
@@ -197,20 +207,85 @@ def calculate_all_turns(total_turns, cpu_count):
         turns_remaining-=1
     return turns
 
+class Bar(pygal.Bar):
+    def _compute_margin(self):
+        super()._compute_margin()
+        self.margin_box.right = 20
+
+class CustomStyle(pygal.style.Style):
+    font_family = "verdana, sans-serif"
+    plot_background = "white"
+    opacity = "1"
+    guide_stroke_dasharray = "1,0"
+    guide_stroke_color = "#dcdcdc"
+    major_guide_stroke_dasharray = guide_stroke_dasharray
+    major_guide_stroke_color = guide_stroke_color
+    colors = ("black",)
+    label_font_size = 20
+    major_label_font_size = label_font_size
+    title_font_size = 32
+    value_font_size = 18
+    value_colors = ("black",)
+    tooltip_font_size = 29
+    foreground = "black"
+
+def generate_chart(results, board_spaces, total_turns, duration, num_cores_used):
+    config = pygal.Config()
+    config.show_legend = False
+    config.human_readable = True
+    config.title = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})"
+    config.x_title = "Board Space Names"
+    config.y_title = "Percentage (%) of moves ended on"
+    config.x_labels = [board_space.name for board_space in board_spaces]
+    config.x_label_rotation = 30
+    config.margin_left = 30
+    config.value_formatter = lambda y: f"{y:.1%}"
+    config.stroke = False
+    config.width = 2400
+    config.height = 1200
+    config.print_values = True
+    config.print_values_position = "top"
+    custom_css = '''
+        {id} .axis.x .guides {{
+            transform: translate(-10px, 0px);
+        }}
+    '''
+    # Can't do:
+    # config.css.append('inline:' + custom_css) and have it insert the id
+    # This is a bug, adding text with inline doesn't add the id
+    # https://github.com/Kozea/pygal/blob/4a32a53c691021b864b96f426a8aa339dadee55f/pygal/svg.py#L103-L123
+    # Instead of not adding it or using a temporary file, I'm getting the id
+    # myself after creating the bar chart and adding it into the 'custom_css'
+    # string manually
+
+    chart = Bar(config=config, style=CustomStyle())
+    chart.config.css.append('inline:' + custom_css.format(id=f"#chart-{chart.uuid}"))
+
+    values = [{"value": result, "color": board_space.color} for result, board_space in zip(results, board_spaces)]
+
+    chart.add('Probabilities', values)
+    chart.render_to_file("results/chart.svg")
+    if not getattr(sys, 'oxidized', False):
+        chart.render_to_png("results/chart.png")
+
+BoardSpace = namedtuple("BoardSpace", ["name", "color"])
+
 """
 Save the results from the simulation to a txt and a csv file
 """
-def save_results(results):
+def save_results(results, duration, num_cores_used):
     total_turns = sum(results)
+    percentages = [result/total_turns for result in results]
 
     results_dir = Path('results')
     results_dir.mkdir(parents=True, exist_ok=True)
     probs_txt = results_dir / 'board-probabilities.txt'
     probs_csv = results_dir / 'board-probabilities.csv'
 
-    with resources.open_text(data, 'board-spaces.txt') as fnames:
+    with resources.open_text(data, 'board-spaces.txt') as fp_board_spaces:
+        board_spaces = [BoardSpace(*value.rstrip().split(":")) for value in fp_board_spaces]
+        generate_chart(percentages, board_spaces, total_turns, duration, num_cores_used)
         with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
-            for i,square_name in enumerate(fnames):
-                if i < len(results):
-                    fprobs.write(f"{square_name.rstrip():<21} - {results[i]/total_turns:.3%}\n")
-                    fprobs_csv.write(f"{square_name.rstrip()},{results[i]/total_turns:.3%}\n")
+            for percentage, board_space in zip(percentages, board_spaces):
+                fprobs.write(f"{board_space.name:<21} - {percentage:.3%}\n")
+                fprobs_csv.write(f"{board_space.name},{percentage:.3%}\n")

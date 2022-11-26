@@ -1,41 +1,41 @@
-Go
-Mediterranean Avenue
-Community Chest
-Baltic Avenue
-Income Tax
-Reading Railroad
-Oriental Avenue
-Chance
-Vermont Avenue
-Connecticut Avenue
-Just Visiting Jail
-St. Charles Place
-Electric Company
-States Avenue
-Virginia Avenue
-Pennsylvania Railroad
-St. James Place
-Community Chest
-Tennessee Avenue
-New York Avenue
-Free Parking
-Kentucky Avenue
-Chance
-Indiana Avenue
-Illinois Avenue
-B. & O. Railroad
-Atlantic Avenue
-Ventnor Avenue
-Water Works
-Marvin Gardens
-Go To Jail
-Pacific Avenue
-North Carolina Avenue
-Community Chest
-Pennsylvania Avenue
-Short Line Railroad
-Chance
-Park Place
-Luxury Tax
-Boardwalk
-In Jail
+Go:#cde8df
+Mediterranean Avenue:#612c46
+Community Chest:#fddf65
+Baltic Avenue:#612c46
+Income Tax:#cde8df
+Reading Railroad:#292929
+Oriental Avenue:#a9e6ff
+Chance:#ff7449
+Vermont Avenue:#a9e6ff
+Connecticut Avenue:#a9e6ff
+Just Visiting Jail:#cde8df
+St. Charles Place:#ee457c
+Electric Company:#cde8df
+States Avenue:#ee457c
+Virginia Avenue:#ee457c
+Pennsylvania Railroad:#292929
+St. James Place:#f48337
+Community Chest:#fddf65
+Tennessee Avenue:#f48337
+New York Avenue:#f48337
+Free Parking:#cde8df
+Kentucky Avenue:#ee4737
+Chance:#ff7449
+Indiana Avenue:#ee4737
+Illinois Avenue:#ee4737
+B. & O. Railroad:#292929
+Atlantic Avenue:#fae729
+Ventor Avenue:#fae729
+Water Works:#cde8df
+Marvin Gardens:#fae729
+Go To Jail:#cde8df
+Pacific Avenue:#2ea762
+North Carolina Avenue:#2ea762
+Community Chest:#fddf65
+Pennsylvania Avenue:#2ea762
+Short Line Railroad:#292929
+Chance:#ff7449
+Park Place:#3a57a3
+Luxury Tax:#cde8df
+Boardwalk:#3a57a3
+In Jail:#cde8df

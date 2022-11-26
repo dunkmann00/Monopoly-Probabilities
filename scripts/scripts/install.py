@@ -69,7 +69,7 @@ def install_venv(args):
 
 def install_monopoly(env):
     print("--- Installing Monopoly-Probabilities ---")
-    env.pip("install", "-e", ".")
+    env.pip("install", "--use-pep517", "-e", ".")
     add_script_pth(env)
     print("--- Done ---")
     print("--- To uninstall, run this script again with --uninstall ---")
