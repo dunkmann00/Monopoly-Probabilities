@@ -1,7 +1,7 @@
 import os
 from multiprocessing import Pool
 from itertools import starmap
-from .utils import (Spinner, Timer, format_duration, pluralize,
+from .utils import (Spinner, Timer, Result, pluralize,
                     calculate_all_turns, save_results, get_monopoly_cls,
                     generate_games, play_game)
 
@@ -23,6 +23,7 @@ def parse_args():
         parser.add_argument("--no-parallel", help="Don't run the simulation in parallel.", action="store_true")
         parser.add_argument("--max-cpu-cores", help="When running in parallel, the maximum number of CPU cores to use for the simulation.", type=int)
         parser.add_argument("--pure-python", help="Use the pure python version for the simulation.", action="store_true")
+        parser.add_argument("--results-dir", help="The directory to store the results from the simulation. (Default: 'results')")
         flags = parser.parse_args()
     except ImportError:
         flags = None
@@ -61,8 +62,7 @@ def main():
                 with Pool() as pool:
                     results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(monopoly_cls, turns)))]
 
-    total_turns = sum(results)
-    duration_fmt = format_duration(timer.duration)
-    print(f"Run time: {duration_fmt}")
-    print(f"Complete, {pluralize(total_turns,'move',',')} made")
-    save_results(results, duration_fmt, num_cores_used)
+    result = Result(results, timer.duration, num_cores_used)
+    print(f"Run time: {result.pretty_duration}")
+    print(f"Complete, {result.pretty_total_turns} made")
+    save_results(result, flags.results_dir)

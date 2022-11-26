@@ -125,16 +125,35 @@ class Timer(object):
             return None
         return self.end - self.start
 
-def format_duration(duration):
-    if duration is None:
-        return ''
-    duration_str = ''
-    mins, secs = divmod(duration, 60)
-    if mins > 0:
-        duration_str = f"{pluralize(mins,'min','.0f')} "
-    format = '.0f' if mins > 0 else '.2f'
-    duration_str += f"{pluralize(secs,'sec',format)}"
-    return duration_str
+BoardSpace = namedtuple("BoardSpace", ["name", "color"])
+
+class Result():
+    def __init__(self, results, duration, num_cores_used):
+        self.results = results
+        self.total_turns = sum(results)
+        self.percentages = [result/self.total_turns for result in results]
+        self.duration = duration
+        self.num_cores_used = num_cores_used
+
+    @property
+    def pretty_duration(self):
+        if self.duration is None:
+            return ''
+        duration_str = ''
+        mins, secs = divmod(self.duration, 60)
+        if mins > 0:
+            duration_str = f"{pluralize(mins,'min','.0f')} "
+        format = '.0f' if mins > 0 else '.2f'
+        duration_str += f"{pluralize(secs,'sec',format)}"
+        return duration_str
+
+    @property
+    def pretty_total_turns(self):
+        return pluralize(self.total_turns,'move',',')
+
+    @property
+    def pretty_num_cores_used(self):
+        return pluralize(self.num_cores_used, 'cpu core')
 
 """
 Returns either the C extension or pure Python version of the Monopoly class
@@ -229,11 +248,11 @@ class CustomStyle(pygal.style.Style):
     tooltip_font_size = 29
     foreground = "black"
 
-def generate_chart(results, board_spaces, total_turns, duration, num_cores_used):
+def make_chart(result, board_spaces):
     config = pygal.Config()
     config.show_legend = False
     config.human_readable = True
-    config.title = f"Monopoly Probabilities Results ({total_turns:,} moves - {duration} - {pluralize(num_cores_used, 'cpu core')})"
+    config.title = f"Monopoly Probabilities Results ({result.pretty_total_turns} - {result.pretty_duration} - {result.pretty_num_cores_used})"
     config.x_title = "Board Space Names"
     config.y_title = "Percentage (%) of moves ended on"
     config.x_labels = [board_space.name for board_space in board_spaces]
@@ -261,31 +280,45 @@ def generate_chart(results, board_spaces, total_turns, duration, num_cores_used)
     chart = Bar(config=config, style=CustomStyle())
     chart.config.css.append('inline:' + custom_css.format(id=f"#chart-{chart.uuid}"))
 
-    values = [{"value": result, "color": board_space.color} for result, board_space in zip(results, board_spaces)]
-
+    values = [{"value": percentage, "color": board_space.color} for percentage, board_space in zip(result.percentages, board_spaces)]
     chart.add('Probabilities', values)
-    chart.render_to_file("results/chart.svg")
-    if not getattr(sys, 'oxidized', False):
-        chart.render_to_png("results/chart.png")
 
-BoardSpace = namedtuple("BoardSpace", ["name", "color"])
+    return chart
 
 """
 Save the results from the simulation to a txt and a csv file
 """
-def save_results(results, duration, num_cores_used):
-    total_turns = sum(results)
-    percentages = [result/total_turns for result in results]
-
-    results_dir = Path('results')
+def save_results(result, results_dir=None):
+    results_dir = results_dir or 'results'
+    results_dir = Path(results_dir).resolve()
     results_dir.mkdir(parents=True, exist_ok=True)
-    probs_txt = results_dir / 'board-probabilities.txt'
-    probs_csv = results_dir / 'board-probabilities.csv'
 
+    # This should be changed to use the newer 'files()' api, but PyOxidizer
+    # doesn't yet support it
     with resources.open_text(data, 'board-spaces.txt') as fp_board_spaces:
         board_spaces = [BoardSpace(*value.rstrip().split(":")) for value in fp_board_spaces]
-        generate_chart(percentages, board_spaces, total_turns, duration, num_cores_used)
-        with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
-            for percentage, board_space in zip(percentages, board_spaces):
-                fprobs.write(f"{board_space.name:<21} - {percentage:.3%}\n")
-                fprobs_csv.write(f"{board_space.name},{percentage:.3%}\n")
+
+    print(f"Saving Results to {results_dir}:")
+
+    probs_txt = results_dir / 'board-probabilities.txt'
+    probs_csv = results_dir / 'board-probabilities.csv'
+    with probs_txt.open('w') as fprobs, probs_csv.open('w') as fprobs_csv:
+        for percentage, board_space in zip(result.percentages, board_spaces):
+            fprobs.write(f"{board_space.name:<21} - {percentage:.3%}\n")
+            fprobs_csv.write(f"{board_space.name},{percentage:.3%}\n")
+    print(probs_txt.name)
+    print(probs_csv.name)
+
+    chart = make_chart(result, board_spaces)
+
+    probs_svg_chart = results_dir / 'board-probabilities-chart.svg'
+    chart.render_to_file(str(probs_svg_chart))
+    print(probs_svg_chart.name)
+
+    if not getattr(sys, 'oxidized', False):
+        probs_png_chart = results_dir / 'board-probabilities-chart.png'
+        chart.render_to_png(str(probs_png_chart))
+        print(probs_png_chart.name)
+    else:
+        print("* Couldn't save .png version of chart, not supported with "
+              "PyOxidizer build.")
