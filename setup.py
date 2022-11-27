@@ -15,10 +15,10 @@ install_requires = \
 extras_require = \
 {'cython': ['cython>=0.29.15,<0.30.0'],
  'nuitka': ['nuitka>=1.2.3,<2.0.0',
-            'zstandard>=0.18.0,<0.19.0',
+            'zstandard>=0.19.0,<0.20.0',
             'ordered-set>=4.1.0,<5.0.0'],
  'pyinstaller': ['pyinstaller>=5.0,<6.0'],
- 'pyoxidizer': ['pyoxidizer>=0.22.0,<0.23.0']}
+ 'pyoxidizer': ['pyoxidizer>=0.23.0,<0.24.0']}
 
 entry_points = \
 {'console_scripts': ['monopoly = app:main',
