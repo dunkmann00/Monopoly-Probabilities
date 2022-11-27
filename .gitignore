@@ -12,3 +12,4 @@ nuitka-build/
 *.pyd
 macos-signing/
 notary_log.json
+.pdm.toml
