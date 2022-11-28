@@ -1,14 +1,38 @@
+[project]
+name = "monopoly-probabilities"
+version = "0.2.0"
+description = "Calculate the probabilities of landing on each different square on a monopoly board."
+authors = [
+    {name = "George Waters", email = "gwatersdev@gmail.com"},
+]
+dependencies = [
+]
+requires-python = ">=3.7,<3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.scripts]
+monopoly = "app:main"
+scriptopoly = "scripts:scriptopoly.main"
+
+[tool.setuptools]
+packages = ['app', 'app.cython_ext', 'app.data']
+package-data = {'*' = ['*.txt']}
+
+
 [tool.poetry]
 name = "monopoly-probabilities"
 version = "0.2.0"
 description = "Calculate the probabilities of landing on each different square on a monopoly board."
-authors = ["George Waters <george@georgeh2os.com>"]
+authors = ["George Waters <gwatersdev@gmail.com>"]
 packages = [
     { include = "app" }
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<3.11"
+python = ">=3.10,<3.11"
+
+[tool.poetry.group.runtime.dependencies]
 pygal = {url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"}
 
 [tool.poetry.group.binaries]
@@ -27,10 +51,6 @@ optional = true
 [tool.poetry.group.cython.dependencies]
 cython = "^0.29.32"
 
-[tool.poetry.scripts]
-monopoly = "app:main"
-scriptopoly = "scripts:scriptopoly.main"
-
 [build-system]
-requires = ["setuptools>=59.0.1"]
+requires = ["setuptools==65.6.3"]
 build-backend = "setuptools.build_meta"

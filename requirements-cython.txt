@@ -1,4 +1,4 @@
-cython==0.29.32 ; python_version >= "3.7" and python_version < "3.11" \
+cython==0.29.32 ; python_version >= "3.10" and python_version < "3.11" \
     --hash=sha256:061e25151c38f2361bc790d3bcf7f9d9828a0b6a4d5afa56fbed3bd33fb2373a \
     --hash=sha256:06be83490c906b6429b4389e13487a26254ccaad2eef6f3d4ee21d8d3a4aaa2b \
     --hash=sha256:07d173d3289415bb496e72cb0ddd609961be08fe2968c39094d5712ffb78672b \
