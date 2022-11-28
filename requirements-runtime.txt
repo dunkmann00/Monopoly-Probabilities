@@ -1,0 +1,1 @@
+pygal @ https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip ; python_version >= "3.10" and python_version < "3.11"

@@ -56,6 +56,7 @@ def make_exe():
     )
 
     exe.add_python_resources(exe.pip_install(["--use-pep517", CWD]))
+    exe.add_python_resources(exe.pip_install(["--use-pep517", "-r", "requirements-runtime.txt"]))
 
     return exe
 

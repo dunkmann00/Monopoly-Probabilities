@@ -1,34 +1,56 @@
+[project]
+name = "monopoly-probabilities"
+version = "0.2.0"
+description = "Calculate the probabilities of landing on each different square on a monopoly board."
+authors = [
+    {name = "George Waters", email = "gwatersdev@gmail.com"},
+]
+dependencies = [
+]
+requires-python = ">=3.7,<3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.scripts]
+monopoly = "app:main"
+scriptopoly = "scripts:scriptopoly.main"
+
+[tool.setuptools]
+packages = ['app', 'app.cython_ext', 'app.data']
+package-data = {'*' = ['*.txt']}
+
+
 [tool.poetry]
 name = "monopoly-probabilities"
 version = "0.2.0"
-description = "Calculate the probabilties of landing on each different square on a monopoly board."
-authors = ["George Waters <george@georgeh2os.com>"]
+description = "Calculate the probabilities of landing on each different square on a monopoly board."
+authors = ["George Waters <gwatersdev@gmail.com>"]
 packages = [
     { include = "app" }
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-cython = {version = "^0.29.15", optional = true}
-pyinstaller = {version = "^5.0", optional = true}
-pyoxidizer = {version = "^0.22.0", optional = true}
-Nuitka = {url = "https://github.com/Nuitka/Nuitka/archive/40931e2f1c7f63364a82ac77238fed1fc4fd5a2f.zip", optional = true}
-zstandard = {version = "^0.18.0", optional = true}
-ordered-set = {version = "^4.1.0", optional = true}
+python = ">=3.10,<3.11"
+
+[tool.poetry.group.runtime.dependencies]
 pygal = {url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.binaries]
+optional = true
 
-[tool.poetry.extras]
-cython = ["cython"]
-pyinstaller = ["pyinstaller"]
-pyoxidizer = ["pyoxidizer"]
-Nuitka = ["Nuitka", "zstandard", "ordered-set"]
+[tool.poetry.group.binaries.dependencies]
+pyinstaller = "^5.6.2"
+pyoxidizer = "^0.23.0"
+nuitka = "^1.2.3"
+zstandard = "^0.19.0"
+ordered-set = "^4.1.0"
 
-[tool.poetry.scripts]
-monopoly = "app:main"
-scriptopoly = "scripts:scriptopoly.main"
+[tool.poetry.group.cython]
+optional = true
+
+[tool.poetry.group.cython.dependencies]
+cython = "^0.29.32"
 
 [build-system]
-requires = ["setuptools>=59.0.1"]
+requires = ["setuptools==65.6.3"]
 build-backend = "setuptools.build_meta"
