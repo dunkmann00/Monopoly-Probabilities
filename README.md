@@ -1,6 +1,8 @@
-# Monopoly-Probabilities
-Simulate a Monopoly game to generate the probabilities of landing on each
-square.
+![Monopoly Probabilities](/title-image.png)
+
+### Simulate a Monopoly game to generate the probabilities of landing on each square.
+
+---
 
 While this project was originally inspired by the YouTube video
 [The Mathematics of Winning Monopoly](https://youtu.be/ubQXz5RBBtU) by Stand-up
@@ -82,7 +84,10 @@ monopoly
 
 If everything is working, you should see the output telling you the number of
 cores, turns (moves), and time it took to complete. There will also be a `csv`
-and `txt` file in the `results` directory with the data from the simulation.
+and a `txt` file in the `results` directory with the data from the simulation.
+Last but not least, there will be an `svg` file in the `results` directory,
+showing a bar graph of the results (*In case it is not obvious, you can open the
+`svg` file with your web browser to view the image*).
 
 Running the `monopoly` command by itself runs with 100 turns by default. To run
 the simulation with a different number of turns you can use the `--turns`
@@ -211,3 +216,9 @@ I'll list a few notes reviewing my experiences with these tools:
 - Nuitka is still giving me difficulties with multiprocessing. At the moment,
   running Nuitka in multi-core mode is disabled. To force the Nuitka binary to
   run in multi-core mode, set the `FORCE_NUITKA_MULTI` environment variable.
+- Trying to generate a `png` of the bar graph was an effort in futility. After
+  jumping through many hoops, I was able to get PyInstaller and Nuitka working
+  with it locally, but not PyOxidizer. This unfortunately only worked when
+  building and running locally. When running the Github Actions build it did not
+  work and I don't think there is anything I could do to fix that with the
+  library I was using (`cairosvg`...the library that `PyGal` uses).
