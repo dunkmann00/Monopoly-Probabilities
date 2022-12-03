@@ -1,1 +1,11 @@
-pygal @ https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip ; python_version >= "3.10" and python_version < "3.11"
+commonmark==0.9.1 ; python_version >= "3.10" and python_version < "3.11" \
+    --hash=sha256:452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60 \
+    --hash=sha256:da2f38c92590f83de410ba1a3cbceafbc74fee9def35f9251ba9a971d6d66fd9
+pygal @ https://github.com/dunkmann00/pygal/releases/download/3.0.0/pygal-3.0.0-py2.py3-none-any.whl ; python_version >= "3.10" and python_version < "3.11" \
+    --hash=sha256:8d20a5e71697891d8d4dfa32132a37b68d32554b518789d242421545b3a26da8
+pygments==2.13.0 ; python_version >= "3.10" and python_version < "3.11" \
+    --hash=sha256:56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1 \
+    --hash=sha256:f643f331ab57ba3c9d89212ee4a2dabc6e94f117cf4eefde99a0574720d14c42
+rich==12.6.0 ; python_version >= "3.10" and python_version < "3.11" \
+    --hash=sha256:a4eb26484f2c82589bd9a17c73d32a010b1e29d89f1604cd9bf3a2097b81bb5e \
+    --hash=sha256:ba3a3775974105c221d31141f2c116f4fd65c5ceb0698657a11e9f295ec93fd0

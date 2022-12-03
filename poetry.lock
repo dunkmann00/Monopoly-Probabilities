@@ -18,6 +18,17 @@ python-versions = "*"
 pycparser = "*"
 
 [[package]]
+name = "commonmark"
+version = "0.9.1"
+description = "Python parser for the CommonMark Markdown spec"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.extras]
+test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
+
+[[package]]
 name = "cython"
 version = "0.29.32"
 description = "The Cython compiler for writing C extensions for the Python language."
@@ -98,7 +109,17 @@ test = ["cairosvg", "coveralls", "flask", "lxml", "pygal-maps-ch", "pygal-maps-f
 
 [package.source]
 type = "url"
-url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"
+url = "https://github.com/dunkmann00/pygal/releases/download/3.0.0/pygal-3.0.0-py2.py3-none-any.whl"
+[[package]]
+name = "pygments"
+version = "2.13.0"
+description = "Pygments is a syntax highlighting package written in Python."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pyinstaller"
@@ -145,6 +166,21 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "rich"
+version = "12.6.0"
+description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+category = "dev"
+optional = false
+python-versions = ">=3.6.3,<4.0.0"
+
+[package.dependencies]
+commonmark = ">=0.9.0,<0.10.0"
+pygments = ">=2.6.0,<3.0.0"
+
+[package.extras]
+jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
+
+[[package]]
 name = "setuptools"
 version = "65.6.3"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
@@ -174,7 +210,7 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "f9807ed640b42aebc0bf61a3ed58af652bebd3e6e8fd91fcafb92800aa3e18d5"
+content-hash = "2562922505a6542ae334f99223eaa81ca25440a01980d048e16488efe77129e1"
 
 [metadata.files]
 altgraph = [
@@ -247,6 +283,10 @@ cffi = [
     {file = "cffi-1.15.1-cp39-cp39-win_amd64.whl", hash = "sha256:70df4e3b545a17496c9b3f41f5115e69a4f2e77e94e1d2a8e1070bc0c38c8a3c"},
     {file = "cffi-1.15.1.tar.gz", hash = "sha256:d400bfb9a37b1351253cb402671cea7e89bdecc294e8016a707f6d1d8ac934f9"},
 ]
+commonmark = [
+    {file = "commonmark-0.9.1-py2.py3-none-any.whl", hash = "sha256:da2f38c92590f83de410ba1a3cbceafbc74fee9def35f9251ba9a971d6d66fd9"},
+    {file = "commonmark-0.9.1.tar.gz", hash = "sha256:452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60"},
+]
 cython = [
     {file = "Cython-0.29.32-cp27-cp27m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:39afb4679b8c6bf7ccb15b24025568f4f9b4d7f9bf3cbd981021f542acecd75b"},
     {file = "Cython-0.29.32-cp27-cp27m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:dbee03b8d42dca924e6aa057b836a064c769ddfd2a4c2919e65da2c8a362d528"},
@@ -311,6 +351,10 @@ pycparser = [
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
 pygal = []
+pygments = [
+    {file = "Pygments-2.13.0-py3-none-any.whl", hash = "sha256:f643f331ab57ba3c9d89212ee4a2dabc6e94f117cf4eefde99a0574720d14c42"},
+    {file = "Pygments-2.13.0.tar.gz", hash = "sha256:56a8508ae95f98e2b9bdf93a6be5ae3f7d8af858b43e02c5a2ff083726be40c1"},
+]
 pyinstaller = [
     {file = "pyinstaller-5.6.2-py3-none-macosx_10_13_universal2.whl", hash = "sha256:1b1e3b37a22fb36555d917f0c3dfb998159ff4af6d8fa7cc0074d630c6fe81ad"},
     {file = "pyinstaller-5.6.2-py3-none-manylinux2014_aarch64.whl", hash = "sha256:05df5d2b9ca645cc6ef61d8a85451d2aabe5501997f1f50cd94306fd6bc0485d"},
@@ -339,6 +383,10 @@ pyoxidizer = [
 pywin32-ctypes = [
     {file = "pywin32-ctypes-0.2.0.tar.gz", hash = "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942"},
     {file = "pywin32_ctypes-0.2.0-py2.py3-none-any.whl", hash = "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"},
+]
+rich = [
+    {file = "rich-12.6.0-py3-none-any.whl", hash = "sha256:a4eb26484f2c82589bd9a17c73d32a010b1e29d89f1604cd9bf3a2097b81bb5e"},
+    {file = "rich-12.6.0.tar.gz", hash = "sha256:ba3a3775974105c221d31141f2c116f4fd65c5ceb0698657a11e9f295ec93fd0"},
 ]
 setuptools = [
     {file = "setuptools-65.6.3-py3-none-any.whl", hash = "sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54"},

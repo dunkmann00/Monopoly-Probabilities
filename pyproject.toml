@@ -33,7 +33,8 @@ packages = [
 python = ">=3.10,<3.11"
 
 [tool.poetry.group.runtime.dependencies]
-pygal = {url = "https://github.com/dunkmann00/pygal/archive/refs/heads/freeze.zip"}
+rich = "^12.6.0"
+pygal = {url = "https://github.com/dunkmann00/pygal/releases/download/3.0.0/pygal-3.0.0-py2.py3-none-any.whl"}
 
 [tool.poetry.group.binaries]
 optional = true

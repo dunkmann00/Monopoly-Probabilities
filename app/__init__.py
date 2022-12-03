@@ -1,9 +1,14 @@
 import os
 from multiprocessing import Pool
 from itertools import starmap
-from .utils import (Spinner, Timer, Result, pluralize,
+from .utils import (Timer, Result, pluralize,
                     calculate_all_turns, save_results, get_monopoly_cls,
-                    generate_games, play_game)
+                    generate_games, play_game, console)
+
+from rich.panel import Panel
+from rich.text import Text
+from rich import box
+
 
 # This is needed to turn off multiprocessing when built with Nuitka.
 # No matter what I tried I couldn't get it to work. Hopefully I can fix
@@ -36,6 +41,24 @@ def pyoxidizer_main():
 
 def main():
     flags = parse_args()
+
+    title = Text(r"""    ___  ___                              _
+    |  \/  |                             | |            ____
+    | .  . | ___  _ __   ___  _ __   ___ | |_   _      /\' .\    _____
+    | |\/| |/ _ \| '_ \ / _ \| '_ \ / _ \| | | | |    /: \___\  / .  /\
+    | |  | | (_) | | | | (_) | |_) | (_) | | |_| |    \' / . / /____/..\
+    \_|  |_/\___/|_| |_|\___/| .__/ \___/|_|\__, |     \/___/  \'  '\  /
+                             | |             __/ |              \'__'\/
+                             |_|            |___/
+    ______          _           _     _ _ _ _   _
+    | ___ \        | |         | |   (_) (_) | (_)
+    | |_/ / __ ___ | |__   __ _| |__  _| |_| |_ _  ___  ___
+    |  __/ '__/ _ \| '_ \ / _` | '_ \| | | | __| |/ _ \/ __|
+    | |  | | | (_) | |_) | (_| | |_) | | | | |_| |  __/\__ \
+    \_|  |_|  \___/|_.__/ \__,_|_.__/|_|_|_|\__|_|\___||___/
+""",)
+    console.print(Panel(title, box=box.DOUBLE_EDGE, border_style="red"), style="bold white")
+    print()
     timer = Timer()
     num_cores_used = 0
     with timer:
@@ -47,15 +70,15 @@ def main():
 
         if NUITKA_BUILD: # Built with Nuitka, multiprocessing does not work, don't use it
             if cpu_count > 1:
-                print("Multi-core support is not currently available with the Nuitka build.")
-                print("Running in single core mode.")
+                console.print("Multi-core support is not currently available with the Nuitka build.", style="yellow")
+                console.print("Running in single core mode.", style="yellow")
                 cpu_count = 1
 
         monopoly_cls = get_monopoly_cls(pure_python=flags.pure_python)
         turns = calculate_all_turns(flags.turns, cpu_count)
         num_cores_used = len(turns)
-        info_text = f"Using {pluralize(num_cores_used,'core')} to simulate {pluralize(sum(turns),'move',',')}"
-        with Spinner(info_text) as spinner:
+        info_text = f"Using [green]{pluralize(num_cores_used,'core',highlight=True)}[/] to simulate [green]{pluralize(sum(turns),'move',',',True)}"
+        with console.status(info_text) as status:
             if len(turns) <= 1 or NUITKA_BUILD:
                 results = [sum(square) for square in zip(*starmap(play_game, generate_games(monopoly_cls, turns)))]
             else:
@@ -63,6 +86,9 @@ def main():
                     results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(monopoly_cls, turns)))]
 
     result = Result(results, timer.duration, num_cores_used)
-    print(f"Run time: {result.pretty_duration}")
-    print(f"Complete, {result.pretty_total_turns} made")
+    console.rule("[bold]Results")
+    print()
+    console.print(f"# of Cores: {num_cores_used}")
+    console.print(f"  Run time: [cyan]{result.pretty_duration()}")
+    console.print(f"     Moves: [cyan]{result.pretty_total_turns()}")
     save_results(result, flags.results_dir)
