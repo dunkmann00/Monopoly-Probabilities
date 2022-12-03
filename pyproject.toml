@@ -41,7 +41,7 @@ optional = true
 
 [tool.poetry.group.binaries.dependencies]
 pyinstaller = "^5.6.2"
-pyoxidizer = "^0.23.0"
+pyoxidizer = "^0.22.0"
 nuitka = "^1.2.3"
 zstandard = "^0.19.0"
 ordered-set = "^4.1.0"

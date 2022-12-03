@@ -96,13 +96,13 @@ pyinstaller==5.6.2 ; python_version >= "3.10" and python_version < "3.11" \
     --hash=sha256:d888db9afedff290d362ee296d30eb339abeba707ca1565916ce1cd5947131c3 \
     --hash=sha256:e026adc92c60158741d0bfca27eefaa2414801f61328cb84d0c88241fe8c2087 \
     --hash=sha256:eb083c25f711769af0898852ea30dcb727ba43990bbdf9ffbaa9c77a7bd0d720
-pyoxidizer==0.23.0 ; python_version >= "3.10" and python_version < "3.11" \
-    --hash=sha256:0c99ed8826f1c45431a405f1e4ef3897bb75e8b2c9a4b0eeda64733350b96a6b \
-    --hash=sha256:1ab30cfebbdde6415886a5fc0480c6db9ca6e28520859405b02bf008ca871241 \
-    --hash=sha256:3b8b403ea6033584525f5e6675652e7edd437e172c55a32ebf774ade2f691d01 \
-    --hash=sha256:4d1114ebe39e5be06e545032303ba482aa829c46d97d8f9dea3a15a4e9472891 \
-    --hash=sha256:b918943e3789b6ff0bf39e66f2489207b126a34eb8e9351e4e858d5408b6c1f5 \
-    --hash=sha256:c5614d113d60013150b0c281a15bd72e53a0a4d76e3f583591a683bfbca585a3
+pyoxidizer==0.22.0 ; python_version >= "3.10" and python_version < "3.11" \
+    --hash=sha256:6e1c5ad4ee1990d58ef9d09c3f950c11f921df8b30325a8c130cf1f3d2fa7a28 \
+    --hash=sha256:774813b480e7ca2c620bb44f29dab6bbec33215278cdcd64421462be6a4443df \
+    --hash=sha256:785f87f8084ab94cd47477cc8258cf126aaef0ca7e0e52bb1f4b666cffc388f8 \
+    --hash=sha256:8681e0d638be6b14d5f47810364b63df585deb1483ed65f09597a6d3cb35f1dc \
+    --hash=sha256:a07166628b1c838855d2208daad1268ed430f13751a903966ed96db1713be3fd \
+    --hash=sha256:de3b607ffc1eac72d0b7bbefb67bc5afd08cbfe04c2ad2e4b7fe58de695eea74
 pywin32-ctypes==0.2.0 ; python_version >= "3.10" and python_version < "3.11" and sys_platform == "win32" \
     --hash=sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942 \
     --hash=sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98
