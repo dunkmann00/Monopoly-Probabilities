@@ -1,6 +1,6 @@
 [project]
 name = "monopoly-probabilities"
-version = "0.2.0"
+version = "0.3.0"
 description = "Calculate the probabilities of landing on each different square on a monopoly board."
 authors = [
     {name = "George Waters", email = "gwatersdev@gmail.com"},
@@ -22,7 +22,7 @@ package-data = {'*' = ['*.txt']}
 
 [tool.poetry]
 name = "monopoly-probabilities"
-version = "0.2.0"
+version = "0.3.0"
 description = "Calculate the probabilities of landing on each different square on a monopoly board."
 authors = ["George Waters <gwatersdev@gmail.com>"]
 packages = [
