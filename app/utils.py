@@ -12,90 +12,10 @@ try:
 except ImportError:
     CMonopoly = None
 
-"""
-Extremely bareboned version of spinner from yaspin library
-https://github.com/pavdmyt/yaspin/tree/master/yaspin
-"""
-class Spinner(object):
-    MAC_FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
-    WINDOWS_FRAMES = ["[    ]","[=   ]","[==  ]","[=== ]","[ ===]","[  ==]",
-			         "[   =]","[    ]","[   =]","[  ==]","[ ===]","[====]",
-			         "[=== ]","[==  ]","[=   ]"]
-    def __init__(self, text=""):
-        self._frames = self.WINDOWS_FRAMES if os.name == "nt" else self.MAC_FRAMES
-        self._interval = 80 * 0.001 # convert from ms to secs
-        self._cycle = itertools.cycle(self._frames)
-        self.text = text
-        self._stdout_lock = threading.Lock()
-        self._stop_spin = None
-        self._spin_thread = None
+from rich.console import Console
 
-    def __enter__(self):
-        self.start()
-        return self
+console = Console()
 
-    def __exit__(self, exc_type, exc_val, traceback):
-        if self._spin_thread.is_alive():
-            self.stop()
-        return False
-
-    def start(self):
-        if sys.stdout.isatty():
-            self._hide_cursor()
-        self._stop_spin = threading.Event()
-        self._spin_thread = threading.Thread(target=self._spin)
-        try:
-            self._spin_thread.start()
-        finally:
-            # Ensure cursor is not hidden if any failure occurs that prevents
-            # getting it back
-            self._show_cursor()
-
-    def stop(self):
-        if self._spin_thread:
-            self._stop_spin.set()
-            self._spin_thread.join()
-
-            sys.stdout.write(f"\r{self.text}")
-            self._clear_line()
-            sys.stdout.write("\n")
-
-            if sys.stdout.isatty():
-                self._show_cursor()
-
-    def _spin(self):
-        while not self._stop_spin.is_set():
-            # Compose Output
-            spin_phase = next(self._cycle)
-            out = f"\r{spin_phase} {self.text}"
-
-            # Write
-            with self._stdout_lock:
-                sys.stdout.write(out)
-                self._clear_line()
-                sys.stdout.flush()
-
-            # Wait
-            self._stop_spin.wait(self._interval)
-
-    @staticmethod
-    def _hide_cursor():
-        if os.name != "nt":
-            sys.stdout.write("\033[?25l")
-        sys.stdout.flush()
-
-    @staticmethod
-    def _show_cursor():
-        if os.name != "nt":
-            sys.stdout.write("\033[?25h")
-        sys.stdout.flush()
-
-    @staticmethod
-    def _clear_line():
-        if os.name == "nt":
-            sys.stdout.write(" "*7+"\r")
-        else:
-            sys.stdout.write("\033[K")
 
 """
 Time how long it takes code to run inside a `Timer` context. Print out the
@@ -135,25 +55,22 @@ class Result():
         self.duration = duration
         self.num_cores_used = num_cores_used
 
-    @property
-    def pretty_duration(self):
+    def pretty_duration(self, highlight=False):
         if self.duration is None:
             return ''
         duration_str = ''
         mins, secs = divmod(self.duration, 60)
         if mins > 0:
-            duration_str = f"{pluralize(mins,'min','.0f')} "
+            duration_str = f"{pluralize(mins,'min','.0f',highlight)} "
         format = '.0f' if mins > 0 else '.2f'
-        duration_str += f"{pluralize(secs,'sec',format)}"
+        duration_str += f"{pluralize(secs,'sec',format,highlight)}"
         return duration_str
 
-    @property
-    def pretty_total_turns(self):
-        return pluralize(self.total_turns,'move',',')
+    def pretty_total_turns(self, highlight=False):
+        return pluralize(self.total_turns,'move',',',highlight)
 
-    @property
-    def pretty_num_cores_used(self):
-        return pluralize(self.num_cores_used, 'cpu core')
+    def pretty_num_cores_used(self, highlight=False):
+        return pluralize(self.num_cores_used, 'cpu core', highlight=highlight)
 
 """
 Returns either the C extension or pure Python version of the Monopoly class
@@ -166,13 +83,13 @@ depending on:
 """
 def get_monopoly_cls(pure_python=False):
     if pure_python:
-        print("-- Using Pure Python Monopoly class --")
+        console.print("-- Using Pure Python Monopoly class --", style="yellow")
         return PyMonopoly
     else:
         if CMonopoly is not None:
             return CMonopoly
         else:
-            print("-- Falling back to Pure Python Monopoly class --")
+            console.print("-- Falling back to Pure Python Monopoly class --", style="yellow")
             return PyMonopoly
 
 """
@@ -199,8 +116,10 @@ greater than 1. Can also provide a format string for the value.
 
 Return the value, formatted if necessary, with the correct label.
 """
-def pluralize(value, label, format=None):
+def pluralize(value, label, format=None, highlight=False):
     value_str = str(value) if format is None else f"{value:{format}}"
+    if highlight:
+        value_str = f"[bold]{value_str}[/bold]"
     return f"{value_str} {label}{'s' if value != 1 else ''}"
 
 """
@@ -252,7 +171,7 @@ def make_chart(result, board_spaces):
     config = pygal.Config()
     config.show_legend = False
     config.human_readable = True
-    config.title = f"Monopoly Probabilities Results ({result.pretty_total_turns} - {result.pretty_duration} - {result.pretty_num_cores_used})"
+    config.title = f"Monopoly Probabilities Results ({result.pretty_total_turns()} - {result.pretty_duration()} - {result.pretty_num_cores_used()})"
     config.x_title = "Board Space Names"
     config.y_title = "Percentage (%) of moves ended on"
     config.x_labels = [board_space.name for board_space in board_spaces]
@@ -298,7 +217,7 @@ def save_results(result, results_dir=None):
     with resources.open_text(data, 'board-spaces.txt') as fp_board_spaces:
         board_spaces = [BoardSpace(*value.rstrip().split(":")) for value in fp_board_spaces]
 
-    print(f"Saving Results to {results_dir}:")
+    console.print(f"\n[bold]Saving in[/] {results_dir}:")
 
     probs_txt = results_dir / 'board-probabilities.txt'
     probs_csv = results_dir / 'board-probabilities.csv'
@@ -306,11 +225,11 @@ def save_results(result, results_dir=None):
         for percentage, board_space in zip(result.percentages, board_spaces):
             fprobs.write(f"{board_space.name:<21} - {percentage:.3%}\n")
             fprobs_csv.write(f"{board_space.name},{percentage:.3%}\n")
-    print(probs_txt.name)
-    print(probs_csv.name)
+    console.print(" •", probs_txt.name, style="cyan")
+    console.print(" •", probs_csv.name, style="cyan")
 
     chart = make_chart(result, board_spaces)
 
     probs_svg_chart = results_dir / 'board-probabilities-chart.svg'
     chart.render_to_file(str(probs_svg_chart))
-    print(probs_svg_chart.name)
+    console.print(" •", probs_svg_chart.name, style="cyan")
