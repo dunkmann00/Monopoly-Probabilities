@@ -36,11 +36,15 @@ def make_exe():
     # appropriate value when OxidizedFinder imports the `multiprocessing`
     # module.
     python_config.multiprocessing_start_method = 'auto'
-    python_config.multiprocessing_auto_dispatch = True
+
+    # In version 0.19, there is a bug in the handling of the 'spawn' start method.
+    # This should be fixed in future versions but for now, I will call 'freeze_support'
+    # myself in the python code by using a different entry point for pyoxidizer.
+    python_config.multiprocessing_auto_dispatch = False
 
 
     # Evaluate a string as Python code when the interpreter starts.
-    python_config.run_command = "from app import main; main()"
+    python_config.run_command = "from app import pyoxidizer_main; pyoxidizer_main()"
 
     # Produce a PythonExecutable from a Python distribution, embedded
     # resources, and other options. The returned object represents the
