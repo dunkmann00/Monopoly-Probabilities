@@ -1,8 +1,9 @@
-import threading, time, itertools, sys, os
+import threading, time, itertools, sys, os, signal
 import pygal
 from pathlib import Path
 import importlib.resources as resources
 from collections import namedtuple
+from contextlib import contextmanager
 
 from . import data
 
@@ -16,6 +17,20 @@ from rich.console import Console
 
 console = Console()
 
+def init_worker():
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+@contextmanager
+def monopoly_status(info_template, cancelled=True):
+    info_text = info_template.format(color="green")
+    cancelled_text = info_template.format(color="red") + "...[bold red]Cancelled"
+    try:
+        with console.status(info_text) as status:
+            yield status
+    except KeyboardInterrupt:
+        if cancelled:
+            console.print(cancelled_text)
+        sys.exit(1)
 
 """
 Time how long it takes code to run inside a `Timer` context. Print out the
