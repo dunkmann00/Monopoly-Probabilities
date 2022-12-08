@@ -20,16 +20,31 @@ console = Console()
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
+"""
+Handle keyboard interrupts here. I need to do this because when freezing the app
+the keyboard interrupts are behaving strangely for PyInstaller and Nuitka. When
+raised, they randomly raise again while the inital error is being handled. This
+then raises another error, and since this one is in the exception handle block,
+it just propogates all the way up and you get an ugly stack trace. By routing it
+through here I can ignore any interrupts after the initial one, thus avoiding
+any unnecessary errors and error terminal output.
+"""
+def setup_keyboard_interrupt():
+    fired = False
+    def keyboard_interrupt_handler(signalnum, frame):
+        nonlocal fired
+        if signalnum == signal.SIGINT and not fired:
+            fired = True
+            raise KeyboardInterrupt
+    signal.signal(signal.SIGINT, keyboard_interrupt_handler)
+
 @contextmanager
-def monopoly_status(info_template, cancelled=True):
-    info_text = info_template.format(color="green")
-    cancelled_text = info_template.format(color="red") + "...[bold red]Cancelled"
+def cancel_on_kbinterrupt(cancelled_text):
+    setup_keyboard_interrupt()
     try:
-        with console.status(info_text) as status:
-            yield status
+        yield
     except KeyboardInterrupt:
-        if cancelled:
-            console.print(cancelled_text)
+        console.print(cancelled_text)
         sys.exit(1)
 
 """
