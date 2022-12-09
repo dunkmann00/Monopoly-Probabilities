@@ -5,6 +5,8 @@ from libcpp.set cimport set
 
 from random import random
 
+from cpython.exc cimport PyErr_CheckSignals
+
 cdef enum:
     JAIL = 40
 
@@ -79,6 +81,7 @@ cdef class Monopoly():
         self.results[self.current_position]+=1
         self.total_turns+=1
         if self.total_turns % 100000 == 0:
+            PyErr_CheckSignals()
             with nogil:
                 pass
 
