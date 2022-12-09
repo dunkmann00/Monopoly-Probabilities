@@ -247,7 +247,7 @@ def save_results(result, results_dir=None):
     with resources.open_text(data, 'board-spaces.txt') as fp_board_spaces:
         board_spaces = [BoardSpace(*value.rstrip().split(":")) for value in fp_board_spaces]
 
-    console.print(f"\n[bold]Saving in[/] {results_dir}:")
+    console.print(f"\n[bold]Saving in[/] [magenta]{results_dir}[/]:")
 
     probs_txt = results_dir / 'board-probabilities.txt'
     probs_csv = results_dir / 'board-probabilities.csv'
