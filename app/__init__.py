@@ -1,4 +1,4 @@
-import os
+import os, time
 from multiprocessing import Pool
 from itertools import starmap
 from .utils import (Timer, Result, pluralize, init_worker, cancel_on_kbinterrupt,
@@ -86,7 +86,10 @@ def main():
                 results = [sum(square) for square in zip(*starmap(play_game, generate_games(monopoly_cls, turns)))]
             else:
                 with Pool(initializer=init_worker) as pool:
-                    results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(monopoly_cls, turns)))]
+                    processing = pool.starmap_async(play_game, generate_games(monopoly_cls, turns))
+                    while not processing.ready():
+                        time.sleep(0.1)
+                    results = [sum(square) for square in zip(*processing.get())]
 
     result = Result(results, timer.duration, num_cores_used)
     console.rule("[bold]Results")
