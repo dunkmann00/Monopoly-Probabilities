@@ -1,4 +1,4 @@
-import os
+import os, time
 from multiprocessing import Pool
 from itertools import starmap
 from .utils import (Timer, Result, pluralize, init_worker, cancel_on_kbinterrupt,
@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.text import Text
 from rich import box
 
+SPINNER = 'bouncingBar' if os.name == 'nt' else 'dots'
 
 # This is needed to turn off multiprocessing when built with Nuitka.
 # No matter what I tried I couldn't get it to work. Hopefully I can fix
@@ -80,12 +81,15 @@ def main():
         info_template = f"Using [{{color}}]{pluralize(num_cores_used,'core',highlight=True)}[/] to simulate [{{color}}]{pluralize(sum(turns),'move',',',True)}[/]"
         info_text = info_template.format(color="green")
         cancelled_text = info_template.format(color="red") + "[white]...[/][bold red]Cancelled"
-        with cancel_on_kbinterrupt(cancelled_text), console.status(info_text) as console_status:
+        with cancel_on_kbinterrupt(cancelled_text), console.status(info_text, spinner=SPINNER) as console_status:
             if len(turns) <= 1 or NUITKA_BUILD:
                 results = [sum(square) for square in zip(*starmap(play_game, generate_games(monopoly_cls, turns)))]
             else:
                 with Pool(initializer=init_worker) as pool:
-                    results = [sum(square) for square in zip(*pool.starmap(play_game, generate_games(monopoly_cls, turns)))]
+                    processing = pool.starmap_async(play_game, generate_games(monopoly_cls, turns))
+                    while not processing.ready():
+                        time.sleep(0.1)
+                    results = [sum(square) for square in zip(*processing.get())]
 
     result = Result(results, timer.duration, num_cores_used)
     console.rule("[bold]Results")
