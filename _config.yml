@@ -1,5 +1,5 @@
 exclude:
-  - *
+  - "*"
 include:
   - README.md
   - title-image.png
