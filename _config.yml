@@ -1,2 +1,8 @@
-exclude: ["*"]
-include: ["README.md", "title-image.png"]
+exclude:
+  - *
+include:
+  - README.md
+  - title-image.png
+
+optional_front_matter:
+  enabled: true
