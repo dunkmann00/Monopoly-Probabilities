@@ -3,6 +3,8 @@ exclude:
 include:
   - README.md
   - title-image.png
+  - default.html
+  - home.html
 
 optional_front_matter:
   enabled: true
