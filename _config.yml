@@ -6,5 +6,5 @@ include:
   - default.html
   - home.html
 
-optional_front_matter:
-  enabled: true
+readme_index:
+  remove_originals: true
