@@ -13,9 +13,102 @@ try:
 except ImportError:
     CMonopoly = None
 
-from rich.console import Console
+from rich.console import Console, detect_legacy_windows
+from rich.style import Style
+from rich._win32_console import LegacyWindowsTerm
 
 console = Console()
+
+"""
+Status spinner to use only for Legacy Windows terminals.
+"""
+class LegacyWindowsStatus:
+    WINDOWS_FRAMES = ["[    ]","[=   ]","[==  ]","[=== ]","[ ===]","[  ==]",
+			         "[   =]","[    ]","[   =]","[  ==]","[ ===]","[====]",
+			         "[=== ]","[==  ]","[=   ]"]
+    def __init__(self, text=""):
+        self._frames = self.WINDOWS_FRAMES
+        self._interval = 80 * 0.001 # convert from ms to secs
+        self._cycle = itertools.cycle(self._frames)
+        self.text = text
+        self._stdout_lock = threading.Lock()
+        self._stop_spin = None
+        self._spin_thread = None
+        self.legacy_terminal = LegacyWindowsTerm(console.file)
+        self.spinner_style = Style(color="green")
+
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc_val, traceback):
+        if self._spin_thread.is_alive():
+            self.stop()
+        return False
+
+    def start(self):
+        console.print(f"[green]{self._frames[0]}[/]", self.text, highlight=False, end="")
+        if sys.stdout.isatty():
+            self._hide_cursor()
+        self._stop_spin = threading.Event()
+        self._spin_thread = threading.Thread(target=self._spin)
+        try:
+            self._spin_thread.start()
+        except Exception:
+            # Ensure cursor is not hidden if any failure occurs that prevents
+            # getting it back
+            if sys.stdout.isatty():
+                self._show_cursor()
+            raise
+
+    def stop(self):
+        if self._spin_thread:
+            self._stop_spin.set()
+            self._spin_thread.join()
+
+            self.legacy_terminal.write_text("\r")
+            self._erase_line()
+
+            if sys.stdout.isatty():
+                self._show_cursor()
+
+    def _spin(self):
+        adjustment = 0.0
+        smoothness = None
+        frame = time.monotonic()
+        while not self._stop_spin.is_set():
+            # Compose Output
+            spin_phase = next(self._cycle)
+            out = f"\r{spin_phase}"
+
+            # Write
+            with self._stdout_lock:
+                self.legacy_terminal.write_styled(out, self.spinner_style)
+
+            # Wait
+            wait = max(0.0, self._interval + adjustment)
+            self._stop_spin.wait(wait)
+
+            # Adjust for slower than expected waits and smooth
+            last_frame = frame
+            frame = time.monotonic()
+            smoothness = 0.0 if smoothness is None else 0.9
+            adjustment = adjustment * smoothness + min(0.0, (self._interval - (frame - last_frame) + adjustment)) * (1.0 - smoothness)
+
+    def _hide_cursor(self):
+        self.legacy_terminal.hide_cursor()
+
+    def _show_cursor(self):
+        self.legacy_terminal.show_cursor()
+
+    def _erase_line(self):
+        self.legacy_terminal.erase_line()
+
+def console_status(text=""):
+    if detect_legacy_windows():
+        return LegacyWindowsStatus(text)
+    else:
+        return console.status(text)
 
 def init_worker():
     signal.signal(signal.SIGINT, signal.SIG_IGN)

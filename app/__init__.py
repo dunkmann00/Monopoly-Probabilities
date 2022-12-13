@@ -1,10 +1,9 @@
 import os, time
 from multiprocessing import Pool
 from itertools import starmap
-from .utils import (Timer, Result, pluralize, init_worker, cancel_on_kbinterrupt,
-                    calculate_all_turns, save_results, get_monopoly_cls,
-                    generate_games, play_game, console)
-
+from .utils import (Timer, Result, pluralize, console, init_worker,
+                    cancel_on_kbinterrupt, console_status, calculate_all_turns,
+                    save_results, get_monopoly_cls, generate_games, play_game)
 from rich.panel import Panel
 from rich.text import Text
 from rich import box
@@ -81,7 +80,7 @@ def main():
         info_template = f"Using [{{color}}]{pluralize(num_cores_used,'core',highlight=True)}[/] to simulate [{{color}}]{pluralize(sum(turns),'move',',',True)}[/]"
         info_text = info_template.format(color="green")
         cancelled_text = info_template.format(color="red") + "[white]...[/][bold red]Cancelled"
-        with cancel_on_kbinterrupt(cancelled_text), console.status(info_text, spinner=SPINNER) as console_status:
+        with cancel_on_kbinterrupt(cancelled_text), console_status(info_text) as status:
             if len(turns) <= 1 or NUITKA_BUILD:
                 results = [sum(square) for square in zip(*starmap(play_game, generate_games(monopoly_cls, turns)))]
             else:
