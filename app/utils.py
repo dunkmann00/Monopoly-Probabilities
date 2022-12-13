@@ -15,7 +15,6 @@ except ImportError:
 
 from rich.console import Console, detect_legacy_windows
 from rich.style import Style
-from rich._win32_console import LegacyWindowsTerm
 
 console = Console()
 
@@ -26,7 +25,7 @@ class LegacyWindowsStatus:
     WINDOWS_FRAMES = ["[    ]","[=   ]","[==  ]","[=== ]","[ ===]","[  ==]",
 			         "[   =]","[    ]","[   =]","[  ==]","[ ===]","[====]",
 			         "[=== ]","[==  ]","[=   ]"]
-    def __init__(self, text=""):
+    def __init__(self, console, term, text=""):
         self._frames = self.WINDOWS_FRAMES
         self._interval = 80 * 0.001 # convert from ms to secs
         self._cycle = itertools.cycle(self._frames)
@@ -34,7 +33,8 @@ class LegacyWindowsStatus:
         self._stdout_lock = threading.Lock()
         self._stop_spin = None
         self._spin_thread = None
-        self.legacy_terminal = LegacyWindowsTerm(console.file)
+        self.legacy_terminal = term
+        self.console = console
         self.spinner_style = Style(color="green")
 
     def __enter__(self):
@@ -47,8 +47,8 @@ class LegacyWindowsStatus:
         return False
 
     def start(self):
-        console.print(f"[green]{self._frames[0]}[/]", self.text, highlight=False, end="")
-        if sys.stdout.isatty():
+        self.console.print(f"[green]{self._frames[0]}[/]", self.text, highlight=False, end="")
+        if self.console.file.isatty():
             self._hide_cursor()
         self._stop_spin = threading.Event()
         self._spin_thread = threading.Thread(target=self._spin)
@@ -57,7 +57,7 @@ class LegacyWindowsStatus:
         except Exception:
             # Ensure cursor is not hidden if any failure occurs that prevents
             # getting it back
-            if sys.stdout.isatty():
+            if self.console.file.isatty():
                 self._show_cursor()
             raise
 
@@ -69,7 +69,7 @@ class LegacyWindowsStatus:
             self.legacy_terminal.write_text("\r")
             self._erase_line()
 
-            if sys.stdout.isatty():
+            if self.console.file.isatty():
                 self._show_cursor()
 
     def _spin(self):
@@ -106,7 +106,8 @@ class LegacyWindowsStatus:
 
 def console_status(text=""):
     if detect_legacy_windows():
-        return LegacyWindowsStatus(text)
+        from rich._win32_console import LegacyWindowsTerm
+        return LegacyWindowsStatus(console, LegacyWindowsTerm(console.file), text)
     else:
         return console.status(text)
 
