@@ -13,7 +13,7 @@ try:
 except ImportError:
     CMonopoly = None
 
-from rich.console import Console, detect_legacy_windows
+from rich.console import Console
 from rich.style import Style
 
 console = Console()
@@ -105,7 +105,7 @@ class LegacyWindowsStatus:
         self.legacy_terminal.erase_line()
 
 def console_status(text=""):
-    if detect_legacy_windows():
+    if console.legacy_windows:
         from rich._win32_console import LegacyWindowsTerm
         return LegacyWindowsStatus(console, LegacyWindowsTerm(console.file), text)
     else:
