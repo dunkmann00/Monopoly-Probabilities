@@ -1,2 +1,10 @@
-exclude: ["*"]
-include: ["README.md", "title-image.png"]
+exclude:
+  - "*"
+include:
+  - README.md
+  - title-image.png
+  - default.html
+  - home.html
+
+readme_index:
+  remove_originals: true
