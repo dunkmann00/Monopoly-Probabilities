@@ -22,4 +22,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build & Deploy
-        uses: dunkmann00/jekyll-v4-gh-pages@main
+        uses: dunkmann00/jekyll-v4-gh-pages@v1
