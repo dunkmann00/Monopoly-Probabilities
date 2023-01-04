@@ -12,3 +12,5 @@ nuitka-build/
 *.pyd
 macos-signing/
 notary_log.json
+_site/
+Gemfile*
