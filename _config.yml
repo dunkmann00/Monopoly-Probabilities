@@ -8,3 +8,6 @@ include:
 
 readme_index:
   remove_originals: true
+
+primer:
+  theme: dark
